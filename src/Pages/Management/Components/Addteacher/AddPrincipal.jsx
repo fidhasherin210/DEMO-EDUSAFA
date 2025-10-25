@@ -175,7 +175,7 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
           name="reg_no"
           value={principalData.reg_no}
           onChange={handleChange}
-          placeholder="Enter Admission with QSM"
+          placeholder="Enter Admission"
           required
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition"
         />

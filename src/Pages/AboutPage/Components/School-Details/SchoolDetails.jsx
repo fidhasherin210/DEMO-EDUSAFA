@@ -120,14 +120,14 @@ function SchoolDetails() {
               <h2 className="text-base md:text-3xl font-bold text-gray-300 mb-2 opacity-80">
                 {SchoolDetails.sub_name}
               </h2>
-              <div className="absolute right-0 top-0 w-0.5 h-8 bg-cyan-400 animate-pulse"></div>
+
             </div>
           </div>
 
           {/* Floating badge */}
           <div className="inline-flex items-center px-6 py-3 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full mb-12 hover:bg-white/10 transition-colors">
             <Zap className="w-5 h-5 text-yellow-400 mr-3" />
-            <span className="text-white text-sm font-medium">{SchoolDetails.educational_board}</span>
+            <span className="text-white text-xs font-medium">{SchoolDetails.educational_board}</span>
           </div>
 
           {/* Call to action */}
@@ -146,11 +146,15 @@ function SchoolDetails() {
             </span>
           </p>
 
-          <button className="group relative inline-flex items-center px-8 py-4 bg-gradient-to-r from-violet-600 to-cyan-600 rounded-2xl font-bold text-white shadow-2xl shadow-violet-500/25 hover:shadow-violet-500/40 transform hover:scale-105 transition-all duration-300">
-            <span className="relative z-10">Explore Universe</span>
-            <ArrowRight className="w-5 h-5 ml-3 relative z-10 group-hover:translate-x-2 transition-transform" />
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-violet-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </button>
+       <button
+  onClick={() => window.scrollBy({ top: 800, behavior: "smooth" })}
+  className="group relative inline-flex items-center px-8 py-4 bg-gradient-to-r from-violet-600 to-cyan-600 rounded-2xl font-bold text-white shadow-2xl shadow-violet-500/25 hover:shadow-violet-500/40 transform hover:scale-105 transition-all duration-300"
+>
+  <span className="relative z-10">Explore Universe</span>
+  <ArrowRight className="w-5 h-5 ml-3 relative z-10 group-hover:translate-x-2 transition-transform" />
+  <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-violet-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+</button>
+
         </div>
       </section>
 

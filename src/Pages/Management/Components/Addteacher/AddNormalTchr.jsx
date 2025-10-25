@@ -215,7 +215,7 @@ function AddNormalTchr() {
         </div>
         <div>
           <label htmlFor="msr_no" className="block text-sm font-medium text-gray-700 mb-1">
-            MSR Number
+            MSR No
           </label>
           <input
             type="text"
@@ -349,7 +349,7 @@ function AddNormalTchr() {
           name="reg_no"
           value={teacherData.reg_no}
           onChange={handleChange}
-          placeholder="Admission Number With QSM"
+          placeholder="Admission Number"
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition"
         />
       </div>

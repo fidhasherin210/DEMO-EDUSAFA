@@ -27,7 +27,7 @@ function Footer() {
                 <GraduationCap className="w-10 h-6 text-white" />
               </div>
               <h3 className="text-base md:text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-300 bg-clip-text text-transparent">
-                Qurrathul Ain Sunni Higher Secondary Madrasa
+                Sample Name Higher Secondary Madrasa
               </h3>
             </div>
             <p className="text-xs md:text-md text-slate-300 mb-8 leading-relaxed max-w-md">
@@ -126,7 +126,7 @@ function Footer() {
                     href="mailto:qurrathulainsunnimadrassa@gmail.com"
                     className="text-xs hover:text-emerald-400 transition-colors no-underline"
                   >
-                    qurrathulainsunnimadrassa@gmail.com
+                    samplemadrassa@gmail.com
                   </a>
                 </div>
               </div>
@@ -141,7 +141,7 @@ function Footer() {
                     href="tel:+919847550940"
                     className="hover:text-blue-400 transition-colors no-underline"
                   >
-                    +91 9847550940
+                    +91 123456789
                   </a>
                 </div>
               </div>
@@ -153,7 +153,7 @@ function Footer() {
                 <div>
                   <p className="text-xs text-slate-400 mb-1">Address</p>
                   <p>
-                    Urulikkunnu, Koduvally
+                    Location, Place
                     <br />
                     Calicut, Kerala
                   </p>
@@ -191,7 +191,7 @@ function Footer() {
         <div className="max-w-7xl mx-auto px-6 py-6 text-center">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-slate-400 text-xs text-center md:text-left">
-              © 2025–26 Qurrathul Ain Sunni Higher Secondary. All Rights
+              © 2025–26 Your Madrasa Higher Secondary. All Rights
               Reserved.
             </p>
             <a

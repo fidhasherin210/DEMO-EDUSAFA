@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import DeleteMemmorial from "./DeleteMemmorial";
 
 function AddMemorial() {
   const [name, setName] = useState("");
@@ -207,8 +208,9 @@ function AddMemorial() {
           </button>
         </form>
 
-
+      <DeleteMemmorial/>
       </div>
+
     </div>
   );
 }

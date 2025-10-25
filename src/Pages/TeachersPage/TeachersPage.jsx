@@ -81,9 +81,13 @@ function TeachersPage() {
   const givNotification = () => navigate("/give-notification-teacher");
   const dailyRoutine = () => navigate("/daily-routine");
   const classRoom = () => navigate("/classroom-teacher");
+  const atteList = () => navigate("/std-attendence-list");
   const chatbot = () => navigate("/chat-bot-teacher");
+
   const getImageUrl = (url) =>
     url?.startsWith("http") ? url : `${backendUrl}${url}`;
+
+  console.log(csrfToken)
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       <div
@@ -322,14 +326,14 @@ function TeachersPage() {
 
           <div
             className="group cursor-pointer bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-white/80"
-            onClick={chatbot}
+            onClick={atteList}
           >
             <div className="flex flex-col items-center text-center space-y-4">
               <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-                🧠
+                👨‍🏫
               </div>
               <h3 className="text-xs md:text-sm font-semibold text-gray-800 leading-tight">
-                EduBot
+                Attendance List
               </h3>
             </div>
             <div className="mt-4 h-1 bg-gradient-to-r from-transparent via-gray-200 to-transparent rounded-full group-hover:via-blue-400 transition-all duration-300"></div>

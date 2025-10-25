@@ -11,7 +11,7 @@ import {
 const MarkTchrAttendancAuth = () => {
   const [teachers, setTeachers] = useState([]);
   const [selectedDate, setSelectedDate] = useState("");
-  const [selectedSession, setSelectedSession] = useState("");
+
   const [attendance, setAttendance] = useState({});
   const [message, setMessage] = useState("");
   const [csrfToken, setCsrfToken] = useState("");
@@ -21,12 +21,12 @@ const MarkTchrAttendancAuth = () => {
 
 useEffect(() => {
   const fetchAttendance = async () => {
-    if (!selectedDate || !selectedSession) return;
+    if (!selectedDate ) return;
 
     try {
       setIsLoading(true);
      const response = await fetch(
-  `${backendUrl}/api/authority/get-attendnace-by-date-session/?date=${selectedDate}&session=${selectedSession}`,
+  `${backendUrl}/api/authority/get-attendnace-by-date/?date=${selectedDate}`,
   { credentials: "include" }
 );
 
@@ -55,7 +55,7 @@ useEffect(() => {
   };
 
   fetchAttendance();
-}, [selectedDate, selectedSession, teachers, backendUrl]);
+}, [selectedDate, teachers, backendUrl]);
 
 
   useEffect(() => {
@@ -117,7 +117,6 @@ useEffect(() => {
     const attendanceData = teachers.map((teacher) => ({
       teacher_id: teacher.id,
       date: selectedDate,
-      session: selectedSession,
       status: attendance[teacher.id] || "absent",
     }));
 
@@ -255,28 +254,7 @@ useEffect(() => {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-white/90 text-sm font-medium mb-3">
-                    <Clock className="inline w-4 h-4 mr-2" />
-                    Select Session
-                  </label>
-                  <select
-                    value={selectedSession}
-                    onChange={(e) => setSelectedSession(e.target.value)}
-                    required
-                    className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-200"
-                  >
-                    <option value="" className="text-gray-800">
-                      Select Session
-                    </option>
-                    <option value="AM" className="text-gray-800">
-                      Morning (AM)
-                    </option>
-                    <option value="PM" className="text-gray-800">
-                      Afternoon (PM)
-                    </option>
-                  </select>
-                </div>
+              
               </div>
             </div>
 

@@ -4,7 +4,7 @@ import { User } from "lucide-react";
 const SupportPage = () => {
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  
+
   const [phoneNumbers, setPhoneNumbers] = useState({
     principal_phone_no: "+91 0000000",
     school_phone_no: "+91 0000000",
@@ -119,7 +119,7 @@ const SupportPage = () => {
                     </div>
                     <div>
                       <p className="font-medium text-slate-900">Location</p>
-                      <p className="text-slate-600">Urulikkunuu, Koduavlly, Calicut</p>
+                      <p className="text-slate-600">Your Place, District, Kerala</p>
                     </div>
                   </div>
 

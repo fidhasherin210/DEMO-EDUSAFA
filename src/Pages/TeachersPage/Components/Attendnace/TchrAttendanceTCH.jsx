@@ -18,8 +18,9 @@ function TchrAttendanceTCH() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedMonth, setSelectedMonth] = useState(currentMonth);
   const [selectedYear, setSelectedYear] = useState(currentYear);
-  const teacherDetails = JSON.parse(localStorage.getItem("teacher"));
 
+
+  const teacherDetails = JSON.parse(localStorage.getItem("teacher"));
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const fetchAttendanceData = useCallback(async () => {
@@ -41,6 +42,7 @@ function TchrAttendanceTCH() {
 
       if (response.ok) {
         setAttendance(data.attendance_records);
+
       } else {
         console.warn("Failed to fetch attendance records.");
       }
@@ -84,41 +86,38 @@ function TchrAttendanceTCH() {
   };
 
   const calculateAttendanceStats = () => {
-    let presentDays = 0;
-    let absentDays = 0;
-
     const filteredRecords = filterAttendanceRecords();
     if (!filteredRecords || filteredRecords.length === 0) {
-      return { presentDays, absentDays, workingDays: 0 };
+      return {
+        presentDays: 0,
+        absentDays: 0,
+        workingDays: 0
+      };
     }
 
-    const groupedRecords = {};
+    // Group records by date to count unique days
+    const uniqueDays = {};
     filteredRecords.forEach((record) => {
-      const date = record.date;
-      if (!groupedRecords[date]) {
-        groupedRecords[date] = { am: null, pm: null };
+      const dateKey = record.date;
+      if (!uniqueDays[dateKey]) {
+        uniqueDays[dateKey] = [];
       }
-      groupedRecords[date][record.session.toLowerCase()] = record.status;
+      uniqueDays[dateKey].push(record.status);
     });
 
-    let workingDays = 0;
+    let presentDays = 0;
+    let absentDays = 0;
+    const workingDays = Object.keys(uniqueDays).length;
 
-    for (const date in groupedRecords) {
-      const { am, pm } = groupedRecords[date];
-
-      if (am === "present") {
-        presentDays += 0.5;
-      } else if (am === "absent") {
-        absentDays += 0.5;
+    // Count present and absent days
+    for (const dateKey in uniqueDays) {
+      const statuses = uniqueDays[dateKey];
+      // If any record for this date is present, count as present day
+      if (statuses.includes("present")) {
+        presentDays += 1;
+      } else {
+        absentDays += 1;
       }
-
-      if (pm === "present") {
-        presentDays += 0.5;
-      } else if (pm === "absent") {
-        absentDays += 0.5;
-      }
-
-      workingDays += 1;
     }
 
     return { presentDays, absentDays, workingDays };
@@ -146,7 +145,7 @@ function TchrAttendanceTCH() {
   };
 
   const attendancePercentage =
-    workingDays > 0 ? (presentDays / (workingDays * 2)) * 100 : 0;
+    workingDays > 0 ? (presentDays / workingDays) * 100 : 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-1">
@@ -166,64 +165,63 @@ function TchrAttendanceTCH() {
           </div>
         </div>
 
-{/* Filters Section */}
-<div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 sm:p-6 mb-6">
-  <div className="flex items-center gap-2 mb-4">
-    <Filter className="w-5 h-5 text-blue-600" />
-    <h2 className="text-sm sm:text-base md:text-lg font-semibold text-blue-600">
-      Filter Records
-    </h2>
-  </div>
+        {/* Filters Section */}
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 sm:p-6 mb-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Filter className="w-5 h-5 text-blue-600" />
+            <h2 className="text-sm sm:text-base md:text-lg font-semibold text-blue-600">
+              Filter Records
+            </h2>
+          </div>
 
-  {/* ✅ Flex row always, with responsive gap */}
-  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-    {/* Year */}
-    <div className="flex-1 space-y-1 sm:space-y-2">
-      <label
-        htmlFor="year"
-        className="block text-xs sm:text-sm font-medium text-gray-700"
-      >
-        Year
-      </label>
-      <select
-        id="year"
-        value={selectedYear}
-        onChange={handleYearChange}
-        className="w-full px-2 sm:px-3 py-2 sm:py-3 border border-gray-200 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-gray-50 text-sm sm:text-base"
-      >
-        <option value="">All Years</option>
-        {Array.from({ length: 10 }, (_, i) => currentYear - i).map((year) => (
-          <option key={year} value={year}>
-            {year}
-          </option>
-        ))}
-      </select>
-    </div>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+            {/* Year */}
+            <div className="flex-1 space-y-1 sm:space-y-2">
+              <label
+                htmlFor="year"
+                className="block text-xs sm:text-sm font-medium text-gray-700"
+              >
+                Year
+              </label>
+              <select
+                id="year"
+                value={selectedYear}
+                onChange={handleYearChange}
+                className="w-full px-2 sm:px-3 py-2 sm:py-3 border border-gray-200 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-gray-50 text-sm sm:text-base"
+              >
+                <option value="">All Years</option>
+                {Array.from({ length: 10 }, (_, i) => currentYear - i).map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-    {/* Month */}
-    <div className="flex-1 space-y-1 sm:space-y-2">
-      <label
-        htmlFor="month"
-        className="block text-xs sm:text-sm font-medium text-gray-700"
-      >
-        Month
-      </label>
-      <select
-        id="month"
-        value={selectedMonth}
-        onChange={handleMonthChange}
-        className="w-full px-2 sm:px-3 py-2 sm:py-3 border border-gray-200 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-gray-50 text-sm sm:text-base"
-      >
-        <option value="">All Months</option>
-        {monthNames.map((month, index) => (
-          <option key={index} value={index + 1}>
-            {month}
-          </option>
-        ))}
-      </select>
-    </div>
-  </div>
-</div>
+            {/* Month */}
+            <div className="flex-1 space-y-1 sm:space-y-2">
+              <label
+                htmlFor="month"
+                className="block text-xs sm:text-sm font-medium text-gray-700"
+              >
+                Month
+              </label>
+              <select
+                id="month"
+                value={selectedMonth}
+                onChange={handleMonthChange}
+                className="w-full px-2 sm:px-3 py-2 sm:py-3 border border-gray-200 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-gray-50 text-sm sm:text-base"
+              >
+                <option value="">All Months</option>
+                {monthNames.map((month, index) => (
+                  <option key={index} value={index + 1}>
+                    {month}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
 
         {isLoading ? (
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-12">
@@ -247,7 +245,7 @@ function TchrAttendanceTCH() {
                           Present Days
                         </p>
                         <p className="text-xl md:text-3xl font-bold">
-                          {presentDays.toFixed(1)}
+                          {presentDays}
                         </p>
                       </div>
                       <CheckCircle className="w-6 h-6 text-green-200" />
@@ -261,7 +259,7 @@ function TchrAttendanceTCH() {
                           Absent Days
                         </p>
                         <p className="text-xl md:text-3xl font-bold">
-                          {absentDays.toFixed(1)}
+                          {absentDays}
                         </p>
                       </div>
                       <XCircle className="w-6 h-6 text-red-200" />
@@ -271,7 +269,7 @@ function TchrAttendanceTCH() {
                   <div className="bg-gradient-to-r from-blue-500 to-cyan-600 rounded-2xl p-3 text-white">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-blue-100 text-xs md:text-sm  font-medium">
+                        <p className="text-blue-100 text-xs md:text-sm font-medium">
                           Working Days
                         </p>
                         <p className="text-xl md:text-3xl font-bold">{workingDays}</p>
@@ -295,6 +293,8 @@ function TchrAttendanceTCH() {
                   </div>
                 </div>
 
+             
+
                 {/* Attendance Records Table */}
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                   <div className="p-6 border-b border-gray-100">
@@ -308,8 +308,6 @@ function TchrAttendanceTCH() {
 
                   <div className="overflow-x-auto">
                     <div className="max-h-96 overflow-y-auto">
-                      {" "}
-                      {/* ✅ Added scroll */}
                       <table className="w-full">
                         <thead className="bg-gray-50">
                           <tr>
@@ -317,7 +315,7 @@ function TchrAttendanceTCH() {
                               Date
                             </th>
                             <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                              Session
+                              Day
                             </th>
                             <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
                               Status
@@ -333,19 +331,14 @@ function TchrAttendanceTCH() {
                               key={index}
                               className="hover:bg-gray-50 transition-colors"
                             >
-                              <td className="px-1 py-4">
-                                <div className="flex flex-col">
-                                  <span className="text-xs font-medium text-gray-900">
-                                    {record.date}
-                                  </span>
-                                  <span className="text-xs text-gray-500">
-                                    {getDayName(record.date)}
-                                  </span>
-                                </div>
+                              <td className="px-6 py-4">
+                                <span className="text-sm font-medium text-gray-900">
+                                  {record.date}
+                                </span>
                               </td>
                               <td className="px-6 py-4">
-                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
-                                  {record.session.toUpperCase()}
+                                <span className="text-sm text-gray-500">
+                                  {getDayName(record.date)}
                                 </span>
                               </td>
                               <td className="px-6 py-4">
@@ -366,7 +359,7 @@ function TchrAttendanceTCH() {
                                 </span>
                               </td>
                               <td className="px-6 py-4">
-                                <span className="text-gray-600">
+                                <span className="text-sm text-gray-600">
                                   {record.remarks || "N/A"}
                                 </span>
                               </td>

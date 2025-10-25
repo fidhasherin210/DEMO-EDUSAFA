@@ -8,6 +8,7 @@ import {
   UserX,
   Clock,
   BookOpen,
+  Calendar,
 } from "lucide-react";
 
 function ClassRoomsPrinci() {
@@ -19,12 +20,19 @@ function ClassRoomsPrinci() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
   const navigate = useNavigate();
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const getImageUrl = (url) =>
     url?.startsWith("http") ? url : `${backendUrl}${url}`;
+
+  // Set default date to current date on component mount
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0];
+    setSelectedDate(today);
+  }, []);
 
   useEffect(() => {
     const fetchAllClasses = async () => {
@@ -61,9 +69,9 @@ function ClassRoomsPrinci() {
     setTeacher(null);
 
     try {
-      // Fetch attendance data
+      // Fetch attendance data with selected date
       const attendanceResponse = await axios.get(
-        `${backendUrl}/api/principal/get-attendnace-by-class/${classData.id}/`,
+        `${backendUrl}/api/principal/get-attendnace-by-class/${classData.id}/${selectedDate}/`,
         { withCredentials: true }
       );
 
@@ -95,6 +103,43 @@ function ClassRoomsPrinci() {
     }
   };
 
+  // Function to refresh attendance data when date changes
+  const refreshAttendanceData = async () => {
+    if (!selectedClass) return;
+
+    setLoading(true);
+    setError("");
+    setMessage("");
+
+    try {
+      const attendanceResponse = await axios.get(
+        `${backendUrl}/api/principal/get-attendnace-by-class/${selectedClass.id}/${selectedDate}/`,
+        { withCredentials: true }
+      );
+
+      setAttendanceData(attendanceResponse.data);
+
+      // Update selected class with class_status
+      setSelectedClass(prev => ({
+        ...prev,
+        class_status: attendanceResponse.data.class_status
+      }));
+
+    } catch (err) {
+      console.error("Error fetching attendance:", err);
+      setError(err.response?.data?.error || err.message || "Failed to fetch attendance data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Effect to refresh attendance data when selectedDate changes and a class is selected
+  useEffect(() => {
+    if (selectedClass) {
+      refreshAttendanceData();
+    }
+  }, [selectedDate]);
+
   const markClassStatus = async () => {
     if (!selectedClass) {
       setMessage("Please select a class first");
@@ -114,7 +159,7 @@ function ClassRoomsPrinci() {
       setMessage(response.data.message || "Class status updated successfully!");
 
       // Refresh the class data to get updated status
-      handleClassSelect(selectedClass);
+      refreshAttendanceData();
 
     } catch (error) {
       console.error("Error marking class status:", error);
@@ -138,6 +183,17 @@ function ClassRoomsPrinci() {
     return Math.round(
       ((attendanceData.present_students?.length || 0) / total) * 100
     );
+  };
+
+  // Format date for display
+  const formatDisplayDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   };
 
   return (
@@ -166,7 +222,7 @@ function ClassRoomsPrinci() {
               <div className="hidden md:flex items-center space-x-4">
                 <div className="text-right">
                   <p className="text-sm text-slate-500">Active Class</p>
-                  <p className="font-semibold text-slate-800">
+                  <p className="font-semibold text-slate-800 text-sm ">
                     Class {selectedClass.class}
                   </p>
                 </div>
@@ -214,7 +270,7 @@ function ClassRoomsPrinci() {
         <div className="bg-white/90 backdrop-blur-xl border border-white/20 rounded-2xl shadow-xl p-8">
           <div className="flex items-center gap-3 mb-6">
             <BookOpen className="w-6 h-6 text-blue-600" />
-            <h2 className="text-lg font-semibold text-blue-600">
+            <h2 className="text-xs md:text-sm  font-semibold text-blue-600">
               Select Your Class
             </h2>
           </div>
@@ -256,6 +312,39 @@ function ClassRoomsPrinci() {
         </div>
       </div>
 
+      {/* Date Selection */}
+      {selectedClass && (
+        <div className="max-w-6xl mx-auto p-4 mb-4">
+          <div className="bg-white/90 backdrop-blur-xl border border-white/20 rounded-2xl shadow-xl p-6">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <Calendar className="w-5 h-5 text-blue-600" />
+                <h3 className="text-xs md:text-sm font-semibold text-blue-500">
+                  Select Date
+                </h3>
+              </div>
+              <div className="flex items-center gap-4">
+                <input
+                  type="date"
+                  value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                  className="px-4 py-2 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <button
+                  onClick={() => setSelectedDate(new Date().toISOString().split('T')[0])}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+                >
+                  Today
+                </button>
+              </div>
+              <div className="text-sm text-slate-600 font-medium">
+                {formatDisplayDate(selectedDate)}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Selected Class Details */}
       {selectedClass && (
         <div className="max-w-6xl mx-auto px-2 space-y-8">
@@ -265,10 +354,12 @@ function ClassRoomsPrinci() {
               <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                 {/* Class Name & Status */}
                 <div className="text-center md:text-left">
-                  <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                  <h1 className="text-base md:text-3xl font-bold text-white mb-2">
                     Class {selectedClass.class || selectedClass.std}
                   </h1>
-                  <p className="text-sm text-blue-100">Academic Session Overview</p>
+                  <p className="text-sm text-blue-100">
+                    Attendance for {formatDisplayDate(selectedDate)}
+                  </p>
 
                   {/* Class Status */}
                   {selectedClass.class_status && (
@@ -392,7 +483,7 @@ function ClassRoomsPrinci() {
                 </h3>
                 <p className="text-base text-slate-600 max-w-md mx-auto">
                   {attendanceData
-                    ? "No students found in attendance records for today."
+                    ? `No attendance records found for ${formatDisplayDate(selectedDate)}.`
                     : "Waiting for the class session to begin. Students will appear here once attendance starts."}
                 </p>
               </div>
@@ -515,24 +606,23 @@ function ClassRoomsPrinci() {
         </div>
       )}
 
-{/* Action Buttons */}
-<div className="bg-white/95 backdrop-blur-lg rounded-3xl p-4 shadow-2xl border border-white/20 max-w-6xl mx-auto mt-2 mb-6">
-  <div className="flex justify-center gap-2">
-    <button
-      className="px-6 py-3 rounded-2xl font-semibold text-lg bg-gradient-to-br from-blue-500 to-blue-700 text-white flex items-center gap-2 transition-all hover:-translate-y-1 hover:shadow-xl"
-      onClick={createStd}
-    >
-      <span className="text-xs">Create Standard</span>
-    </button>
-    <button
-      className="px-6 py-3 rounded-2xl font-semibold text-lg bg-gradient-to-br from-emerald-500 to-emerald-700 text-white flex items-center gap-2 transition-all hover:-translate-y-1 hover:shadow-xl"
-      onClick={editStd}
-    >
-      <span className="text-xs">Edit Standard</span>
-    </button>
-  </div>
-</div>
-
+      {/* Action Buttons */}
+      <div className="bg-white/95 backdrop-blur-lg rounded-3xl p-4 shadow-2xl border border-white/20 max-w-6xl mx-auto mt-2 mb-6">
+        <div className="flex justify-center gap-2">
+          <button
+            className="px-6 py-3 rounded-2xl font-semibold text-lg bg-gradient-to-br from-blue-500 to-blue-700 text-white flex items-center gap-2 transition-all hover:-translate-y-1 hover:shadow-xl"
+            onClick={createStd}
+          >
+            <span className="text-xs">Create Standard</span>
+          </button>
+          <button
+            className="px-6 py-3 rounded-2xl font-semibold text-lg bg-gradient-to-br from-emerald-500 to-emerald-700 text-white flex items-center gap-2 transition-all hover:-translate-y-1 hover:shadow-xl"
+            onClick={editStd}
+          >
+            <span className="text-xs">Edit Standard</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

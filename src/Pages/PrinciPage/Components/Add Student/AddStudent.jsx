@@ -141,7 +141,7 @@ function AddStudent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-1 md:p-6">
+       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-1 md:p-6">
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
@@ -174,7 +174,9 @@ function AddStudent() {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Full Name <span className="text-red-500">*</span>
+                  </label>
                   <input
                     type="text"
                     name="name"
@@ -187,7 +189,9 @@ function AddStudent() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Gender <span className="text-red-500">*</span>
+                  </label>
                   <select
                     name="gender"
                     value={formData.gender}
@@ -201,7 +205,9 @@ function AddStudent() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Blood Group</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Blood Group <span className="text-red-500">*</span>
+                  </label>
                   <div className="relative">
                     <Droplet className="absolute left-3 top-3.5 w-4 h-4 text-gray-400" />
                     <input
@@ -209,6 +215,7 @@ function AddStudent() {
                       name="blood_grp"
                       value={formData.blood_grp}
                       onChange={handleChange}
+                      required
                       className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       placeholder="e.g., A+, B-, O+"
                     />
@@ -216,7 +223,9 @@ function AddStudent() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Phone Number <span className="text-red-500">*</span>
+                  </label>
                   <div className="relative">
                     <Phone className="absolute left-3 top-3.5 w-4 h-4 text-gray-400" />
                     <input
@@ -224,6 +233,7 @@ function AddStudent() {
                       name="phone_no"
                       value={formData.phone_no}
                       onChange={handleChange}
+                      required
                       className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       placeholder="Enter phone number"
                     />
@@ -231,7 +241,9 @@ function AddStudent() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Place</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Place <span className="text-red-500">*</span>
+                  </label>
                   <div className="relative">
                     <MapPin className="absolute left-3 top-3.5 w-4 h-4 text-gray-400" />
                     <input
@@ -239,6 +251,7 @@ function AddStudent() {
                       name="place"
                       value={formData.place}
                       onChange={handleChange}
+                      required
                       className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       placeholder="Enter place"
                     />
@@ -288,7 +301,9 @@ function AddStudent() {
               </div>
 
               <div className="mt-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Address <span className="text-red-500">*</span>
+                </label>
                 <div className="relative">
                   <Home className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                   <textarea
@@ -296,6 +311,7 @@ function AddStudent() {
                     value={formData.address}
                     onChange={handleChange}
                     rows="3"
+                    required
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     placeholder="Enter complete address"
                   ></textarea>
@@ -311,7 +327,9 @@ function AddStudent() {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Parent Name *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Parent Name <span className="text-red-500">*</span>
+                  </label>
                   <input
                     type="text"
                     name="parent_name"
@@ -324,7 +342,9 @@ function AddStudent() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Parent Occupation</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Parent Occupation <span className="text-red-500">*</span>
+                  </label>
                   <div className="relative">
                     <Briefcase className="absolute left-3 top-3.5 w-4 h-4 text-gray-400" />
                     <input
@@ -332,6 +352,7 @@ function AddStudent() {
                       name="parent_occupation"
                       value={formData.parent_occupation}
                       onChange={handleChange}
+                      required
                       className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       placeholder="Enter occupation"
                     />
@@ -348,7 +369,9 @@ function AddStudent() {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Standard *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Standard <span className="text-red-500">*</span>
+                  </label>
                   <select
                     name="std"
                     value={formData.std}
@@ -364,19 +387,24 @@ function AddStudent() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Former School</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Former School <span className="text-red-500">*</span>
+                  </label>
                   <input
                     type="text"
                     name="former_school"
                     value={formData.former_school}
                     onChange={handleChange}
+                    required
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     placeholder="Enter previous school name"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Admission Number</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Admission Number <span className="text-red-500">*</span>
+                  </label>
                   <div className="relative">
                     <Hash className="absolute left-3 top-3.5 w-4 h-4 text-gray-400" />
                     <input
@@ -384,6 +412,7 @@ function AddStudent() {
                       name="admission_no"
                       value={formData.admission_no}
                       onChange={handleChange}
+                      required
                       className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       placeholder="Enter admission number"
                     />
@@ -391,7 +420,9 @@ function AddStudent() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Admission Date</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Admission Date <span className="text-red-500">*</span>
+                  </label>
                   <div className="relative">
                     <Calendar className="absolute left-3 top-3.5 w-4 h-4 text-gray-400" />
                     <input
@@ -399,13 +430,16 @@ function AddStudent() {
                       name="admission_date"
                       value={formData.admission_date}
                       onChange={handleChange}
+                      required
                       className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Reg Number</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Reg Number <span className="text-red-500">*</span>
+                  </label>
                   <div className="relative">
                     <Hash className="absolute left-3 top-3.5 w-4 h-4 text-gray-400" />
                     <input
@@ -413,21 +447,25 @@ function AddStudent() {
                       name="reg_no"
                       value={formData.reg_no}
                       onChange={handleChange}
+                      required
                       className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                      placeholder="Enter Reg_no With QSM"
+                      placeholder="Enter Reg_no"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Password <span className="text-red-500">*</span>
+                  </label>
                   <input
                     type="text"
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
+                    required
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                    placeholder="Enter Password "
+                    placeholder="Enter Password"
                   />
                 </div>
               </div>

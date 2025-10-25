@@ -7,19 +7,32 @@ import Calandar from "./Components/Calandar/Calandar";
 import Events from "./Components/UpcomingEvents/Events";
 import AttendancePie from "./Components/Atnd-summery/AttendancePie";
 import ClassWiseAtndPie from "./Components/Atnd-Class-waise/ClassWiseAtndPie";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import RouteenTopers from "./Components/Routine-Toperse/RouteenTopers";
+import EdusafaLogo from "../../assets/Edusafa2.png";
 
 function Home() {
-  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [schoolDetails, setSchoolDetails] = useState({});
   const [studetsCount, setStudentsCount] = useState("");
   const [teacherCount, setTeacherCount] = useState("");
   const [Notice, setNotice] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+  // Check if device is mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024); // lg breakpoint
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const fetchSchoolDetails = useCallback(async () => {
     try {
@@ -77,36 +90,16 @@ function Home() {
     fetchStudentsCount,
   ]);
 
-  const handlePrincipalClick = () => {
-    const principalToken = localStorage.getItem("principal");
-    navigate(principalToken ? "/principalpage" : "/principal-login");
-  };
-
-  const handleAuthorityClick = () => {
-    const authorityToken = localStorage.getItem("management");
-    navigate(authorityToken ? "/management-details" : "/management-login");
-  };
-
-  const handleStudentClick = () => {
-    const studentToken = localStorage.getItem("student");
-    navigate(studentToken ? "/studentspage" : "/studentlogin");
-  };
-
-  const handleTeacherClick = () => {
-    const teacherToken = localStorage.getItem("teacher");
-    navigate(teacherToken ? "/teacherspage" : "/teacherlogin");
-  };
-
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
-  if (!schoolDetails || !schoolDetails.name) {
+  // Show loading screen ONLY on mobile when schoolDetails is not loaded
+  if (isMobile && (!schoolDetails || !schoolDetails.name)) {
     return (
-      <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-blue-600 via-purple-00 to-cyan-800 overflow-hidden relative">
-        {/* Islamic Pattern Background */}
+      <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-blue-800  to-sky-500 overflow-hidden relative">
+        {/* Your existing loading component */}
         <div className="absolute inset-0 opacity-5">
-          {/* Traditional Islamic geometric pattern */}
           <div
             className="absolute inset-0 bg-repeat"
             style={{
@@ -114,14 +107,11 @@ function Home() {
               animation: "float 15s ease-in-out infinite",
             }}
           ></div>
-
-          {/* Floating crescents */}
         </div>
 
         <div className="text-center p-8 relative z-10">
           {/* Main Islamic-inspired Loading Animation */}
           <div className="mx-auto mb-8 relative">
-            {/* Outer Islamic geometric ring */}
             <div className="h-36 w-36 md:h-44 md:w-44 relative">
               {/* Eight-pointed star pattern */}
             </div>
@@ -145,7 +135,6 @@ function Home() {
               <span className="bg-gradient-to-r from-gray-100 via-green-300 to-purple-50 bg-clip-text text-transparent">
                 QSM Madrasa App
               </span>
-              {/* Decorative underline */}
               <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-transparent via-purple-400 to-transparent animate-pulse"></div>
             </h1>
 
@@ -286,132 +275,176 @@ function Home() {
     );
   }
 
+  // For desktop or when data is loaded, show the main content
+  if (!schoolDetails || !schoolDetails.name) {
+    return (
+      <div className="min-h-screen flex justify-center items-center bg-gray-100">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Rest of your main component remains the same...
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 overflow-x-hidden">
+      {/* Sidebar Overlay (Mobile Only) */}
       {menuOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[9998] lg:hidden"
           onClick={toggleMenu}
         />
       )}
 
-      <div className="flex">
+      <div className="flex relative">
+        {/* Sidebar */}
         {/* Sidebar */}
         <aside
-          className={`mb-4 fixed top-0 left-0 h-full lg:w-[20rem] w-[16rem] py-3 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white transform transition-transform duration-300 ease-in-out z-50 ${
-            menuOpen ? "translate-x-0" : "-translate-x-full"
-          } lg:translate-x-0 shadow-2xl`}
+          className={`fixed top-0 left-0 h-full lg:w-[20rem] w-[16rem] py-3
+  bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white
+  transform transition-transform duration-300 ease-in-out shadow-2xl
+  z-[9999] will-change-transform backface-hidden
+  ${menuOpen ? "translate-x-0" : "-translate-x-full"}
+  lg:translate-x-0 flex flex-col justify-between`}
         >
           {/* Sidebar Header */}
-          <div className="px-3 md:p-4 border-b border-slate-700/50 ">
-            <div className="flex items-center justify-center mb-1">
-              <div className="">
-                <h1 className="mt-5 md:text-4xl text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  Edusafa
-                </h1>
-              </div>
-            </div>
-            <p className="text-xs text-slate-300 text-center mb-3">
-              {schoolDetails.sub_name} <br />{" "}
-              <span className="text-xs md:text-sm text-slate-500">
-                Koduvally,Calicut, Kerala
-              </span>
-            </p>
+          <div>
+          <div className="px-3 md:p-4 border-b border-slate-700/50">
+  <div className="flex flex-col items-center justify-center ">
+    <img
+      src={EdusafaLogo}
+      alt="Edusafa Logo"
+      className="w-[180px] md:w-[260px] mt-5"
+      style={{ height: "auto" }}
+    />
+
+    <p className="text-xs text-slate-300 text-center mb-3 mt-2">
+      {schoolDetails.sub_name} <br />
+      <span className="text-xs md:text-sm text-slate-500">
+        Your Place, District, Kerala
+      </span>
+    </p>
+  </div>
+</div>
+
+
+            {/* Close Button (Mobile) */}
+            <button
+              className="absolute top-4 right-4 lg:hidden text-gray-400 hover:bg-white/10 rounded-full p-2 transition-colors"
+              onClick={toggleMenu}
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+
+            {/* Navigation */}
+            {/* Navigation */}
+            <nav className="px-4 py-2 md:p-5 space-y-2 mt-3">
+              <Link
+                to="/about"
+                className="flex items-center p-2 text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 rounded-xl transition-all duration-200 group no-underline"
+              >
+                <span className="mr-3 text-2xl">🏠</span>
+                <span className="text-sm font-medium group-hover:translate-x-1 transition-transform">
+                  About
+                </span>
+              </Link>
+
+              <Link
+                to={
+                  localStorage.getItem("teacher")
+                    ? "/teacherspage"
+                    : "/teacherlogin"
+                }
+                className="flex items-center p-2 text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 rounded-xl transition-all duration-200 group no-underline"
+              >
+                <span className="mr-3 text-2xl">👨‍🏫</span>
+                <span className="text-sm font-medium group-hover:translate-x-1 transition-transform">
+                  Teachers
+                </span>
+              </Link>
+
+              <Link
+                to={
+                  localStorage.getItem("student")
+                    ? "/studentspage"
+                    : "/studentlogin"
+                }
+                className="flex items-center p-2 text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 rounded-xl transition-all duration-200 group no-underline"
+              >
+                <span className="mr-3 text-2xl">👨‍👩‍👧‍👦</span>
+                <span className="text-sm font-medium group-hover:translate-x-1 transition-transform">
+                  Parents
+                </span>
+              </Link>
+
+              <Link
+                to={
+                  localStorage.getItem("principal")
+                    ? "/principalpage"
+                    : "/principal-login"
+                }
+                className="flex items-center p-2 text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 rounded-xl transition-all duration-200 group no-underline"
+              >
+                <span className="mr-3 text-2xl">🏛️</span>
+                <span className="text-sm font-medium group-hover:translate-x-1 transition-transform">
+                  Principal
+                </span>
+              </Link>
+
+              <Link
+                to={
+                  localStorage.getItem("management")
+                    ? "/management-details"
+                    : "/management-login"
+                }
+                className="flex items-center p-2 text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 rounded-xl transition-all duration-200 group no-underline"
+              >
+                <span className="mr-3 text-2xl">🏢</span>
+                <span className="text-sm font-medium group-hover:translate-x-1 transition-transform">
+                  Management
+                </span>
+              </Link>
+
+              <Link
+                to="/support"
+                className="flex items-center p-2 text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 rounded-xl transition-all duration-200 group no-underline"
+              >
+                <span className="mr-3 text-2xl">🛠️</span>
+                <span className="text-sm font-medium group-hover:translate-x-1 transition-transform">
+                  Support
+                </span>
+              </Link>
+            </nav>
           </div>
 
-          {/* Close Button */}
-          <button
-            className="absolute top-4 right-4 lg:hidden text-gray-400 hover:bg-white/10 rounded-full p-2 transition-colors"
-            onClick={toggleMenu}
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          {/* Bottom Footer */}
+          <div className="p-4 border-t border-slate-700/50 text-center">
+            <a
+              href="https://www.aionespark.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent no-underline hover:text-blue-600 transition-colors duration-300 text-sm"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-
-          {/* Navigation */}
-          <nav className="px-4 py-2 md:p-5 space-y-2 mt-3">
-            <Link
-              to="/about"
-              className="flex items-center p-2 text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 rounded-xl transition-all duration-200 group no-underline"
-            >
-              <span className="mr-3 text-2xl">🏠</span>
-              <span className="text-sm font-medium group-hover:translate-x-1 transition-transform">
-                About
+              Powered by <br />
+              <span className="font-semibold mt-5">
+                AioneSpark TechHive LLP
               </span>
-            </Link>
-
-            <button
-              onClick={handleTeacherClick}
-              className="w-full flex items-center p-2 text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 rounded-xl transition-all duration-200 group"
-            >
-              <span className="mr-3 text-2xl">👨‍🏫</span>
-              <span className=" text-sm font-medium group-hover:translate-x-1 transition-transform">
-                Teachers
-              </span>
-            </button>
-
-            <button
-              onClick={handleStudentClick}
-              className="w-full flex items-center p-2 text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 rounded-xl transition-all duration-200 group"
-            >
-              <span className="mr-3 text-2xl">👨‍👩‍👧‍👦</span>
-              <span className=" text-sm font-medium group-hover:translate-x-1 transition-transform">
-                Parents
-              </span>
-            </button>
-
-            <button
-              onClick={handlePrincipalClick}
-              className="w-full flex items-center p-2 text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 rounded-xl transition-all duration-200 group"
-            >
-              <span className="mr-3 text-2xl">🏛️</span>
-              <span className="text-sm font-medium group-hover:translate-x-1 transition-transform">
-                Principal
-              </span>
-            </button>
-
-            <button
-              onClick={handleAuthorityClick}
-              className="w-full flex items-center p-2 text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 rounded-xl transition-all duration-200 group"
-            >
-              <span className="mr-3 text-2xl">🏢</span>
-              <span className="text-sm font-medium group-hover:translate-x-1 transition-transform">
-                Management
-              </span>
-            </button>
-
-            <Link
-              to="/support"
-              className="flex items-center p-2 text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 rounded-xl transition-all duration-200 group no-underline"
-            >
-              <span className="mr-3 text-2xl">🛠️</span>
-              <span className="text-sm font-medium group-hover:translate-x-1 transition-transform">
-                Support
-              </span>
-            </Link>
-            <div className="mt-5 text-center">
-              <a
-                href="https://www.aionespark.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent no-underline hover:text-blue-600 transition-colors duration-300 text-sm"
-              >
-                Powered by <br />
-                <span className="font-semibold">AioneSpark TechHive LLP</span>
-              </a>
-            </div>
-          </nav>
+            </a>
+          </div>
         </aside>
 
         {/* Main Content */}
@@ -459,7 +492,7 @@ function Home() {
             {/* Stats Cards */}
             <div
               className="
-    grid gap-6 mb-6
+    grid gap-2 mb-2
     grid-flow-col auto-cols-[250px] overflow-x-auto no-scrollbar p-1
     md:grid-flow-row md:auto-cols-auto md:grid-cols-3 md:overflow-visible md:p-0
   "
@@ -510,9 +543,7 @@ function Home() {
                       Upcoming Events
                     </p>
                     <p className="text-2xl md:text-3xl font-bold text-purple-600">
-                      {Notice.events_count
-                        ? `0${Notice.events_count }`
-                        : "00"}
+                      {Notice.events_count ? `0${Notice.events_count}` : "00"}
                     </p>
                   </div>
                   <div className="bg-gradient-to-r from-purple-500 to-purple-600 p-3 rounded-2xl">

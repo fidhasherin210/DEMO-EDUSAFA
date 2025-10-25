@@ -127,9 +127,16 @@ function ParentsDetails() {
                           <span>{parent.place}</span>
                         </div>
                         <div className="flex items-center space-x-1">
+                           <a
+                            href={`tel:${parent.number}`}
+                            className="hover:underline text-blue-500 cursor-pointer"
+                          >
                           <Phone className="w-4 h-4" />
-                          <span>{parent.number}</span>
+
+                            {parent.number}
+                          </a>
                         </div>
+
                         <div className="flex items-center space-x-1">
                           <Users className="w-4 h-4" />
                           <span>Total Members: {parent.members_count}</span>
@@ -270,4 +277,4 @@ function ParentsDetails() {
   );
 }
 
-export default ParentsDetails
+export default ParentsDetails;

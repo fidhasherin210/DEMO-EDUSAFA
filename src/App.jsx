@@ -1,82 +1,101 @@
+import React, { Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./Pages/HomePage/Home";
-import AboutPage from "./Pages/AboutPage/AboutPage";
-import ChatBot from "./Pages/HomePage/Components/ChatBot/ChatBot.jsx";
-import ProtectedRoute from "./ProtectedRoute"; // Protected route for role-based access
+import ProtectedRoute from "./ProtectedRoute";
 
-// ==================== MANAGEMENT PAGES & COMPONENTS ====================
-import ManagementLogin from "./Pages/Management/ManagementLogin"; // Management login page
-import ManagementPage from "./Pages/Management/ManagementPage"; // Management's main page
-import AddManagementAuth from "./Pages/Management/Components/AddManagement/AddManagementAuth.jsx"; // Add Management Auth
-import ThrAttendanceAuth from "./Pages/Management/Components/Teacherattendance/ThrAttendanceAuth.jsx"; // Check Teacher Attendance
-import StdAttendanceAuth from "./Pages/Management/Components/Studentattendance/StdAttendanceAuth.jsx"; // Check Student Attendance
-import StdProgressAuth from "./Pages/Management/Components/Studentprogress/StdProgressAuth.jsx"; // Check Student Progress
-import MarkTchrAttendanceAuth from "./Pages/Management/Components/MarkTeacherAttendance/MarkTchrAttendancAuth.jsx"; // Mark Teacher Attendance
-import AddTchrAuth from "./Pages/Management/Components/Addteacher/AddTchrAuth.jsx"; // Add Teacher
-import TeacherInfoAuth from "./Pages/Management/Components/TeacherInfo/TeacherInfoAuth.jsx"; // Teacher Info
-import EditTeacherInfo from "./Pages/Management/Components/TeacherInfo/EditTeacherInfo.jsx"; // Edit Teacher Info
-import StudentInfo from "./Pages/Management/Components/Studentinfo/StudentInfo.jsx"; // Student Info
-import CreateEventsAuth from "./Pages/Management/Components/Eventss/CreateEventsAuth.jsx"; // Create Events
-import ClassaRoomAuth from "./Pages/Management/Components/ClassRoom/ClassaRoomAuth.jsx"; // Class Room Auth
-import AddMemorial from "./Pages/Management/Components/Memorial/AddMemorial.jsx";
-import AddParents from "./Pages/Management/Components/Parents/AddParents/AddParents.jsx";
-import ParentsDetails from "./Pages/Management/Components/Parents/ParentsDetails/ParentsDetails.jsx";
+// ==================== Lazy-loaded Pages ====================
+// General
+const Home = React.lazy(() => import("./Pages/HomePage/Home"));
+const AboutPage = React.lazy(() => import("./Pages/AboutPage/AboutPage"));
+const SupportPage = React.lazy(() => import("./Pages/SupportPage/SupportPage.jsx"));
+const ChatBot = React.lazy(() => import("./Pages/HomePage/Components/ChatBot/ChatBot.jsx"));
 
-// ==================== PRINCIPAL PAGES & COMPONENTS ====================
-import PrincipalPage from "./Pages/PrinciPage/PrincipalPage"; // Principal's main page
-import PrinciLogin from "./Pages/PrinciPage/Components/Login/PrinciLogin.jsx"; // Principal login
-import AddStudent from "./Pages/PrinciPage/Components/Add Student/AddStudent.jsx"; // Add Student
-import MarkTchrAtte from "./Pages/PrinciPage/Components/Mark Tchr Attendnance/MarkTchrAtte.jsx"; // Mark Teacher Attendance
-import CheckStdAttePrinci from "./Pages/PrinciPage/Components/Check std atte/CheckStdAttePrinci.jsx"; // Check Student Attendance
+// Management
+const ManagementLogin = React.lazy(() => import("./Pages/Management/ManagementLogin"));
+const ManagementPage = React.lazy(() => import("./Pages/Management/ManagementPage"));
+const AddManagementAuth = React.lazy(() => import("./Pages/Management/Components/AddManagement/AddManagementAuth.jsx"));
+const ThrAttendanceAuth = React.lazy(() => import("./Pages/Management/Components/Teacherattendance/ThrAttendanceAuth.jsx"));
+const StdAttendanceAuth = React.lazy(() => import("./Pages/Management/Components/Studentattendance/StdAttendanceAuth.jsx"));
+const StdProgressAuth = React.lazy(() => import("./Pages/Management/Components/Studentprogress/StdProgressAuth.jsx"));
+const MarkTchrAttendanceAuth = React.lazy(() => import("./Pages/Management/Components/MarkTeacherAttendance/MarkTchrAttendancAuth.jsx"));
+const AddTchrAuth = React.lazy(() => import("./Pages/Management/Components/Addteacher/AddTchrAuth.jsx"));
+const TeacherInfoAuth = React.lazy(() => import("./Pages/Management/Components/TeacherInfo/TeacherInfoAuth.jsx"));
+const EditTeacherInfo = React.lazy(() => import("./Pages/Management/Components/TeacherInfo/EditTeacherInfo.jsx"));
+const StudentInfo = React.lazy(() => import("./Pages/Management/Components/Studentinfo/StudentInfo.jsx"));
+const CreateEventsAuth = React.lazy(() => import("./Pages/Management/Components/Eventss/CreateEventsAuth.jsx"));
+const ClassaRoomAuth = React.lazy(() => import("./Pages/Management/Components/ClassRoom/ClassaRoomAuth.jsx"));
+const AddMemorial = React.lazy(() => import("./Pages/Management/Components/Memorial/AddMemorial.jsx"));
+const AddParents = React.lazy(() => import("./Pages/Management/Components/Parents/AddParents/AddParents.jsx"));
+const ParentsDetails = React.lazy(() => import("./Pages/Management/Components/Parents/ParentsDetails/ParentsDetails.jsx"));
 
-import CheckProgressPrinci from "./Pages/PrinciPage/Components/Check Progress/CheckProgressPrinci.jsx"; // Check Progress
-import MarkStdAttePrinci from "./Pages/PrinciPage/Components/Marak std attendance/MarkStdAttePrinci.jsx"; // Mark Student Attendance
-import CheckTchrAttePrinci from "./Pages/PrinciPage/Components/Teacher Attendnace/CheckTchrAttePrinci.jsx"; // Check Teacher Attendance
-import ClassRoomsPrinci from "./Pages/PrinciPage/Components/ClassRooms/ClassRoomsPrinci.jsx"; // Classrooms
-import EventsPrinci from "./Pages/PrinciPage/Components/Eventss/EventsPrinci.jsx"; // Events
-import HandleNotificationPrinci from "./Pages/PrinciPage/Components/Notification/HandleNotificationPrinci.jsx"; // Handle Notification
-import SetClasses from "./Pages/PrinciPage/Components/ClassRooms/SetClasses.jsx"; // Set Classes
-import EditClasses from "./Pages/PrinciPage/Components/ClassRooms/EditClasses.jsx"; // Edit Classes
-import DailyRoutinePrinci from "./Pages/PrinciPage/Components/DailyRoutinPrinci/DailyRoutinePrinci.jsx"; // Daily Routine
-import PassStudents from "./Pages/PrinciPage/Components/PassStudents/PassStudents.jsx"; // Pass Students
-import ParentsDetailsPrinci from "./Pages/PrinciPage/Components/Parents/ParentsDetails/ParentsDetailsPrinci.jsx";
-import AddParentsPrinci from "./Pages/PrinciPage/Components/Parents/AddParents/AddParentsPrinci.jsx";
-import StudentsDetails from "./Pages/PrinciPage/Components/Check std info/StudentsDetails.jsx";
-import EditStudentInfo from "./Pages/PrinciPage/Components/Check std info/EditStudentInfo.jsx";
+// Principal
+const PrinciLogin = React.lazy(() => import("./Pages/PrinciPage/Components/Login/PrinciLogin.jsx"));
+const PrincipalPage = React.lazy(() => import("./Pages/PrinciPage/PrincipalPage"));
+const AddStudent = React.lazy(() => import("./Pages/PrinciPage/Components/Add Student/AddStudent.jsx"));
+const MarkTchrAtte = React.lazy(() => import("./Pages/PrinciPage/Components/Mark Tchr Attendnance/MarkTchrAtte.jsx"));
+const CheckStdAttePrinci = React.lazy(() => import("./Pages/PrinciPage/Components/Check std atte/CheckStdAttePrinci.jsx"));
+const CheckProgressPrinci = React.lazy(() => import("./Pages/PrinciPage/Components/Check Progress/CheckProgressPrinci.jsx"));
+const MarkStdAttePrinci = React.lazy(() => import("./Pages/PrinciPage/Components/Marak std attendance/MarkStdAttePrinci.jsx"));
+const CheckTchrAttePrinci = React.lazy(() => import("./Pages/PrinciPage/Components/Teacher Attendnace/CheckTchrAttePrinci.jsx"));
+const ClassRoomsPrinci = React.lazy(() => import("./Pages/PrinciPage/Components/ClassRooms/ClassRoomsPrinci.jsx"));
+const EventsPrinci = React.lazy(() => import("./Pages/PrinciPage/Components/Eventss/EventsPrinci.jsx"));
+const HandleNotificationPrinci = React.lazy(() => import("./Pages/PrinciPage/Components/Notification/HandleNotificationPrinci.jsx"));
+const SetClasses = React.lazy(() => import("./Pages/PrinciPage/Components/ClassRooms/SetClasses.jsx"));
+const EditClasses = React.lazy(() => import("./Pages/PrinciPage/Components/ClassRooms/EditClasses.jsx"));
+const DailyRoutinePrinci = React.lazy(() => import("./Pages/PrinciPage/Components/DailyRoutinPrinci/DailyRoutinePrinci.jsx"));
+const PassStudents = React.lazy(() => import("./Pages/PrinciPage/Components/PassStudents/PassStudents.jsx"));
+const ParentsDetailsPrinci = React.lazy(() => import("./Pages/PrinciPage/Components/Parents/ParentsDetails/ParentsDetailsPrinci.jsx"));
+const AddParentsPrinci = React.lazy(() => import("./Pages/PrinciPage/Components/Parents/AddParents/AddParentsPrinci.jsx"));
+const StudentsDetails = React.lazy(() => import("./Pages/PrinciPage/Components/Check std info/StudentsDetails.jsx"));
+const EditStudentInfo = React.lazy(() => import("./Pages/PrinciPage/Components/Check std info/EditStudentInfo.jsx"));
+const MarkStdProgressPrinci = React.lazy(() => import("./Pages/PrinciPage/Components/Mark std Progress/MarkStdProgressPrinci.jsx"));
 
-// ==================== TEACHER PAGES & COMPONENTS ====================
-import TeachersPage from "./Pages/TeachersPage/TeachersPage"; // Teacher's main page
-import TeachersLogin from "./Pages/TeachersPage/Components/Login/TeachersLogin"; // Teacher login page
-import DailyRoutine from "./Pages/TeachersPage/Components/DailyRoutine/DailyRoutine.jsx"; // Daily Routine
-import TeacherProfileTchr from "./Pages/TeachersPage/Components/Profile/TeacherProfileTchr.jsx"; // Teacher Profile
-import MarkProgressTCH from "./Pages/TeachersPage/Components/Std Progress/MarkProgressTCH.jsx"; // Mark Student Progress
-import TchrAttendanceTCH from "./Pages/TeachersPage/Components/Attendnace/TchrAttendanceTCH.jsx"; // Teacher Attendance
-import StudentsInfoTCH from "./Pages/TeachersPage/Components/Students Info/StudentsInfoTCH.jsx"; // Students Info
-import MarkStdAtteTCH from "./Pages/TeachersPage/Components/Mark Std Attendance/MarkStdAtteTCH.jsx"; // Mark Student Attendance
-import CheckStdAtteTCH from "./Pages/TeachersPage/Components/Check Std Attendance/CheckStdAtteTCH.jsx"; // Check Student Attendance
-import CheckStdProgrTCH from "./Pages/TeachersPage/Components/Std Progress/CheckStdProgrTCH.jsx"; // Check Student Progress
-import AddTimeTables from "./Pages/TeachersPage/Components/Add TimeTables/AddTimeTables.jsx"; // Add Timetables
-import TchrNotification from "./Pages/TeachersPage/Components/Notification/TchrNotification.jsx"; // Teacher Notification
-import GivNotificaTHR from "./Pages/TeachersPage/Components/Giv Notification/GivNotificaTHR.jsx"; // Give Notification
-import ClassRoomTeachr from "./Pages/TeachersPage/Components/ClassRoom/ClassRoomTeachr.jsx"; // Teacher Classroom
+// Teacher
+const TeachersLogin = React.lazy(() => import("./Pages/TeachersPage/Components/Login/TeachersLogin"));
+const TeachersPage = React.lazy(() => import("./Pages/TeachersPage/TeachersPage"));
+const DailyRoutine = React.lazy(() => import("./Pages/TeachersPage/Components/DailyRoutine/DailyRoutine.jsx"));
+const TeacherProfileTchr = React.lazy(() => import("./Pages/TeachersPage/Components/Profile/TeacherProfileTchr.jsx"));
+const MarkProgressTCH = React.lazy(() => import("./Pages/TeachersPage/Components/Std Progress/MarkProgressTCH.jsx"));
+const TchrAttendanceTCH = React.lazy(() => import("./Pages/TeachersPage/Components/Attendnace/TchrAttendanceTCH.jsx"));
+const StudentsInfoTCH = React.lazy(() => import("./Pages/TeachersPage/Components/Students Info/StudentsInfoTCH.jsx"));
+const MarkStdAtteTCH = React.lazy(() => import("./Pages/TeachersPage/Components/Mark Std Attendance/MarkStdAtteTCH.jsx"));
+const CheckStdAtteTCH = React.lazy(() => import("./Pages/TeachersPage/Components/Check Std Attendance/CheckStdAtteTCH.jsx"));
+const CheckStdProgrTCH = React.lazy(() => import("./Pages/TeachersPage/Components/Std Progress/CheckStdProgrTCH.jsx"));
+const AddTimeTables = React.lazy(() => import("./Pages/TeachersPage/Components/Add TimeTables/AddTimeTables.jsx"));
+const TchrNotification = React.lazy(() => import("./Pages/TeachersPage/Components/Notification/TchrNotification.jsx"));
+const GivNotificaTHR = React.lazy(() => import("./Pages/TeachersPage/Components/Giv Notification/GivNotificaTHR.jsx"));
+const ClassRoomTeachr = React.lazy(() => import("./Pages/TeachersPage/Components/ClassRoom/ClassRoomTeachr.jsx"));
+const StdAtteList = React.lazy(() => import("./Pages/TeachersPage/Components/StdAttenList/StdAtteList.jsx"));
 
-// ==================== STUDENT PAGES & COMPONENTS ====================
-import StudentsPage from "./Pages/StudentsPge/StudentsPage"; // Student's main page
-import StudentsProfile from "./Pages/StudentsPge/Components/StudentsProfile/StudentsProfile"; // Student's profile page
-import StudentsAttendance from "./Pages/StudentsPge/Components/Attendance/StudentsAttendnace"; // Student attendance page
-import StudentLogin from "./Pages/StudentsPge/Components/Login/StudentLogin"; // Student login page
-import StudentsProgressSTD from "./Pages/StudentsPge/Components/Progress/StudentsProgressSTD.jsx"; // Student progress page
-import ContactTeacher from "./Pages/StudentsPge/Components/Contact Teacher/ContactTeacher.jsx"; // Contact teacher
-import TimeTable from "./Pages/StudentsPge/Components/Time Table/TimeTable.jsx"; // Time table
-import ClassRoom from "./Pages/StudentsPge/Components/Class Room/ClassRoom.jsx"; // Class Room
-import Notification from "./Pages/StudentsPge/Components/Notification/Notification.jsx"; // Notification
-import MyRoutine from "./Pages/StudentsPge/Components/DailuRoutine/MyRoutine.jsx"; // My Routine
-import MarkMyRoutine from "./Pages/StudentsPge/Components/DailuRoutine/MarkMyRoutine.jsx"; // Mark My Routine
-import SupportPage from "./Pages/SupportPage/SupportPage.jsx";
+// Student
+const StudentLogin = React.lazy(() => import("./Pages/StudentsPge/Components/Login/StudentLogin"));
+const StudentsPage = React.lazy(() => import("./Pages/StudentsPge/StudentsPage"));
+const StudentsProfile = React.lazy(() => import("./Pages/StudentsPge/Components/StudentsProfile/StudentsProfile"));
+const StudentsAttendance = React.lazy(() => import("./Pages/StudentsPge/Components/Attendance/StudentsAttendnace"));
+const StudentsProgressSTD = React.lazy(() => import("./Pages/StudentsPge/Components/Progress/StudentsProgressSTD.jsx"));
+const ContactTeacher = React.lazy(() => import("./Pages/StudentsPge/Components/Contact Teacher/ContactTeacher.jsx"));
+const TimeTable = React.lazy(() => import("./Pages/StudentsPge/Components/Time Table/TimeTable.jsx"));
+const ClassRoom = React.lazy(() => import("./Pages/StudentsPge/Components/Class Room/ClassRoom.jsx"));
+const Notification = React.lazy(() => import("./Pages/StudentsPge/Components/Notification/Notification.jsx"));
+const MyRoutine = React.lazy(() => import("./Pages/StudentsPge/Components/DailuRoutine/MyRoutine.jsx"));
+const MarkMyRoutine = React.lazy(() => import("./Pages/StudentsPge/Components/DailuRoutine/MarkMyRoutine.jsx"));
 
 function App() {
   return (
     <Router>
+      <Suspense fallback={
+        <div className="flex justify-center items-center h-screen w-screen bg-gradient-to-br from-slate-50 to-slate-100">
+  <div className="text-center">
+    <div className="inline-flex items-center gap-3 px-8 py-4 ">
+      <div className="flex gap-1.5">
+        <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+        <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+        <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+      </div>
+      <span className="text-lg font-semibold text-slate-700">Loading</span>
+    </div>
+  </div>
+</div>
+      }>
       <Routes>
         {/* // ==================== General PAGES & COMPONENTS ==================== */}
         <Route path="/" element={<Home />} />
@@ -367,6 +386,14 @@ function App() {
             </ProtectedRoute>
           }
         />
+         <Route
+          path="/add-progress-principal"
+          element={
+            <ProtectedRoute role="principal">
+              <MarkStdProgressPrinci/>
+            </ProtectedRoute>
+          }
+        />
         {/* // ==================== TEACHER PAGES & COMPONENTS ==================== */}
         {/* Teacher Routes */}
         <Route path="/teacherlogin" element={<TeachersLogin />} />
@@ -482,6 +509,14 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/std-attendence-list"
+          element={
+            <ProtectedRoute role="teacher">
+              <StdAtteList/>
+            </ProtectedRoute>
+          }
+        />
         {/* // ==================== STUDENT PAGES & COMPONENTS ==================== */}
         <Route path="/studentlogin" element={<StudentLogin />} />{" "}
         <Route
@@ -573,6 +608,7 @@ function App() {
           }
         />
       </Routes>
+      </Suspense>
     </Router>
   );
 }

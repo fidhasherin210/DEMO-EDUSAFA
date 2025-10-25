@@ -71,7 +71,7 @@ function AttendancePie() {
         <div className="absolute inset-0 w-32 h-32 -translate-x-8 -translate-y-8">
           {/* Users Icon */}
           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 animate-bounce" style={{ animationDelay: '0s', animationDuration: '2s' }}>
-            <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-md">
+            <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-md">
               <Users className="w-5 h-5 text-white" />
             </div>
           </div>
@@ -124,7 +124,7 @@ function AttendancePie() {
       </h3>
 
       {/* Chart area */}
-      <div className="flex items-center justify-center h-64">
+      <div className="flex items-center justify-center h-48 mb-3">
         {attendance.attendance_marked === false ? (
           <AttendanceUpdateAnimation />
         ) : (

@@ -8,9 +8,7 @@ import {
   User,
   ArrowLeft,
 } from "lucide-react";
-
-
-
+import { Link } from "react-router-dom";
 
 function CheckProgressPrinci() {
   const [allClasses, setAllClasses] = useState([]);
@@ -21,7 +19,7 @@ function CheckProgressPrinci() {
   const [selectedYear, setSelectedYear] = useState(
     new Date().getFullYear().toString()
   );
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const fetchAllClasses = async () => {
@@ -90,7 +88,8 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
     );
     return (total / studentProgress.length).toFixed(1);
   };
-const getImageUrl = (url) => (url?.startsWith("http") ? url : `${backendUrl}${url}`);
+  const getImageUrl = (url) =>
+    url?.startsWith("http") ? url : `${backendUrl}${url}`;
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-1 md:p-6">
       <div className="max-w-7xl mx-auto">
@@ -115,38 +114,38 @@ const getImageUrl = (url) => (url?.startsWith("http") ? url : `${backendUrl}${ur
         </div>
         {/* Class Selection */}
         {!selectedClass && (
-
-           <div className="max-w-7xl mx-auto p-1 mb-4">
-                <div className="bg-white/90 backdrop-blur-xl border border-white/20 rounded-2xl shadow-xl p-8">
-                  <div className="flex items-center gap-3 mb-6">
-                    <BookOpen className="w-6 h-6 text-blue-600" />
-                    <h2 className="text-base md:text-lg font-semibold text-blue-600">Select Your Class</h2>
-                  </div>
-
-                  <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-1">
-                    {allClasses.map((classData, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handleClassSelect(classData)}
-                        className={`group relative overflow-hidden rounded-xl p-2 md:p-4 font-medium transition-all duration-300 ${
-                          selectedClass === classData
-                            ? "bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-xl shadow-blue-500/25 scale-105"
-                            : "bg-white border-2 border-slate-200 text-slate-700 hover:border-blue-300 hover:shadow-lg hover:scale-105"
-                        }`}
-                      >
-                        <div className="relative z-10">
-                          <div className="text-sm opacity-80 ">Class</div>
-                          <div className="text-sm font-bold">{classData.class}</div>
-                        </div>
-                        {selectedClass !== classData && (
-                          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+          <div className="max-w-7xl mx-auto p-1 mb-4">
+            <div className="bg-white/90 backdrop-blur-xl border border-white/20 rounded-2xl shadow-xl p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <BookOpen className="w-6 h-6 text-blue-600" />
+                <h2 className="text-base md:text-lg font-semibold text-blue-600">
+                  Select Your Class
+                </h2>
               </div>
 
+              <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-1">
+                {allClasses.map((classData, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleClassSelect(classData)}
+                    className={`group relative overflow-hidden rounded-xl p-2 md:p-4 font-medium transition-all duration-300 ${
+                      selectedClass === classData
+                        ? "bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-xl shadow-blue-500/25 scale-105"
+                        : "bg-white border-2 border-slate-200 text-slate-700 hover:border-blue-300 hover:shadow-lg hover:scale-105"
+                    }`}
+                  >
+                    <div className="relative z-10">
+                      <div className="text-sm opacity-80 ">Class</div>
+                      <div className="text-sm font-bold">{classData.class}</div>
+                    </div>
+                    {selectedClass !== classData && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
         )}
 
         {/* Student Selection */}
@@ -217,7 +216,9 @@ const getImageUrl = (url) => (url?.startsWith("http") ? url : `${backendUrl}${ur
                     <h2 className="text-base md:text-xl font-bold text-blue-600">
                       {selectedStudent.name}
                     </h2>
-                    <p className="text-sm text-gray-600">{selectedStudent.place}</p>
+                    <p className="text-sm text-gray-600">
+                      {selectedStudent.place}
+                    </p>
                   </div>
                 </div>
 
@@ -386,7 +387,21 @@ const getImageUrl = (url) => (url?.startsWith("http") ? url : `${backendUrl}${ur
           </div>
         )}
       </div>
-{/* <MarkStdProgressPrinci/> */}
+      {/* <MarkStdProgressPrinci/> */}
+      <div className="space-y-6 text-center">
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6">
+          <h3 className="text-base text-center font-semibold text-blue-600 mb-4">
+            Actions
+          </h3>
+          <Link
+            to="/add-progress-principal"
+            className="inline-flex rounded-lg items-center justify-center gap-2 px-5 py-3 bg-gradient-to-br from-blue-500 to-purple-600 hover:to-indigo-700 transition-all duration-200 text-white"
+          >
+            <TrendingUp className="w-5 h-5" />
+            Add Student Progress
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

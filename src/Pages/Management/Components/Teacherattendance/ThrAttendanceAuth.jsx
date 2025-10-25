@@ -58,7 +58,6 @@ const ThrAttendanceAuth = () => {
         setAttendanceSummary({
           totalPresent: data.total_present,
           totalAbsent: data.total_absent,
-          session: data.last_updated_session,
         });
       } catch (err) {
         setError(err.message);
@@ -165,27 +164,29 @@ const ThrAttendanceAuth = () => {
   };
 
   const calculateAttendanceSummary = (records) => {
+    // Group records by date
     const attendanceByDate = {};
     records.forEach((record) => {
       if (!attendanceByDate[record.date]) {
-        attendanceByDate[record.date] = { AM: null, PM: null };
+        attendanceByDate[record.date] = [];
       }
-      attendanceByDate[record.date][record.session] = record.status;
+      attendanceByDate[record.date].push(record.status);
     });
 
     let totalPresent = 0;
     let totalAbsent = 0;
     let totalWorkingDays = 0;
 
+    // Calculate attendance for each date
     for (const date in attendanceByDate) {
-      const sessions = attendanceByDate[date];
       totalWorkingDays += 1;
+      const statuses = attendanceByDate[date];
 
-      if (sessions.AM === "present" && sessions.PM === "present") {
+      // If any record for this date is present, count as present for the day
+      const isPresent = statuses.includes("present");
+
+      if (isPresent) {
         totalPresent += 1;
-      } else if (sessions.AM === "present" || sessions.PM === "present") {
-        totalPresent += 0.5;
-        totalAbsent += 0.5;
       } else {
         totalAbsent += 1;
       }
@@ -269,7 +270,7 @@ const ThrAttendanceAuth = () => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-3 md:grid-cols-3 gap-1 md:gap-4">
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-1 md:gap-4">
                     <div className="bg-green-50 rounded-lg p-4 text-center">
                       <div className="flex items-center justify-center mb-2">
                         <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
@@ -291,18 +292,6 @@ const ThrAttendanceAuth = () => {
                       </div>
                       <p className="text-2xl font-bold text-red-600">
                         {attendanceSummary.totalAbsent}
-                      </p>
-                    </div>
-
-                    <div className="bg-blue-50 rounded-lg p-4 text-center">
-                      <div className="flex items-center justify-center mb-2">
-                        <Clock className="h-5 w-5 text-blue-600 mr-2" />
-                        <span className="text-sm font-medium text-blue-800">
-                          Session
-                        </span>
-                      </div>
-                      <p className="text-lg font-bold text-blue-600">
-                        {attendanceSummary.session}
                       </p>
                     </div>
                   </div>
@@ -441,9 +430,6 @@ const ThrAttendanceAuth = () => {
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Status
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Session
-                        </th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
@@ -478,11 +464,6 @@ const ThrAttendanceAuth = () => {
                                   record.status.slice(1)}
                               </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                              <span className="px-2 py-1 bg-gray-100 rounded-full text-xs font-medium">
-                                {record.session}
-                              </span>
-                            </td>
                           </tr>
                         ))
                       ) : (
@@ -501,73 +482,83 @@ const ThrAttendanceAuth = () => {
                 </div>
               </div>
 
-            {/* Summary Cards */}
-<div className="grid grid-cols-2 gap-1 mb-6">
-  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
-    <h3 className="text-xs md:text-base font-semibold text-gray-900 mb-3 flex items-center">
-      <Calendar className="h-4 w-4 mr-2 text-blue-600" />
-      Monthly Summary
-    </h3>
-    <div className="space-y-2 text-sm">
-      <div className="flex justify-between">
-        <span className="text-xs md:text-sm text-gray-600">Present Days:</span>
-        <span className="font-semibold text-green-600">
-          {totalPresent}
-        </span>
-      </div>
-      <div className="flex justify-between">
-        <span className="text-xs md:text-sm text-gray-600">Absent Days:</span>
-        <span className="font-semibold text-red-600">
-          {totalAbsent}
-        </span>
-      </div>
-      <div className="flex justify-between">
-        <span className="text-xs md:text-sm text-gray-600">Working Days:</span>
-        <span className="font-semibold text-gray-900">
-          {totalWorkingDays}
-        </span>
-      </div>
-    </div>
-  </div>
+              {/* Summary Cards */}
+              <div className="grid grid-cols-2 gap-1 mb-6">
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                  <h3 className="text-xs md:text-base font-semibold text-gray-900 mb-3 flex items-center">
+                    <Calendar className="h-4 w-4 mr-2 text-blue-600" />
+                    Monthly Summary
+                  </h3>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-xs md:text-sm text-gray-600">
+                        Present Days:
+                      </span>
+                      <span className="font-semibold text-green-600">
+                        {totalPresent}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-xs md:text-sm text-gray-600">
+                        Absent Days:
+                      </span>
+                      <span className="font-semibold text-red-600">
+                        {totalAbsent}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-xs md:text-sm text-gray-600">
+                        Working Days:
+                      </span>
+                      <span className="font-semibold text-gray-900">
+                        {totalWorkingDays}
+                      </span>
+                    </div>
+                  </div>
+                </div>
 
-  <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
-    <h3 className="text-xs md:text-base font-semibold text-gray-900 mb-3 flex items-center">
-      <BarChart3 className="h-4 w-4 mr-2 text-purple-600" />
-      Yearly Summary
-    </h3>
-    {yearlyLoading ? (
-      <div className="flex items-center justify-center py-6">
-        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-600"></div>
-        <p className="ml-2 text-sm text-gray-600">Calculating...</p>
-      </div>
-    ) : (
-      <div className="space-y-2 text-sm">
-        <div className="flex justify-between">
-          <span className="text-xs md:text-sm text-gray-600">Present Days:</span>
-          <span className="font-semibold text-green-600">
-            {yearlyPresent}
-          </span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-xs md:text-sm text-gray-600">Absent Days:</span>
-          <span className="font-semibold text-red-600">
-            {yearlyAbsent}
-          </span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-xs md:text-sm text-gray-600">Working Days:</span>
-          <span className="font-semibold text-gray-900">
-            {yearlyWorkingDays}
-          </span>
-        </div>
-      </div>
-    )}
-  </div>
-</div>
-
-
-
-
+                <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
+                  <h3 className="text-xs md:text-base font-semibold text-gray-900 mb-3 flex items-center">
+                    <BarChart3 className="h-4 w-4 mr-2 text-purple-600" />
+                    Yearly  Summary
+                  </h3>
+                  {yearlyLoading ? (
+                    <div className="flex items-center justify-center py-6">
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-600"></div>
+                      <p className="ml-2 text-sm text-gray-600">
+                        Calculating...
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-xs md:text-sm text-gray-600">
+                          Present Days:
+                        </span>
+                        <span className="font-semibold text-green-600">
+                          {yearlyPresent}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-xs md:text-sm text-gray-600">
+                          Absent Days:
+                        </span>
+                        <span className="font-semibold text-red-600">
+                          {yearlyAbsent}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-xs md:text-sm text-gray-600">
+                          Working Days:
+                        </span>
+                        <span className="font-semibold text-gray-900">
+                          {yearlyWorkingDays}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           )}
         </div>
