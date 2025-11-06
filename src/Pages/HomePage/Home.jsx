@@ -1,98 +1,98 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { FcBusinesswoman, FcBusinessman, FcCalendar } from "react-icons/fc";
-import ExamTopers from "./Components/Exam-Topers/ExamTopers";
-import AttendnaceTopers from "./Components/Atnd-Topers/AttendnaceTopers";
-import Footer from "./Components/Footer/Footer";
-import Calandar from "./Components/Calandar/Calandar";
-import Events from "./Components/UpcomingEvents/Events";
-import AttendancePie from "./Components/Atnd-summery/AttendancePie";
-import ClassWiseAtndPie from "./Components/Atnd-Class-waise/ClassWiseAtndPie";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import RouteenTopers from "./Components/Routine-Toperse/RouteenTopers";
-import EdusafaLogo from "../../assets/Edusafa2.png";
+import React, { useCallback, useEffect, useState } from 'react'
+import { FcBusinesswoman, FcBusinessman, FcCalendar } from 'react-icons/fc'
+import ExamTopers from './Components/Exam-Topers/ExamTopers'
+import AttendnaceTopers from './Components/Atnd-Topers/AttendnaceTopers'
+import Footer from './Components/Footer/Footer'
+import Calandar from './Components/Calandar/Calandar'
+import Events from './Components/UpcomingEvents/Events'
+import AttendancePie from './Components/Atnd-summery/AttendancePie'
+import ClassWiseAtndPie from './Components/Atnd-Class-waise/ClassWiseAtndPie'
+import { Link } from 'react-router-dom'
+import axios from 'axios'
+import RouteenTopers from './Components/Routine-Toperse/RouteenTopers'
+import EdusafaLogo from '../../assets/Edusafa2.png'
 
 function Home() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [schoolDetails, setSchoolDetails] = useState({});
-  const [studetsCount, setStudentsCount] = useState("");
-  const [teacherCount, setTeacherCount] = useState("");
-  const [Notice, setNotice] = useState("");
-  const [isMobile, setIsMobile] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [schoolDetails, setSchoolDetails] = useState({})
+  const [studetsCount, setStudentsCount] = useState('')
+  const [teacherCount, setTeacherCount] = useState('')
+  const [Notice, setNotice] = useState('')
+  const [isMobile, setIsMobile] = useState(false)
 
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL
 
   // Check if device is mobile
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024); // lg breakpoint
-    };
+      setIsMobile(window.innerWidth < 1024) // lg breakpoint
+    }
 
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
 
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const fetchSchoolDetails = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${backendUrl}/api/dashboard/school-details/`
-      );
-      setSchoolDetails(response.data[0]);
+        `${backendUrl}/api/dashboard/school-details/`,
+      )
+      setSchoolDetails(response.data[0])
     } catch (error) {
-      console.error("Failed to fetch school details:", error);
+      console.error('Failed to fetch school details:', error)
     }
-  }, [backendUrl]);
+  }, [backendUrl])
 
   const fetchStudentsCount = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${backendUrl}/api/dashboard/all-students-count/`
-      );
-      setStudentsCount(response.data);
+        `${backendUrl}/api/dashboard/all-students-count/`,
+      )
+      setStudentsCount(response.data)
     } catch (error) {
-      console.error("Failed to fetch students count:", error);
+      console.error('Failed to fetch students count:', error)
     }
-  }, [backendUrl]);
+  }, [backendUrl])
 
   const fetchteachersCount = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${backendUrl}/api/dashboard/all-teachers-count/`
-      );
-      setTeacherCount(response.data);
+        `${backendUrl}/api/dashboard/all-teachers-count/`,
+      )
+      setTeacherCount(response.data)
     } catch (error) {
-      console.error("Failed to fetch teachers count:", error);
+      console.error('Failed to fetch teachers count:', error)
     }
-  }, [backendUrl]);
+  }, [backendUrl])
 
   const fetchNoticeCount = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${backendUrl}/api/dashboard/get-notice/`
-      );
-      setNotice(response.data);
+        `${backendUrl}/api/dashboard/get-notice/`,
+      )
+      setNotice(response.data)
     } catch (error) {
-      console.error("Failed to fetch notice count:", error);
+      console.error('Failed to fetch notice count:', error)
     }
-  }, [backendUrl]);
+  }, [backendUrl])
 
   useEffect(() => {
-    fetchSchoolDetails();
-    fetchStudentsCount();
-    fetchteachersCount();
-    fetchNoticeCount();
+    fetchSchoolDetails()
+    fetchStudentsCount()
+    fetchteachersCount()
+    fetchNoticeCount()
   }, [
     fetchNoticeCount,
     fetchSchoolDetails,
     fetchteachersCount,
     fetchStudentsCount,
-  ]);
+  ])
 
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
+    setMenuOpen(!menuOpen)
+  }
 
   // Show loading screen ONLY on mobile when schoolDetails is not loaded
   if (isMobile && (!schoolDetails || !schoolDetails.name)) {
@@ -104,7 +104,7 @@ function Home() {
             className="absolute inset-0 bg-repeat"
             style={{
               backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.3'%3E%3Cpath d='M30 0l15 15-15 15L15 15zM0 30l15 15-15 15L15 45zM60 30l-15 15 15 15-15-15zM30 60l-15-15 15-15 15 15z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-              animation: "float 15s ease-in-out infinite",
+              animation: 'float 15s ease-in-out infinite',
             }}
           ></div>
         </div>
@@ -133,7 +133,7 @@ function Home() {
             {/* Main title with Islamic styling */}
             <h1 className="text-2xl md:text-4xl font-bold text-white relative">
               <span className="bg-gradient-to-r from-gray-100 via-green-300 to-purple-50 bg-clip-text text-transparent">
-                QSM Madrasa App
+                Edusafa Madrasa App
               </span>
               <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-transparent via-purple-400 to-transparent animate-pulse"></div>
             </h1>
@@ -153,8 +153,8 @@ function Home() {
                   <div
                     className="absolute inset-1 border border-transparent border-t-green-400 rounded-full animate-spin"
                     style={{
-                      animationDuration: "1.5s",
-                      animationDirection: "reverse",
+                      animationDuration: '1.5s',
+                      animationDirection: 'reverse',
                     }}
                   ></div>
                 </div>
@@ -167,7 +167,7 @@ function Home() {
                       className="w-2 h-2 bg-gradient-to-r from-gray-100 to-purple-500 rounded-full animate-bounce"
                       style={{
                         animationDelay: `${i * 0.2}s`,
-                        animationDuration: "1.2s",
+                        animationDuration: '1.2s',
                       }}
                     ></div>
                   ))}
@@ -186,7 +186,7 @@ function Home() {
             <svg
               viewBox="0 0 100 100"
               className="w-full h-full animate-spin"
-              style={{ animationDuration: "12s" }}
+              style={{ animationDuration: '12s' }}
             >
               <path
                 d="M50 10 Q90 50 50 90 Q10 50 50 10"
@@ -210,8 +210,8 @@ function Home() {
               viewBox="0 0 100 100"
               className="w-full h-full animate-spin"
               style={{
-                animationDuration: "10s",
-                animationDirection: "reverse",
+                animationDuration: '10s',
+                animationDirection: 'reverse',
               }}
             >
               <path
@@ -272,7 +272,7 @@ function Home() {
           }
         `}</style>
       </div>
-    );
+    )
   }
 
   // For desktop or when data is loaded, show the main content
@@ -284,7 +284,7 @@ function Home() {
           <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>
-    );
+    )
   }
 
   // Rest of your main component remains the same...
@@ -306,29 +306,28 @@ function Home() {
   bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white
   transform transition-transform duration-300 ease-in-out shadow-2xl
   z-[9999] will-change-transform backface-hidden
-  ${menuOpen ? "translate-x-0" : "-translate-x-full"}
+  ${menuOpen ? 'translate-x-0' : '-translate-x-full'}
   lg:translate-x-0 flex flex-col justify-between`}
         >
           {/* Sidebar Header */}
           <div>
-          <div className="px-3 md:p-4 border-b border-slate-700/50">
-  <div className="flex flex-col items-center justify-center ">
-    <img
-      src={EdusafaLogo}
-      alt="Edusafa Logo"
-      className="w-[180px] md:w-[260px] mt-5"
-      style={{ height: "auto" }}
-    />
+            <div className="px-3 md:p-4 border-b border-slate-700/50">
+              <div className="flex flex-col items-center justify-center ">
+                <img
+                  src={EdusafaLogo}
+                  alt="Edusafa Logo"
+                  className="w-[180px] md:w-[260px] mt-5"
+                  style={{ height: 'auto' }}
+                />
 
-    <p className="text-xs text-slate-300 text-center mb-3 mt-2">
-      {schoolDetails.sub_name} <br />
-      <span className="text-xs md:text-sm text-slate-500">
-        Your Place, District, Kerala
-      </span>
-    </p>
-  </div>
-</div>
-
+                <p className="text-xs text-slate-300 text-center mb-3 mt-2">
+                  {schoolDetails.sub_name} <br />
+                  <span className="text-xs md:text-sm text-slate-500">
+                    Your Place, District, Kerala
+                  </span>
+                </p>
+              </div>
+            </div>
 
             {/* Close Button (Mobile) */}
             <button
@@ -365,9 +364,9 @@ function Home() {
 
               <Link
                 to={
-                  localStorage.getItem("teacher")
-                    ? "/teacherspage"
-                    : "/teacherlogin"
+                  localStorage.getItem('teacher')
+                    ? '/teacherspage'
+                    : '/teacherlogin'
                 }
                 className="flex items-center p-2 text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 rounded-xl transition-all duration-200 group no-underline"
               >
@@ -379,9 +378,9 @@ function Home() {
 
               <Link
                 to={
-                  localStorage.getItem("student")
-                    ? "/studentspage"
-                    : "/studentlogin"
+                  localStorage.getItem('student')
+                    ? '/studentspage'
+                    : '/studentlogin'
                 }
                 className="flex items-center p-2 text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 rounded-xl transition-all duration-200 group no-underline"
               >
@@ -393,9 +392,9 @@ function Home() {
 
               <Link
                 to={
-                  localStorage.getItem("principal")
-                    ? "/principalpage"
-                    : "/principal-login"
+                  localStorage.getItem('principal')
+                    ? '/principalpage'
+                    : '/principal-login'
                 }
                 className="flex items-center p-2 text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 rounded-xl transition-all duration-200 group no-underline"
               >
@@ -407,9 +406,9 @@ function Home() {
 
               <Link
                 to={
-                  localStorage.getItem("management")
-                    ? "/management-details"
-                    : "/management-login"
+                  localStorage.getItem('management')
+                    ? '/management-details'
+                    : '/management-login'
                 }
                 className="flex items-center p-2 text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 rounded-xl transition-all duration-200 group no-underline"
               >
@@ -507,7 +506,7 @@ function Home() {
                     <p className="text-2xl md:text-3xl font-bold text-blue-600">
                       {studetsCount.all_students_count
                         ? `0${studetsCount.all_students_count}`
-                        : "00"}
+                        : '00'}
                     </p>
                   </div>
                   <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-3 rounded-2xl">
@@ -526,7 +525,7 @@ function Home() {
                     <p className="text-2xl md:text-3xl font-bold text-green-600">
                       {teacherCount.teachers_count
                         ? `0${teacherCount.teachers_count}`
-                        : "00"}
+                        : '00'}
                     </p>
                   </div>
                   <div className="bg-gradient-to-r from-green-500 to-green-600 p-3 rounded-2xl">
@@ -543,7 +542,7 @@ function Home() {
                       Upcoming Events
                     </p>
                     <p className="text-2xl md:text-3xl font-bold text-purple-600">
-                      {Notice.events_count ? `0${Notice.events_count}` : "00"}
+                      {Notice.events_count ? `0${Notice.events_count}` : '00'}
                     </p>
                   </div>
                   <div className="bg-gradient-to-r from-purple-500 to-purple-600 p-3 rounded-2xl">
@@ -594,7 +593,7 @@ function Home() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Home;
+export default Home
