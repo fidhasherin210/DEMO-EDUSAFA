@@ -1,81 +1,57 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react'
 import {
-  GraduationCap,
-  MapPin,
   Users,
-  BookOpen,
-  Sparkles,
-  Star,
-  Award,
-  Calendar,
-  Globe,
   ArrowRight,
-  Zap,
-  Layers,
-  Triangle,
-} from "lucide-react";
+} from 'lucide-react'
+import logo from "/src/assets/Edusafa2.png";
+
+
+
+// Sample school data
+const sampleSchool = {
+  name: "Qurrathul Ain",
+  sub_name: "Higher Secondary Madrasa",
+  educational_board: "Demo Educational Board",
+  logo: logo,
+  image: "https://images.unsplash.com/photo-1562774053-701939374585?w=1200&h=800&fit=crop",
+  history: `Founded in 1985, Innovision Academy has been at the forefront of educational excellence for over three decades. What began as a small initiative with just 50 students has now blossomed into one of the most prestigious educational institutions in the region, nurturing over 2,000 young minds annually.
+
+Our journey began with a simple yet powerful vision: to create an educational ecosystem that doesn't just impart knowledge but inspires innovation, critical thinking, and holistic development. Dr. Sarah Mitchell, our founder, envisioned a school where traditional values meet modern pedagogy, creating an environment where every child can discover their unique potential.
+
+Throughout the 1990s, we expanded our infrastructure, adding state-of-the-art science laboratories, a comprehensive library, and dedicated spaces for arts and sports. The new millennium brought digital transformation to our classrooms, making us one of the first schools in the region to integrate technology seamlessly into education.
+
+The 2010s marked our international expansion, with exchange programs established in 15 countries and our students consistently achieving top ranks in national and international Olympiads. Our alumni have gone on to become leaders in various fields - from technology innovators at Silicon Valley to renowned artists, from research scientists to social entrepreneurs.
+
+Today, Innovision Academy stands as a beacon of educational excellence, recognized with numerous awards including the National Educational Excellence Award (2022) and the Global Innovation in Education Award (2023). Our commitment to nurturing well-rounded individuals who are ready to face the challenges of tomorrow remains stronger than ever.
+
+As we look to the future, we're excited about our upcoming Center for Innovation and Research, a state-of-the-art facility that will house robotics labs, AI research centers, and sustainable technology workshops. Because at Innovision Academy, we believe that education is not just about preparing for tests - it's about preparing for life.`
+}
 
 function SchoolDetails() {
-  const [SchoolDetails, setSchoolDetails] = useState("");
-  const [showFullHistory, setShowFullHistory] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
-  const fetchSchoolDetails = useCallback(async () => {
-    try {
-      const response = await fetch(
-        `${backendUrl}/api/dashboard/school-details/`
-      );
-      const data = await response.json();
-      setSchoolDetails(data[0]);
-    } catch (error) {
-      console.error("Error fetching school details:", error);
-    }
-  }, [backendUrl]);
+  const [showFullHistory, setShowFullHistory] = useState(false)
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
 
   useEffect(() => {
-    fetchSchoolDetails();
-  }, [fetchSchoolDetails]);
+    const handleResize = () => setIsMobile(window.innerWidth < 768)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const toggleHistory = () => setShowFullHistory(!showFullHistory)
 
-  const toggleHistory = () => setShowFullHistory(!showFullHistory);
-
-  const historyText = SchoolDetails.history || "";
-  const truncatedHistory =
-    historyText.length > 300 ? historyText.slice(0, 300) + "..." : historyText;
-  const getImageUrl = (url) =>
-    url?.startsWith("http") ? url : `${backendUrl}${url}`;
+  const historyText = sampleSchool?.history || ''
+  const truncatedHistory = historyText.length > 300 ? historyText.slice(0, 300) + '...' : historyText
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
-      {/* Static Background */}
-      <div className="fixed inset-0 z-0">
-
-
-        {/* Grid pattern */}
-
-      </div>
-
       {/* Glassmorphism Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/20 border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-r from-violet-500 to-cyan-500 rounded-2xl flex items-center justify-center transform rotate-3 hover:rotate-0 transition-transform duration-300">
-                  <GraduationCap className="w-6 h-6 text-white" />
-                </div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-cyan-400 rounded-full animate-ping"></div>
-              </div>
               <div>
-                <span className="font-bold text-xl bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
-                  {SchoolDetails.name}
+                <span className="text-base font-bold md:text-xl bg-gradient-to-r from-blue-600 to-sky-500 bg-clip-text text-transparent">
+                  {sampleSchool.name}
                 </span>
               </div>
             </div>
@@ -85,60 +61,61 @@ function SchoolDetails() {
 
       {/* Ultra-Modern Hero */}
       <section className="mt-4 relative min-h-screen flex items-center justify-center pt-10">
-
-
         <div className="relative z-10 max-w-7xl mx-auto px-3 text-center">
-          {/* Floating UI Elements */}
-          <div className="mt-5 absolute -top-20 left-1/2 transform -translate-x-1/2">
-            <div className="flex items-center space-x-4 opacity-60">
-              <div className="w-2 h-2 bg-violet-400 rounded-full animate-pulse"></div>
-              <div className="w-16 h-0.5 bg-gradient-to-r from-violet-400 to-cyan-400"></div>
-              <Sparkles className="w-6 h-6 text-cyan-400" />
-              <div className="w-16 h-0.5 bg-gradient-to-r from-cyan-400 to-violet-400"></div>
-              <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse delay-500"></div>
-            </div>
-          </div>
-
           {/* Main Logo */}
-          <div className="mb-5 relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-violet-600 via-purple-600 to-cyan-600 rounded-3xl blur-2xl opacity-0"></div>
-            <div className="relative w-16 h-16 mx-auto bg-gradient-to-br from-violet-500 via-purple-500 to-cyan-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-violet-500/25 transform hover:rotate-6 transition-transform duration-300">
-              <GraduationCap className="w-8 h-8 text-white" />
+          <div className="relative mb-2 mt-2 flex justify-center">
+            <div className="relative w-fit">
+              {/* Blur Background */}
+              <div className="absolute inset-0 bg-white rounded-2xl blur-lg"></div>
+
+              {/* Glass Box */}
+              <div className="relative bg-white rounded-2xl p-2 border border-white/20 mb-3">
+                {sampleSchool?.logo ? (
+                  <img
+                    src={sampleSchool.logo}
+                    alt="School Logo"
+                    className="w-[160px] md:w-[220px] h-auto"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="w-[160px] md:w-[220px] h-[80px] md:h-[100px] flex items-center justify-center text-sm md:text-base font-semibold text-gray-500">
+                    School Logo
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
           {/* Glitch-style title */}
           <div className="mb-5 relative">
-            <h1 className="text-2xl md:text-5xl lg:text-6xl font-black leading-none mb-2">
-              <span className="block bg-gradient-to-r from-violet-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                {SchoolDetails.name}
-              </span>
+            <h1 className="text-xl md:text-5xl font-black leading-none mb-2">
+              <span className="block text-white">{sampleSchool.name}</span>
             </h1>
 
             {/* Subtitle with typewriter effect */}
             <div className="relative">
-              <h2 className="text-base md:text-3xl font-bold text-gray-300 mb-2 opacity-80">
-                {SchoolDetails.sub_name}
+              <h2 className="text-sm md:text-2xl font-bold text-gray-300 mb-2 opacity-80">
+                {sampleSchool.sub_name}
               </h2>
-
             </div>
           </div>
 
           {/* Floating badge */}
-          <div className="inline-flex items-center px-6 py-3 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full mb-12 hover:bg-white/10 transition-colors">
-            <Zap className="w-5 h-5 text-yellow-400 mr-3" />
-            <span className="text-white text-xs font-medium">{SchoolDetails.educational_board}</span>
+          <div className="inline-flex items-center px-4 py-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full mb-12 hover:bg-white/10 transition-colors">
+            <span className="text-white text-xs font-medium">
+              {sampleSchool.educational_board}
+            </span>
           </div>
 
           {/* Call to action */}
           <p className="text-xm md:text-4xl text-gray-300 mb-16 leading-relaxed font-light">
-            Where{" "}
+            Where{' '}
             <span className="relative">
               <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent font-bold">
                 Innovation
               </span>
-            </span>{" "}
-            meets{" "}
+            </span>{' '}
+            meets{' '}
             <span className="relative">
               <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent font-bold">
                 Excellence
@@ -146,129 +123,75 @@ function SchoolDetails() {
             </span>
           </p>
 
-       <button
-  onClick={() => window.scrollBy({ top: 800, behavior: "smooth" })}
-  className="group relative inline-flex items-center px-8 py-4 bg-gradient-to-r from-violet-600 to-cyan-600 rounded-2xl font-bold text-white shadow-2xl shadow-violet-500/25 hover:shadow-violet-500/40 transform hover:scale-105 transition-all duration-300"
->
-  <span className="relative z-10">Explore Universe</span>
-  <ArrowRight className="w-5 h-5 ml-3 relative z-10 group-hover:translate-x-2 transition-transform" />
-  <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-violet-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-</button>
-
+          <button
+            onClick={() => window.scrollBy({ top: 800, behavior: 'smooth' })}
+            className="group relative inline-flex items-center px-6 py-4 bg-gradient-to-r from-blue-600 to-sky-500 rounded-2xl font-bold text-white shadow-2xl shadow-violet-500/25 hover:shadow-violet-500/40 transform hover:scale-105 transition-all duration-300"
+          >
+            <span className="relative z-10">Explore Universe</span>
+            <ArrowRight className="w-5 h-5 ml-3 relative z-10 group-hover:translate-x-2 transition-transform" />
+          </button>
         </div>
       </section>
 
-      {/* Neon Stats Grid */}
+      {/* IMAGE + HISTORY SECTION */}
+      <div className="relative z-10 px-4 py-16 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-stretch">
+          {/* IMAGE CARD */}
+          <div className="group relative h-full">
+            <div className=""></div>
 
+            <div className="relative h-full bg-gray-900/50 backdrop-blur-xl rounded-3xl border border-gray-800 overflow-hidden">
+              <div className="relative h-full">
+                <img
+                  src={sampleSchool.image}
+                  alt="School Campus"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
 
-      {/* Floating Cards Image Section */}
-      <div className="relative z-10 px-4 py-5 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-black bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-6">
-              Our Legacy
-            </h2>
-            <p className="text-sm md:text-xl text-gray-400 max-w-2xl mx-auto">
-              Step into a world where sacred knowledge transcends generations
-            </p>
-          </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Image 1 */}
-            <div className="group relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-              <div className="relative bg-gray-900/50 backdrop-blur-xl rounded-3xl border border-gray-800 group-hover:border-purple-500/50 transition-all duration-700 transform group-hover:scale-105 group-hover:-translate-y-2">
-                <div className="relative overflow-hidden rounded-2xl">
-                  <img
-                    src={getImageUrl(SchoolDetails.image_1)}
-                    alt="School Building"
-                    className="w-full h-[400px] object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-purple-500/80 rounded-full flex items-center justify-center backdrop-blur-sm">
-                        <MapPin className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-xs md:text-xl font-bold text-white">
-                          Main Building
-                        </h3>
-                        <p className="text-xs text-gray-300">Where excellence begins</p>
-                      </div>
-                    </div>
+                <div className="absolute bottom-6 left-6 flex items-center space-x-3">
+                  <div className="w-12 h-12 bg-blue-500/80 rounded-full flex items-center justify-center">
+                    <Users className="w-6 h-6 text-white" />
                   </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Image 2 */}
-            <div className="group relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-              <div className="relative bg-gray-900/50 backdrop-blur-xl rounded-3xl border border-gray-800 group-hover:border-blue-500/50 transition-all duration-700 transform group-hover:scale-105 group-hover:-translate-y-2">
-                <div className="relative overflow-hidden rounded-2xl">
-                  <img
-                    src={getImageUrl(SchoolDetails.image_2)}
-                    alt="School Campus"
-                    className="w-full h-[400px] object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-blue-500/80 rounded-full flex items-center justify-center backdrop-blur-sm">
-                        <Users className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-sm md:text-xl font-bold text-white">Campus</h3>
-                        <p className="text-xs text-gray-300">Where memories are made</p>
-                      </div>
-                    </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Campus</h3>
+                    <p className="text-xs text-gray-300">
+                      Where memories are made
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
+          {/* HISTORY CARD */}
+          <div className="relative h-full">
+            <div className="absolute -inset-8 "></div>
 
-          {/* History Section */}
-      <div className="relative z-10 px-1 py-5 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full mb-8 shadow-2xl shadow-purple-500/50">
-              <BookOpen className="w-8 h-8 text-white" />
-            </div>
-            <h2 className="text-3xl md:text-4xl font-black bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-6">
-              Our Story
-            </h2>
-            <div className="w-32 h-1 bg-gradient-to-r from-purple-400 to-pink-400 mx-auto rounded-full"></div>
-          </div>
+            <div className="relative h-full bg-gray-900/80 backdrop-blur-xl rounded-3xl p-6 md:p-12 border border-gray-800 shadow-2xl flex flex-col justify-center">
+              <div className="text-gray-300 text-sm md:text-lg leading-relaxed font-light">
+                <span className=" text-base md:text-xl text-purple-300 font-medium">
+                  History
+                </span>
+                {/* Smooth Expand Container */}
+                <div
+                  className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                    showFullHistory
+                      ? 'max-h-[2000px] opacity-100'
+                      : 'max-h-[220px] md:max-h-[260px] opacity-95'
+                  }`}
+                  style={{ transitionProperty: 'max-height, opacity' }}
+                >
+                  <p>{sampleSchool.history}</p>
+                </div>
 
-          <div className="relative">
-            <div className="absolute -inset-8 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-3xl blur opacity-20"></div>
-
-            <div className="relative bg-gray-900/80 backdrop-blur-xl rounded-3xl p-4 md:p-12 border border-gray-800 shadow-2xl">
-              <div className="absolute top-4 left-4 w-3 h-3 bg-purple-400 rounded-full animate-pulse"></div>
-              <div className="absolute top-4 right-4 w-3 h-3 bg-pink-400 rounded-full animate-pulse delay-300"></div>
-              <div className="absolute bottom-4 left-4 w-3 h-3 bg-blue-400 rounded-full animate-pulse delay-500"></div>
-              <div className="absolute bottom-4 right-4 w-3 h-3 bg-yellow-400 rounded-full animate-pulse delay-700"></div>
-
-              <div className="relative z-10 text-gray-300 text-lg md:text-xl leading-relaxed font-light">
-                <p className="first-letter:text-8xl first-letter:font-bold first-letter:text-transparent first-letter:bg-gradient-to-r first-letter:from-purple-400 first-letter:to-pink-400 first-letter:bg-clip-text first-letter:float-left first-letter:mr-4 first-letter:mt-2">
-                  {isMobile
-                    ? showFullHistory
-                      ? historyText
-                      : truncatedHistory
-                    : historyText}
-                </p>
-
-                {isMobile && historyText.length > 300 && (
+                {historyText.length > 300 && (
                   <button
                     onClick={toggleHistory}
-                    className="mt-4 mb-3 text-purple-400 hover:text-pink-400 font-semibold"
+                    className="text-xs md:text-sm mt-6 text-purple-400 hover:text-pink-400 font-semibold transition-all duration-300 hover:tracking-wide"
                   >
-                    {showFullHistory ? "Read Less" : "Read More"}
+                    {showFullHistory ? 'Read Less' : 'Read More'}
                   </button>
                 )}
               </div>
@@ -276,18 +199,8 @@ function SchoolDetails() {
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow {
-          animation: spin-slow 8s linear infinite;
-        }
-      `}</style>
     </div>
-  );
+  )
 }
 
-export default SchoolDetails;
+export default SchoolDetails

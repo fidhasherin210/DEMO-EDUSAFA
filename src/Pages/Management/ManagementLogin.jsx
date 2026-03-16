@@ -1,101 +1,67 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff } from "lucide-react";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Eye, EyeOff } from "lucide-react"; // 👁️ toggle icons
 
 function ManagementLoginPage() {
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [number, setNumber] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [password, setPassword] = useState('');
+  const [number, setNumber] = useState('');
+  const [schoolCode, setSchoolCode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [name, setName] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+
   const navigate = useNavigate();
 
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-  // ✅ Fetch CSRF Token
-  const fetchCSRFToken = async () => {
-    try {
-      const csrfResponse = await fetch(`${backendUrl}/api/authority/csrf-token/`, {
-        credentials: "include",
-      });
-      const csrfData = await csrfResponse.json();
-      return csrfData.csrfToken;
-    } catch (error) {
-      console.error("CSRF fetch error:", error);
-      return null;
-    }
-  };
+  
+    const handleLogin = async (e) => {
+    e.preventDefault();
+    if (isLoading) return;
 
-  // ✅ Handle Login
-  const handleLogin = async () => {
-    if (loading) return;
-    setLoading(true);
+    setIsLoading(true);
     setError("");
 
-    const csrfToken = await fetchCSRFToken();
-    if (!csrfToken) {
-      setError("Failed to fetch CSRF token.");
-      setLoading(false);
-      return;
-    }
+      localStorage.setItem("management_ui", "1");
+      navigate("/management/dashboard");
 
-    try {
-      const response = await fetch(`${backendUrl}/api/authority/login/`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrfToken,
-        },
-        body: JSON.stringify({
-          name: name.trim(),
-          number: number.trim(),
-          password: password,
-        }),
-      });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.error || "Login failed");
-        setLoading(false);
-        return;
-      }
-
-      // ✅ Store user data
-      localStorage.setItem("management", JSON.stringify(data.management));
-      setError("");
-      navigate("/management-details");
-    } catch (err) {
-      console.error("Login error:", err);
-      setError("An unexpected error occurred.");
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-600 to-purple-600 p-4">
-      <div className="relative bg-white rounded-lg shadow-lg w-full max-w-sm text-center p-6 sm:p-8 mx-auto min-h-[400px]">
-        {/* Profile Image */}
-        <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full p-1">
+    <div className="flex items-center justify-center h-screen bg-gradient-to-r from-blue-600 to-sky-600">
+      <div className="relative bg-white rounded-lg shadow-lg p-4 w-full max-w-sm text-center sm:p-6 mx-4 sm:mx-0 h-auto">
+        {/* Image */}
+        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-600 to-sky-600 rounded-full p-1 sm:p-2">
           <img
             src="/media/teacher3.png"
-            alt="Management"
-            className="w-24 h-24 sm:w-28 sm:h-28 rounded-full"
+            alt="icon"
+            className="w-20 h-20 sm:w-28 sm:h-28 rounded-full"
           />
         </div>
 
-        {/* Heading */}
-        <h2 className="text-lg sm:text-2xl font-semibold text-blue-800 mt-20 mb-4">
+        <h2 className="text-lg sm:text-xl font-semibold text-blue-600 mt-16 sm:mt-20 mb-3 sm:mb-4">
           Management Login
         </h2>
 
-        <div className="space-y-4">
-          {/* Name */}
-          <div className="text-left">
-            <label htmlFor="name" className="block text-gray-700 text-sm mb-1">
+        {/* ✅ Use e.preventDefault */}
+        <form onSubmit={handleLogin}>
+          {/* Reg Number Input */}
+          <div className="mb-3 sm:mb-4 text-center">
+            <label htmlFor="reg_no" className="block text-gray-800 text-sm">
+              School Code
+            </label>
+            <input
+              id="schoolCode"
+              type="text"
+              value={schoolCode}
+              onChange={(e) => setSchoolCode(e.target.value)}
+              placeholder="Enter School Code"
+              className="w-full mt-1 px-3 py-2 sm:px-4 sm:py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+          </div>
+          <div className="mb-3 sm:mb-4 text-center">
+            <label htmlFor="reg_no" className="block text-gray-800 text-sm">
               Name
             </label>
             <input
@@ -103,29 +69,27 @@ function ManagementLoginPage() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your name"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+              placeholder="Enter Your  Name"
+              className="w-full mt-1 px-3 py-2 sm:px-4 sm:py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
-
-          {/* Number */}
-          <div className="text-left">
-            <label htmlFor="number" className="block text-gray-700 text-sm mb-1">
-              Number
+          <div className="mb-3 sm:mb-4 text-center">
+            <label htmlFor="number" className="block text-gray-800 text-sm">
+              Mobile Number
             </label>
             <input
               id="number"
               type="text"
               value={number}
               onChange={(e) => setNumber(e.target.value)}
-              placeholder="Enter your number"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+              placeholder="Enter Register Number"
+              className="w-full mt-1 px-3 py-2 sm:px-4 sm:py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
 
-          {/* Password with Show/Hide */}
-          <div className="text-left relative">
-            <label htmlFor="password" className="block text-gray-700 text-sm mb-1">
+          {/* Password with toggle */}
+          <div className="mb-3 sm:mb-4 text-center relative">
+            <label htmlFor="password" className="block text-gray-800 text-sm">
               Password
             </label>
             <input
@@ -134,7 +98,7 @@ function ManagementLoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter Password"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full mt-1 px-3 py-2 sm:px-4 sm:py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 pr-10"
             />
             <button
               type="button"
@@ -145,15 +109,15 @@ function ManagementLoginPage() {
             </button>
           </div>
 
-          {/* Button */}
+          {/* Login Button with Loading State */}
           <button
-            onClick={handleLogin}
-            disabled={loading}
-            className={`w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 sm:py-2.5 px-4 rounded-lg transition text-sm sm:text-base ${
-              loading ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"
+            type="submit"
+            disabled={isLoading}
+            className={`w-full mt-3 sm:mt-4 bg-gradient-to-r from-blue-600 to-sky-500 text-white py-2 sm:py-2.5 px-4 rounded-lg transition text-sm sm:text-base ${
+              isLoading ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"
             }`}
           >
-            {loading ? (
+            {isLoading ? (
               <span className="flex items-center justify-center">
                 <svg
                   className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
@@ -172,10 +136,7 @@ function ManagementLoginPage() {
                   <path
                     className="opacity-75"
                     fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373
-                    0 0 5.373 0 12h4zm2 5.291A7.962
-                    7.962 0 014 12H0c0 3.042
-                    1.135 5.824 3 7.938l3-2.647z"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
                 Logging in...
@@ -184,11 +145,19 @@ function ManagementLoginPage() {
               "Login"
             )}
           </button>
+        </form>
 
-          {/* Error */}
-          {error && (
-            <div className="text-red-500 text-xs sm:text-sm mt-2">{error}</div>
-          )}
+        {/* Error Message */}
+        {error && <div className="text-red-500 text-xs sm:text-sm mt-2">{error}</div>}
+
+        {/* Forgot Password Link */}
+        <div className="mt-3 sm:mt-4">
+          <a
+            href="/support"
+            className="text-gray-500 text-xs sm:text-sm hover:underline"
+          >
+            Forgot password?
+          </a>
         </div>
       </div>
     </div>
@@ -196,3 +165,18 @@ function ManagementLoginPage() {
 }
 
 export default ManagementLoginPage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

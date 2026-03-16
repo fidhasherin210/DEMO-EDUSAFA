@@ -1,90 +1,82 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { Eye, EyeOff } from "lucide-react"; // 👁️ toggle icons
 
-const PrinciLogin = () => {
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [reg_no, setReg_no] = useState("");
+function PrinciLogin() {
+  const [password, setPassword] = useState('');
+  const [reg_no, setReg_no] = useState('');
+  const [schoolCode, setSchoolCode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [name, setName] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
-  const handleLogin = async (e) => {
+ 
+  
+    const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    if (isLoading) return;
 
-    try {
-      // Step 1: Fetch CSRF token
-      const csrfResponse = await axios.get(
-        `${backendUrl}/api/principal/csrf-token/`,
-        { withCredentials: true }
-      );
-      const csrfToken = csrfResponse.data.csrfToken;
+    setIsLoading(true);
+    setError("");
 
-      // Step 2: Submit login request
-      const response = await axios.post(
-        `${backendUrl}/api/principal/login/`,
-        { name, password, reg_no },
-        {
-          headers: { "X-CSRFToken": csrfToken },
-          withCredentials: true,
-        }
-      );
+  
 
-      // Step 3: Handle success
-      localStorage.setItem("principal", JSON.stringify(response.data.principal));
+      // ✅ Success
       setError("");
-      navigate("/principalpage");
-    } catch (error) {
-      if (error.response && error.response.data?.error) {
-        setError("Login Failed: " + error.response.data.error);
-      } else {
-        setError("An unexpected error occurred. Please try again.");
-      }
-    } finally {
-      setLoading(false);
-    }
+      localStorage.setItem("principal_ui", "1");
+      navigate("/principal/dashboard");
+
+    
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gradient-to-r from-blue-600 to-purple-600">
+    <div className="flex items-center justify-center h-screen bg-gradient-to-r from-blue-600 to-sky-600">
       <div className="relative bg-white rounded-lg shadow-lg p-4 w-full max-w-sm text-center sm:p-6 mx-4 sm:mx-0 h-auto">
         {/* Image */}
-        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full p-1 sm:p-2">
+        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-600 to-sky-600 rounded-full p-1 sm:p-2">
           <img
-            src="media/teacher3.png"
-            alt="Principal"
+            src="/media/teacher3.png"
+            alt="icon"
             className="w-20 h-20 sm:w-28 sm:h-28 rounded-full"
           />
         </div>
 
-        <h2 className="text-lg sm:text-xl font-semibold text-blue-800 mt-16 sm:mt-20 mb-3 sm:mb-4">
-          Principal Login
+        <h2 className="text-lg sm:text-xl font-semibold text-blue-600 mt-16 sm:mt-20 mb-3 sm:mb-4">
+          Principal&apos;s Login
         </h2>
 
+        {/* ✅ Use e.preventDefault */}
         <form onSubmit={handleLogin}>
-          {/* Name Input */}
+          {/* Reg Number Input */}
           <div className="mb-3 sm:mb-4 text-center">
-            <label htmlFor="name" className="block text-gray-800 text-sm">
-              Name
+            <label htmlFor="reg_no" className="block text-gray-800 text-sm">
+              School Code
+            </label>
+            <input
+              id="schoolCode"
+              type="text"
+              value={schoolCode}
+              onChange={(e) => setSchoolCode(e.target.value)}
+              placeholder="Enter School Code"
+              className="w-full mt-1 px-3 py-2 sm:px-4 sm:py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+          </div>
+          <div className="mb-3 sm:mb-4 text-center">
+            <label htmlFor="reg_no" className="block text-gray-800 text-sm">
+              Principal Name
             </label>
             <input
               id="name"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your name"
+              placeholder="Enter Your  Name"
               className="w-full mt-1 px-3 py-2 sm:px-4 sm:py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
-
-          {/* Reg Number Input */}
           <div className="mb-3 sm:mb-4 text-center">
             <label htmlFor="reg_no" className="block text-gray-800 text-sm">
               Register Number
@@ -124,12 +116,12 @@ const PrinciLogin = () => {
           {/* Login Button with Loading State */}
           <button
             type="submit"
-            disabled={loading}
-            className={`w-full mt-3 sm:mt-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 sm:py-2.5 px-4 rounded-lg transition text-sm sm:text-base ${
-              loading ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"
+            disabled={isLoading}
+            className={`w-full mt-3 sm:mt-4 bg-gradient-to-r from-blue-600 to-sky-500 text-white py-2 sm:py-2.5 px-4 rounded-lg transition text-sm sm:text-base ${
+              isLoading ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"
             }`}
           >
-            {loading ? (
+            {isLoading ? (
               <span className="flex items-center justify-center">
                 <svg
                   className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
@@ -174,6 +166,21 @@ const PrinciLogin = () => {
       </div>
     </div>
   );
-};
+}
 
 export default PrinciLogin;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

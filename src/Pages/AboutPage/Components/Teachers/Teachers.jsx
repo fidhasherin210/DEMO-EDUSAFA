@@ -1,238 +1,291 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   MapPin,
   Phone,
   GraduationCap,
   BookOpen,
-  Users,
+  Star,
   Award,
-  Sparkles,
+  Mail,
+  ChevronRight,
+  ChevronLeft,
 } from "lucide-react";
-import axios from "axios";
+
+// Sample teachers data - all male teachers
+const sampleTeachers = [
+    {
+    name: "Prof. Yusuf Ahmed",
+    place: "Kuala Lumpur, Malaysia",
+    phone_no: "+60 12 678 9012",
+    islamic_qualification: "PhD in Hadith Studies - International Islamic University",
+    academic_qualification: "M.Sc in Mathematics",
+    image: "https://image.made-in-china.com/202f0j00KeLiuPDRgrzm/Muslim-Arabic-Dubai-Saudi-Arabia-Men-Turban.webp"
+  },
+  {
+    name: "Prof. Muhammad Ibrahim",
+    place: "Cairo, Egypt",
+    phone_no: "+20 100 234 5678",
+    islamic_qualification: "Master's in Quranic Sciences - Al-Azhar University",
+    academic_qualification: "Ph.D in Arabic Literature",
+    image: "https://i.etsystatic.com/9507418/r/il/9670c1/1183312141/il_570xN.1183312141_mdvt.jpg"
+  },
+  {
+    name: "Hafiz Abdullah ",
+    place: "Lahore, Pakistan",
+    phone_no: "+92 300 345 6789",
+    islamic_qualification: "Hafiz-ul-Quran, Sanad in Tajweed",
+    academic_qualification: "M.Sc in Computer Science",
+    image: "https://static.vecteezy.com/system/resources/thumbnails/070/246/232/small/muslim-man-in-white-shirt-and-hat-with-hands-outstretched-photo.JPG"
+  },
+  {
+    name: " Omar Al-Mansoor",
+    place: "Dubai, UAE",
+    phone_no: "+971 50 456 7890",
+    islamic_qualification: "PhD in Fiqh - Islamic University of Madinah",
+    academic_qualification: "MBA in Educational Management",
+    image: "https://static.vecteezy.com/system/resources/previews/059/915/145/non_2x/a-muslim-man-with-a-beard-and-white-turban-free-png.png"
+  },
+  {
+    name: "Hassan Ali",
+    place: "Istanbul, Turkey",
+    phone_no: "+90 533 567 8901",
+    islamic_qualification: "Ijazah in Qira'at, Advanced Tafsir",
+    academic_qualification: "BA in History",
+    image: "https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTA5L3Jhd3BpeGVsb2ZmaWNlMTJfbXVzbGltX21hbl91c2luZ19pcGFkX2xvb2tfYXRfY2FtZXJhX2hhcHB5X2lzb18xNjJmNWE0Yy1hZjJjLTQzMDQtYTQ4MC1hYjI2YzcwZGM0ZGEucG5n.png"
+  },
+
+];
 
 function Teachers() {
-  const [teachers, setTeachers] = useState([""]);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(true);
 
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
-  const fetchTecahers = useCallback(async () => {
-    try {
-      const response = await axios.get(
-        `${backendUrl}/api/dashboard/all-teachers-only/`
-      );
-      setTeachers(response.data);
-    } catch (error) {
-      console.error("Error fetching teachers:", error);
+  const scroll = (direction) => {
+    const container = document.getElementById('teacher-scroll-container');
+    if (container) {
+      const scrollAmount = direction === 'left' ? -320 : 320;
+      container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
-  }, [backendUrl]);
+  };
 
-  useEffect(() => {
-    fetchTecahers();
-  }, [fetchTecahers]);
-
-  const getImageUrl = (url) =>
-    url?.startsWith("http") ? url : `${backendUrl}${url}`;
+  const handleScroll = (e) => {
+    const container = e.target;
+    setShowLeftArrow(container.scrollLeft > 0);
+    setShowRightArrow(
+      container.scrollLeft < container.scrollWidth - container.clientWidth - 10
+    );
+  };
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Animated Background */}
-      <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-pink-900/20"></div>
-        <div className="absolute top-0 left-0 w-full h-full">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl animate-pulse delay-2000"></div>
-          <div className="absolute top-3/4 left-1/3 w-72 h-72 bg-green-500/10 rounded-full blur-3xl animate-pulse delay-3000"></div>
-        </div>
-      </div>
-
-      {/* Hero Section */}
-      <div className="relative z-10 px2 py-5 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto text-center">
-          {/* Floating Icons */}
-          <div className="relative mb-2">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-full mb-8 shadow-2xl shadow-purple-500/50 animate-pulse">
-              <Users className="w-8 h-8 text-white" />
+      {/* Hero Section with Stats */}
+      <div className="relative z-10 px-4 pt-8 pb-6 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 bg-purple-500/10 px-4 py-2 rounded-full border border-purple-500/20 mb-4">
+              <Award className="w-4 h-4 text-purple-400" />
+              <span className="text-xs text-purple-300 font-medium">ELITE EDUCATORS</span>
             </div>
-          </div>
-
-          <h1 className="text-2xl md:text-6xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent mb-6">
-            Our Teachers
-          </h1>
-
-          <div className="relative">
-            <h2 className="text-sm md:text-3xl font-bold text-gray-300  tracking-wide">
-              Meet Our Extraordinary Educators
-            </h2>
-            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full"></div>
+            
+            <h1 className="text-xl md:text-2xl lg:text-3xl font-black mb-4">
+              <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
+                Our Teachers
+              </span>
+            </h1>
+            
+            <p className="text-xs md:text-base text-gray-400 max-w-2xl mx-auto">
+              Dedicated mentors shaping the future with knowledge, wisdom, and Islamic values
+            </p>
           </div>
         </div>
       </div>
 
       {/* Teachers Grid */}
-      <div className="">
-        <div className="relative z-10 px-2 py-0 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            {teachers.length === 0 ? (
-              <div className="flex justify-center items-center h-40">
-                <p className="text-gray-400 text-sm animate-pulse">
-                  Teachers list will be updated soon...
-                </p>
+      <div className="relative z-10 px-4 pb-12 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          {sampleTeachers.length === 0 ? (
+            <div className="flex flex-col justify-center items-center h-64">
+              <div className="w-16 h-16 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin mb-4"></div>
+              <p className="text-gray-400 text-sm">
+                Loading teachers...
+              </p>
+            </div>
+          ) : (
+            <>
+              {/* Mobile Scroll Indicators */}
+              <div className="relative md:hidden">
+                {/* Left Arrow */}
+                {showLeftArrow && (
+                  <button
+                    onClick={() => scroll('left')}
+                    className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-purple-600/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-purple-600 transition-colors"
+                    style={{ transform: 'translateY(-50%)' }}
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                )}
+                
+                {/* Right Arrow */}
+                {showRightArrow && (
+                  <button
+                    onClick={() => scroll('right')}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-purple-600/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-purple-600 transition-colors"
+                    style={{ transform: 'translateY(-50%)' }}
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                )}
+
+                {/* Scroll Indicator Dots */}
+                <div className="flex justify-center gap-1.5 mb-3 md:hidden">
+                  {sampleTeachers.map((_, idx) => (
+                    <div
+                      key={idx}
+                      className="w-1.5 h-1.5 rounded-full bg-gray-600 data-[active=true]:bg-purple-400 transition-colors"
+                      data-active={idx === 0 ? "true" : "false"}
+                    />
+                  ))}
+                </div>
               </div>
-            ) : (
-              // Mobile: horizontal scroll, Desktop: normal grid
-              <div className="p-1 flex overflow-x-auto space-x-2 snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-1 scrollbar-hide">
-                {teachers.map((teacher, index) => (
+
+              {/* Grid/Scroll Container */}
+              <div 
+                id="teacher-scroll-container"
+                className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 pb-4 snap-x snap-mandatory scrollbar-hide"
+                onScroll={handleScroll}
+                style={{ 
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none',
+                  WebkitOverflowScrolling: 'touch'
+                }}
+              >
+                {sampleTeachers.map((teacher, index) => (
                   <div
                     key={index}
-                    className="group relative flex-shrink-0 w-72 snap-center md:w-auto"
+                    className="group relative flex-shrink-0 w-[85vw] sm:w-80 md:w-auto snap-center md:snap-none"
                   >
                     {/* Holographic Border */}
-                    <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-3xl blur opacity-25 group-hover:opacity-60 transition duration-1000"></div>
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-2xl blur opacity-25 group-hover:opacity-60 transition duration-500"></div>
 
                     {/* Main Card */}
-                    <div className="relative bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-gray-800 group-hover:border-purple-500/50 transition-all duration-500 transform group-hover:scale-102 group-hover:-translate-y-1 overflow-hidden">
+                    <div className="relative bg-gray-900/80 backdrop-blur-xl rounded-xl border border-gray-800 group-hover:border-purple-500/50 transition-all duration-300 overflow-hidden h-full">
+                      
+                      {/* Card Header with Pattern */}
+                      <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-purple-500/10 to-transparent"></div>
+                      
+                      {/* Decorative Elements */}
+                      <div className="absolute top-3 right-3 flex gap-1">
+                        {[...Array(3)].map((_, i) => (
+                          <div key={i} className="w-1 h-1 rounded-full bg-purple-400/30"></div>
+                        ))}
+                      </div>
+
                       {/* Image Section */}
-                      <div className="relative p-3 pb-0">
-                        <div className="relative mx-auto w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden ring-2 ring-purple-500/30 group-hover:ring-purple-500/60 transition-all duration-500">
-                          <img
-                            src={getImageUrl(
-                              teacher.image
-                            )}
-                            alt={teacher.name}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
+                      <div className="relative pt-6 px-4 pb-2">
+                        <div className="relative mx-auto w-24 h-24 md:w-28 md:h-28">
+                          {/* Animated Ring */}
+                          <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 animate-pulse opacity-20"></div>
+                          
+                          {/* Image Container */}
+                          <div className="relative w-full h-full rounded-full overflow-hidden ring-2 ring-purple-500/30 group-hover:ring-purple-500/60 transition-all duration-300">
+                            <img
+                              src={teacher.image}
+                              alt={teacher.name}
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                            />
+                          </div>
+                          
+                          {/* Online Status Indicator */}
+                          <div className="absolute bottom-1 right-1 w-3 h-3 bg-green-500 rounded-full ring-2 ring-gray-900"></div>
                         </div>
                       </div>
 
-                      {/* Content Section */}
-                      <div className="p-3 pt-2">
-                        <h5 className="text-sm md:text-lg font-bold text-center bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-2">
-                          {teacher.name}
-                        </h5>
+                      {/* Content */}
+                      <div className="px-4 pb-4">
+                        {/* Name and Badge */}
+                        <div className="text-center mb-3">
+                          <h3 className="text-base md:text-lg font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                            {teacher.name}
+                          </h3>
+                          <div className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 bg-purple-500/10 rounded-full">
+                            <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+                            <span className="text-xs text-gray-300">Teacher</span>
+                          </div>
+                        </div>
 
-                        <div className="space-y-2">
-                          <div className="flex items-start space-x-2 bg-gray-800/40 rounded-lg p-2">
-                            <MapPin className="w-3 h-3 mt-1 text-purple-400" />
-                            <p className="text-sm text-white truncate">
-                              <span className="text-xs text-gray-400">
-                                Place :
-                              </span>{" "}
-                              {teacher.place}
-                            </p>
+                        {/* Info Cards - Compact Grid */}
+                        <div className="grid grid-cols-2 gap-1.5 mb-3">
+                          <div className="bg-gray-800/40 rounded-lg p-2">
+                            <div className="flex items-center gap-1.5">
+                              <MapPin className="w-3 h-3 text-purple-400" />
+                              <span className="text-xs text-white truncate">{teacher.place}</span>
+                            </div>
+                          </div>
+                          
+                          <div className="bg-gray-800/40 rounded-lg p-2">
+                            <div className="flex items-center gap-1.5">
+                              <Phone className="w-3 h-3 text-blue-400" />
+                              <span className="text-xs text-white truncate">{teacher.phone_no}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Qualifications */}
+                        <div className="space-y-1.5 mb-3">
+                          <div className="bg-gray-800/40 rounded-lg p-2">
+                            <div className="flex items-start gap-2">
+                              <BookOpen className="w-3 h-3 mt-0.5 text-green-400 flex-shrink-0" />
+                              <div className="flex-1 min-w-0">
+                                <span className="text-xs text-gray-400 block">Islamic Qualification :</span>
+                                <span className="mt-1 text-[12px] md:text-xs text-white block truncate">
+                                  {teacher.islamic_qualification}
+                                </span>
+                              </div>
+                            </div>
                           </div>
 
-                          <div className="flex items-start space-x-2 bg-gray-800/40 rounded-lg p-2">
-                            <Phone className="mt-1 w-3 h-3 text-blue-400" />
-                            <p className="text-xs text-white truncate">
-                              <span className="text-xs text-gray-400">
-                                Contact :
-                              </span>{" "}
-                              {teacher.phone_no}
-                            </p>
+                          <div className="bg-gray-800/40 rounded-lg p-2">
+                            <div className="flex items-start gap-2">
+                              <GraduationCap className="w-3 h-3 mt-0.5 text-yellow-400 flex-shrink-0" />
+                              <div className="flex-1 min-w-0">
+                                <span className="text-xs text-gray-400 block">Academic Qualification :</span>
+                                <span className="mt-1 text-[12px] md:text-xs text-white block truncate">
+                                  {teacher.academic_qualification}
+                                </span>
+                              </div>
+                            </div>
                           </div>
+                        </div>
 
-                          <div className="flex items-start space-x-2 bg-gray-800/40 rounded-lg p-2">
-                            <BookOpen className="mt-1 w-3 h-3 text-green-400 flex-shrink-0" />
-                            <p className="text-xs text-white leading-snug">
-                              <span className="text-xs text-gray-400">
-                                Islamic Qualification : <br />
-                              </span>
-                              {teacher.islamic_qualification}
-                            </p>
-                          </div>
-
-                          <div className="flex items-start space-x-2 bg-gray-800/40 rounded-lg p-2">
-                            <GraduationCap className="mt-1 w-3 h-3 text-yellow-400 flex-shrink-0" />
-                            <p className="text-xs text-white leading-snug">
-                              <span className="text-xs text-gray-400">
-                                Academic Qualification : <br />
-                              </span>
-                              {teacher.academic_qualification}
-                            </p>
-                          </div>
+                        {/* Action Buttons */}
+                        <div className="flex gap-2">
+                          <button className="flex-1 bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 text-xs py-2 rounded-lg transition-colors flex items-center justify-center gap-1 border border-purple-500/20">
+                            <Mail className="w-3 h-3" />
+                            Message
+                          </button>
+                          <button className="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white text-xs py-2 rounded-lg transition-colors flex items-center justify-center gap-1">
+                            View Profile
+                            <ChevronRight className="w-3 h-3" />
+                          </button>
                         </div>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
-            )}
-          </div>
+
+              {/* Scroll Hint for Mobile */}
+              <div className="flex justify-center mt-2 md:hidden">
+                <div className="flex items-center gap-2 text-xs text-gray-500">
+                  <ChevronLeft className="w-3 h-3" />
+                  <span>Swipe to see more</span>
+                  <ChevronRight className="w-3 h-3" />
+                </div>
+              </div>
+            </>
+          )}
         </div>
-      </div>
-
-      {/* Stats Section */}
-      <div className="relative z-10 p-2 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-5">
-            <h2 className="text-xl md:text-4xl font-black bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
-              Excellence in Numbers
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-3 gap-2 md:gap-6 items-stretch">
-            {/* Total Teachers */}
-            <div className="group relative">
-              <div className="absolute -inset-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl blur opacity-25 group-hover:opacity-60 transition duration-1000"></div>
-              <div className="relative h-full bg-gray-900/70 backdrop-blur-xl rounded-2xl p-3 md:p-6 border border-gray-800 group-hover:border-purple-500/50 transition-all duration-500 transform group-hover:scale-105">
-                <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full mb-4 md:mb-6 shadow-lg">
-                    <Users className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                  </div>
-                  <h3 className="text-base md:text-3xl font-bold text-white mb-1 md:mb-2">
-                    {teachers.length}
-                  </h3>
-                  <p className="text-[10px] md:text-sm text-gray-400">
-                    Dedicated Educators
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Experience */}
-            <div className="group relative">
-              <div className="absolute -inset-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-60 transition duration-1000"></div>
-              <div className="relative h-full bg-gray-900/70 backdrop-blur-xl rounded-2xl p-3 md:p-6 border border-gray-800 group-hover:border-blue-500/50 transition-all duration-500 transform group-hover:scale-105">
-                <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-4 md:mb-6 shadow-lg">
-                    <Award className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                  </div>
-                  <h3 className="text-base md:text-3xl font-bold text-white mb-1 md:mb-2">
-                    ∞
-                  </h3>
-                  <p className="text-[10px] md:text-sm text-gray-400">
-                    Compassionate Teachers
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Impact */}
-            <div className="group relative">
-              <div className="absolute -inset-2 bg-gradient-to-r from-pink-600 to-yellow-600 rounded-2xl blur opacity-25 group-hover:opacity-60 transition duration-1000"></div>
-              <div className="relative h-full bg-gray-900/70 backdrop-blur-xl rounded-2xl p-3 md:p-6 border border-gray-800 group-hover:border-pink-500/50 transition-all duration-500 transform group-hover:scale-105">
-                <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-pink-600 to-yellow-600 rounded-full mb-4 md:mb-6 shadow-lg">
-                    <Sparkles className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                  </div>
-                  <h3 className="text-base md:text-3xl font-bold text-white mb-1 md:mb-2">
-                    ∞
-                  </h3>
-                  <p className="text-[10px] md:text-sm text-gray-400">
-                    Lifelong Guardians of Faith
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Footer Wave */}
-      <div className="relative z-10 h-32">
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-purple-900/50 to-transparent"></div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 opacity-20"></div>
       </div>
     </div>
   );

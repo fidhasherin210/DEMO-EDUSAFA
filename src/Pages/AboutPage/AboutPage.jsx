@@ -1,36 +1,47 @@
-import React from "react";
-import SchoolDetails from "./Components/School-Details/SchoolDetails";
-import Committee from "./Components/Committee/Committee";
-import Gallery from "./Components/Gallery/Gallery";
-import Footer from "../HomePage/Components/Footer/Footer";
-import MemmorialPage from "./Components/MemmorialPage/MemmorialPage";
-import Teachers from "./Components/Teachers/Teachers";
+import React, { useEffect, useState } from "react"
+
+import SchoolDetails from "./Components/School-Details/SchoolDetails"
+import Committee from "./Components/Committee/Committee"
+import Gallery from "./Components/Gallery/Gallery"
+import MemmorialPage from "./Components/MemmorialPage/MemmorialPage"
+import Teachers from "./Components/Teachers/Teachers"
 
 function AboutPage() {
+
+
+
+
   return (
-    <div>
-      <div className="min-h-screen">
-        <SchoolDetails />
-      </div>
+    <div className="">
+      {/* School Details Section */}
+      <section className="school-details-section">
+        <SchoolDetails  />
+      </section>
 
-      {/* Teachers and Committee Section */}
-      <div className="flex flex-col md:flex-row gap-2 ">
-        {/* Teachers Section */}
-       <div className="md:w-1/2 w-full">
-          <Teachers />
+     <section className="teachers-committee-section bg-black">
+        <div className="">
+          <div className="flex flex-col md:flex-row items-stretch">
+            <div className="md:w-1/2 w-full">
+              <Teachers  />
+            </div>
+
+            <div className="md:w-1/2 w-full">
+             <Committee />
+            </div>
+          </div>
         </div>
+      </section>
 
-        {/* Committee Section */}
-        <div className="md:w-1/2 w-full">
-          <Committee />
-        </div>
-      </div>
+ 
+      
+        <Gallery  />
+   
 
-      <Gallery/>
-      <MemmorialPage/>
-      <Footer/>
+      <section className="memorial-section">
+        <MemmorialPage  />
+      </section>
     </div>
-  );
+  )
 }
 
-export default AboutPage;
+export default AboutPage

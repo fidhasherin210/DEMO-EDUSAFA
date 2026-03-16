@@ -1,28 +1,35 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const ProtectedRoute = ({ children, role }) => {
-  // Get the tokens from localStorage for authority, student, and teacher
-  const authorityToken = localStorage.getItem("management");
-  const studentToken = localStorage.getItem("student");
-  const teacherToken = localStorage.getItem("teacher");
-  const principalToken=localStorage.getItem('principal')
+  const isManagementUI = !!localStorage.getItem("management_ui");
+  const isTeacherUI = !!localStorage.getItem("teacher_ui");
+  const isStudentUI = !!localStorage.getItem("parent_ui");
+  const isPrincipalUI = !!localStorage.getItem("principal_ui");
 
-  // Based on the role, check if the corresponding token exists
-  if (role === "authority" && !authorityToken) {
-    return <Navigate to="/management-login" replace />;
+  if (role === "management" && !isManagementUI) {
+    return <Navigate to="login" replace />;
   }
-  if (role === "student" && !studentToken) {
-    return <Navigate to="/studentlogin" replace />;
+
+  if (role === "teacher" && !isTeacherUI) {
+    return <Navigate to="/teacher-login" replace />;
   }
-  if (role === "teacher" && !teacherToken) {
-    return <Navigate to="/teacherlogin" replace />;
+
+  if (role === "parent" && !isStudentUI) {
+    return <Navigate to="/parent-login" replace />;
   }
-  if (role === "principal" && !principalToken){
-    return <Navigate to="/principallogin" replace />;
+
+  if (role === "principal" && !isPrincipalUI) {
+    return <Navigate to="/principal-login" replace />;
   }
-  // Render the children (protected content) if the token exists
+
   return children;
+};
+
+ProtectedRoute.propTypes = {
+  children: PropTypes.node.isRequired,
+  role: PropTypes.string.isRequired,
 };
 
 export default ProtectedRoute;

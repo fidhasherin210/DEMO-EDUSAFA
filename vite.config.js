@@ -5,9 +5,12 @@ import { VitePWA } from "vite-plugin-pwa";
 export default defineConfig({
   plugins: [
     react(),
+
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.ico", "robots.txt"], // minimal required assets
+
+      includeAssets: ["favicon.ico", "robots.txt"],
+
       manifest: {
         name: "DEMO",
         short_name: "DEMO",
@@ -17,6 +20,8 @@ export default defineConfig({
         display: "standalone",
         orientation: "portrait",
         start_url: "/",
+        scope: "/",
+
         icons: [
           {
             src: "/web-app-icon-192.png",
@@ -27,13 +32,23 @@ export default defineConfig({
             src: "/web-app-icon-512.png",
             sizes: "512x512",
             type: "image/png",
-            purpose: "any maskable", // works for Android + iOS
+            purpose: "any maskable",
           },
         ],
       },
+
       workbox: {
+        // ✅ Prevent old cache issues
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+        skipWaiting: true,
+
+        // ✅ Fix React Router refresh issue
+        navigateFallback: "/index.html",
+
         runtimeCaching: [
           {
+            // 🔹 Cache images
             urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/,
             handler: "CacheFirst",
             options: {
@@ -44,8 +59,23 @@ export default defineConfig({
               },
             },
           },
+
           {
-            urlPattern: /\.(?:js|css|html|woff2?)$/,
+            // 🔹 Cache fonts
+            urlPattern: /\.(?:woff|woff2|ttf|otf)$/,
+            handler: "CacheFirst",
+            options: {
+              cacheName: "fonts-cache",
+              expiration: {
+                maxEntries: 30,
+                maxAgeSeconds: 60 * 60 * 24 * 365,
+              },
+            },
+          },
+
+          {
+            // 🔹 Cache static assets
+            urlPattern: /^(?!.*\/api\/).*\.(?:js|css|html)$/,
             handler: "StaleWhileRevalidate",
             options: {
               cacheName: "static-cache",
@@ -56,6 +86,11 @@ export default defineConfig({
             },
           },
         ],
+      },
+
+      // ✅ iOS PWA support
+      devOptions: {
+        enabled: false,
       },
     }),
   ],

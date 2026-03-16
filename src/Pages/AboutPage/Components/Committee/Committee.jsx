@@ -1,225 +1,274 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { Crown, MapPin, Phone, Users, Award, Sparkles } from "lucide-react";
-import axios from "axios";
+import React, { useState } from 'react'
+import {
+  Crown,
+  MapPin,
+  Phone,
+  Users,
+  Award,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react'
 
 function Committee() {
-  const [committee, setCommittee] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [showLeftArrow, setShowLeftArrow] = useState(false)
+  const [showRightArrow, setShowRightArrow] = useState(true)
 
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  // Sample committee data
+  const committee = [
+ {
+    name: "Yusuf Ali",
+    position: "Chairperson",
+    place: "New York, USA",
+    number: "+1 (555) 123-4567",
+    image: "https://plus.unsplash.com/premium_photo-1726863202242-a5f18a2ae44f?q=80&w=1017&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  },
+  {
+    name: "Ibrahim Khalid",
+    position: "Vice Chairperson",
+    place: "Singapore",
+    number: "+65 9123 4567",
+    image: "https://plus.unsplash.com/premium_photo-1770674918463-685eafd1e6b5?q=80&w=1039&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  },
+  {
+    name: " Saeed Rahman",
+    position: "Secretary",
+    place: "London, UK",
+    number: "+44 20 7946 0123",
+    image: "https://images.unsplash.com/photo-1645864833809-39c64b85e65d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  },
+  {
+    name: "Tariq Mahmood",
+    position: "Treasurer",
+    place: "Toronto, Canada",
+    number: "+1 (416) 555-7890",
+    image: "https://images.unsplash.com/photo-1641106269337-2a0a3a8e73f3?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  },
+  {
+    name: "Omar Abdullah",
+    position: "Executive Member",
+    place: "Mumbai, India",
+    number: "+91 98765 43210",
+    image: "https://images.unsplash.com/photo-1627091908405-30bd51eec537?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  },
+  
+  ]
 
-  const fetchCommittee = useCallback(async () => {
-    try {
-      const response = await axios.get(
-        `${backendUrl}/api/dashboard/committee/`
-      );
-      setCommittee(response.data);
-    } catch (error) {
-      console.error("Committee API error:", error);
-      setError("Failed to fetch committee details");
-    } finally {
-      setLoading(false);
+  const scroll = (direction) => {
+    const container = document.getElementById('committee-scroll-container')
+    if (container) {
+      const scrollAmount = direction === 'left' ? -320 : 320
+      container.scrollBy({ left: scrollAmount, behavior: 'smooth' })
     }
-  }, [backendUrl]);
-
-  useEffect(() => {
-    fetchCommittee();
-  }, [fetchCommittee]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <p className="text-gray-300 text-lg animate-pulse">
-          Loading committee members...
-        </p>
-      </div>
-    );
   }
 
-  if (error) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <p className="text-red-400 text-lg">{error}</p>
-      </div>
-    );
+  const handleScroll = (e) => {
+    const container = e.target
+    setShowLeftArrow(container.scrollLeft > 0)
+    setShowRightArrow(
+      container.scrollLeft < container.scrollWidth - container.clientWidth - 10,
+    )
   }
-
-  const getImageUrl = (url) =>
-    url?.startsWith("http") ? url : `${backendUrl}${url}`;
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Animated Background */}
-      <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-pink-900/20"></div>
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl animate-pulse delay-2000"></div>
-        <div className="absolute top-3/4 left-1/3 w-72 h-72 bg-yellow-500/10 rounded-full blur-3xl animate-pulse delay-3000"></div>
-      </div>
-
       {/* Hero Section */}
-      <div className="relative z-10 px-2 py-5 sm:px-6 lg:px-8">
+      <div className="relative z-10 px-4 pt-8 pb-6 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto text-center">
-          {/* Floating Icon */}
-          <div className="relative mb-2">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 rounded-full mb-6 shadow-2xl shadow-yellow-500/50 animate-pulse">
-              <Crown className="w-10 h-10 text-white" aria-hidden="true" />
-            </div>
+          <div className="inline-flex items-center gap-2 bg-yellow-500/10 px-4 py-2 rounded-full border border-yellow-500/20 mb-4">
+            <Crown className="w-4 h-4 text-yellow-400" />
+            <span className="text-xs text-yellow-300 font-medium">
+              EXECUTIVE LEADERSHIP
+            </span>
           </div>
 
-          <h1 className="text-2xl md:text-6xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent mb-6">
-            Our Leaders
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-black mb-4">
+            <span className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent">
+              Our Leaders
+            </span>
           </h1>
 
-          <div className="relative">
-            <h2 className="text-sm md:text-3xl font-bold text-gray-300 tracking-wide">
-              Visionary Leaders Guiding Excellence
-            </h2>
-            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full"></div>
-          </div>
+          <p className="text-sm md:text-base text-gray-400 max-w-2xl mx-auto">
+            Visionary leaders guiding excellence with wisdom and dedication
+          </p>
         </div>
       </div>
 
       {/* Committee Grid */}
-      <div className="relative z-10 px-2 sm:px-6 lg:px-8">
+      <div className="md:mt-8 relative z-10 px-4 pb-12 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {committee.length === 0 ? (
             <div className="flex justify-center items-center h-40">
-              <p className="text-gray-400 text-sm  animate-pulse">
+              <p className="text-gray-400 text-sm animate-pulse">
                 Committee list will be updated soon...
               </p>
             </div>
           ) : (
-            <div className="p-6 md:p-1 flex overflow-x-auto space-x-2 snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-1 scrollbar-hide">
-              {committee.map((member, index) => (
-                <div
-                  key={index}
-                  className="group relative flex-shrink-0 w-72 snap-center md:w-auto"
-                >
-                  {/* Glow Border */}
-                  <div className="absolute -inset-1 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 rounded-3xl blur opacity-25 group-hover:opacity-60 transition duration-1000"></div>
+            <>
+              {/* Mobile Scroll Indicators */}
+              <div className="relative md:hidden">
+                {/* Left Arrow */}
+                {showLeftArrow && (
+                  <button
+                    onClick={() => scroll('left')}
+                    className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-yellow-600/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-yellow-600 transition-colors"
+                    style={{ transform: 'translateY(-50%)' }}
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                )}
 
-                  {/* Main Card */}
-                  <div className="relative bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-gray-800 group-hover:border-yellow-500/50 transition-all duration-500 transform group-hover:scale-105 group-hover:-translate-y-1 overflow-hidden">
-                    {/* Image */}
-                    <div className="relative p-4 pb-0">
-                      <div className="relative mx-auto w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden ring-2 ring-yellow-500/30 group-hover:ring-yellow-500/60 transition-all duration-500">
-                        <img
-                          src={getImageUrl(member.image)}
-                          alt={member.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
+                {/* Right Arrow */}
+                {showRightArrow && (
+                  <button
+                    onClick={() => scroll('right')}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-yellow-600/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-yellow-600 transition-colors"
+                    style={{ transform: 'translateY(-50%)' }}
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                )}
+
+                {/* Scroll Indicator Dots */}
+                <div className="flex justify-center gap-1.5 mb-3 md:hidden">
+                  {committee.map((_, idx) => (
+                    <div
+                      key={idx}
+                      className="w-1.5 h-1.5 rounded-full bg-gray-600 data-[active=true]:bg-yellow-400 transition-colors"
+                      data-active={idx === 0 ? 'true' : 'false'}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Grid/Scroll Container */}
+              <div
+                id="committee-scroll-container"
+                className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 pb-4 snap-x snap-mandatory scrollbar-hide"
+                onScroll={handleScroll}
+                style={{
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none',
+                  WebkitOverflowScrolling: 'touch',
+                }}
+              >
+                {committee.map((member, index) => (
+                  <div
+                    key={index}
+                    className="group relative flex-shrink-0 w-[85vw] sm:w-80 md:w-auto snap-center md:snap-none"
+                  >
+                    {/* Glow Border */}
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 rounded-2xl blur opacity-25 group-hover:opacity-60 transition duration-500"></div>
+
+                    {/* Main Card */}
+                    <div className="relative bg-gray-900/80 backdrop-blur-xl rounded-xl border border-gray-800 group-hover:border-yellow-500/50 transition-all duration-300 overflow-hidden h-full">
+                      {/* Card Header with Pattern */}
+                      <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-yellow-500/10 to-transparent"></div>
+
+                      {/* Decorative Elements */}
+                      <div className="absolute top-3 right-3 flex gap-1">
+                        {[...Array(3)].map((_, i) => (
+                          <div
+                            key={i}
+                            className="w-1 h-1 rounded-full bg-yellow-400/30"
+                          ></div>
+                        ))}
                       </div>
-                    </div>
 
-                    {/* Content */}
-                    <div className="p-4 pt-2">
-                      <h5 className="text-lg font-bold text-center bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent mb-2">
-                        {member.name}
-                      </h5>
-                      <p className="text-center text-gray-300 text-sm font-medium mb-3">
-                        {member.position}
-                      </p>
+                      {/* Leadership Badge */}
+                      <div className="absolute top-3 left-3 flex items-center">
+                        <div className="bg-yellow-500/20 backdrop-blur-sm px-3 py-1 rounded-full border border-yellow-500/30 flex items-center justify-center">
+                          <span className="text-[10px] font-medium text-yellow-300 leading-none">
+                            LEADER
+                          </span>
+                        </div>
+                      </div>
 
-                      <div className="space-y-2">
-                        <div className="flex items-start space-x-2 bg-gray-800/40 rounded-lg p-2">
-                          <MapPin className="w-4 h-4 text-yellow-400" aria-hidden="true" />
-                          <p className="text-xs text-white truncate">
-                            {member.place}
-                          </p>
+                      {/* Image Section */}
+                      <div className="relative pt-8 px-4 pb-2">
+                        <div className="relative mx-auto w-24 h-24 md:w-28 md:h-28">
+                          {/* Animated Ring */}
+                          <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 animate-pulse opacity-20"></div>
+
+                          {/* Image Container */}
+                          <div className="relative w-full h-full rounded-full overflow-hidden ring-2 ring-yellow-500/30 group-hover:ring-yellow-500/60 transition-all duration-300">
+                            <img
+                              src={member.image}
+                              alt={member.name}
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                            />
+                          </div>
+
+                          {/* Crown Icon for Top Leaders */}
+                          {index === 0 && (
+                            <div className="absolute -top-1 -right-1 w-6 h-6 bg-yellow-500 rounded-full flex items-center justify-center ring-2 ring-gray-900">
+                              <Crown className="w-3 h-3 text-white" />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Content */}
+                      <div className="px-4 pb-4">
+                        {/* Name and Position */}
+                        <div className="text-center mb-3">
+                          <h3 className="text-base md:text-lg font-bold bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
+                            {member.name}
+                          </h3>
+                          <div className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 bg-yellow-500/10 rounded-full">
+                            <Award className="w-3 h-3 text-yellow-400" />
+                            <span className="text-xs text-gray-300">
+                              {member.position}
+                            </span>
+                          </div>
                         </div>
 
-                        <div className="flex items-start space-x-2 bg-gray-800/40 rounded-lg p-2">
-                          <Phone className="w-4 h-4 text-blue-400" aria-hidden="true" />
-                          <p className="text-xs text-white truncate">
-                            {member.number}
-                          </p>
+                        {/* Info Cards */}
+                        <div className="space-y-1.5 mb-3">
+                          <div className="bg-gray-800/40 rounded-lg p-2">
+                            <div className="flex items-center gap-2">
+                              <MapPin className="w-3 h-3 text-yellow-400 flex-shrink-0" />
+                              <span className="text-xs text-white truncate">
+                                {member.place}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="bg-gray-800/40 rounded-lg p-2">
+                            <div className="flex items-center gap-2">
+                              <Phone className="w-3 h-3 text-blue-400 flex-shrink-0" />
+                              <span className="text-xs text-white truncate">
+                                {member.number}
+                              </span>
+                            </div>
+                          </div>
                         </div>
+
+                        {/* Contact Button */}
+                        <button className="w-full bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-400 text-xs py-2 rounded-lg transition-colors flex items-center justify-center gap-1 border border-yellow-500/20">
+                          <Users className="w-3 h-3" />
+                          Contact Leader
+                          <ChevronRight className="w-3 h-3" />
+                        </button>
                       </div>
                     </div>
                   </div>
+                ))}
+              </div>
+
+              {/* Scroll Hint for Mobile */}
+              <div className="flex justify-center mt-2 md:hidden">
+                <div className="flex items-center gap-2 text-xs text-gray-500">
+                  <ChevronLeft className="w-3 h-3" />
+                  <span>Swipe to see more leaders</span>
+                  <ChevronRight className="w-3 h-3" />
                 </div>
-              ))}
-            </div>
+              </div>
+            </>
           )}
         </div>
       </div>
-
-      {/* Stats Section */}
-      <div className="relative z-10 p-2 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-5">
-            <h2 className="text-xl md:text-4xl font-black bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
-              Excellence in Numbers
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-3 gap-2 md:gap-6 items-stretch">
-            {/* Total Leaders */}
-            <div className="group relative">
-              <div className="absolute -inset-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl blur opacity-25 group-hover:opacity-60 transition duration-1000"></div>
-              <div className="relative h-full bg-gray-900/70 backdrop-blur-xl rounded-2xl p-3 md:p-6 border border-gray-800 group-hover:border-purple-500/50 transition-all duration-500 transform group-hover:scale-105">
-                <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full mb-4 md:mb-6 shadow-lg">
-                    <Users className="w-6 h-6 md:w-8 md:h-8 text-white" aria-hidden="true" />
-                  </div>
-                  <h3 className="text-base md:text-3xl font-bold text-white mb-1 md:mb-2">
-                    {committee.length}
-                  </h3>
-                  <p className="text-[10px] md:text-sm text-gray-400">
-                    Leaders
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Visionary Impact */}
-            <div className="group relative">
-              <div className="absolute -inset-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-60 transition duration-1000"></div>
-              <div className="relative h-full bg-gray-900/70 backdrop-blur-xl rounded-2xl p-3 md:p-6 border border-gray-800 group-hover:border-blue-500/50 transition-all duration-500 transform group-hover:scale-105">
-                <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-4 md:mb-6 shadow-lg">
-                    <Award className="w-6 h-6 md:w-8 md:h-8 text-white" aria-hidden="true" />
-                  </div>
-                  <h3 className="text-base md:text-3xl font-bold text-white mb-1 md:mb-2">
-                    ∞
-                  </h3>
-                  <p className="text-[10px] md:text-sm text-gray-400">
-                    Visionary Impact
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Lasting Legacy */}
-            <div className="group relative">
-              <div className="absolute -inset-2 bg-gradient-to-r from-pink-600 to-yellow-600 rounded-2xl blur opacity-25 group-hover:opacity-60 transition duration-1000"></div>
-              <div className="relative h-full bg-gray-900/70 backdrop-blur-xl rounded-2xl p-3 md:p-6 border border-gray-800 group-hover:border-pink-500/50 transition-all duration-500 transform group-hover:scale-105">
-                <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-pink-600 to-yellow-600 rounded-full mb-4 md:mb-6 shadow-lg">
-                    <Sparkles className="w-6 h-6 md:w-8 md:h-8 text-white" aria-hidden="true" />
-                  </div>
-                  <h3 className="text-base md:text-3xl font-bold text-white mb-1 md:mb-2">
-                    ∞
-                  </h3>
-                  <p className="text-[10px] md:text-sm text-gray-400">
-                    Lasting Legacy
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Footer Glow */}
-      <div className="relative z-10 h-20">
-        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-yellow-900/50 to-transparent"></div>
-      </div>
     </div>
-  );
+  )
 }
 
-export default Committee;
+export default Committee
