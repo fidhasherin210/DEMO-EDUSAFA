@@ -9,6 +9,16 @@ import {
   Calendar,
 } from "lucide-react";
 
+import student1 from '../../../../../../assets/students/student-01.jpeg';
+import student2 from '../../../../../../assets/students/student-03.jpeg';
+import student3 from '../../../../../../assets/students/student-02.jpeg';
+import student4 from '../../../../../../assets/students/student-06.jpg';
+import student5 from '../../../../../../assets/students/student-05.jpeg';
+import student6 from '../../../../../../assets/students/student-04.jpeg';
+import student7 from '../../../../../../assets/students/student-07.png';
+
+
+
 function ClassRoomTeachr() {
   // Sample data for classes
   const [allClasses] = useState([
@@ -27,23 +37,20 @@ function ClassRoomTeachr() {
   // Sample student images (using placeholder images)
   const sampleStudents = {
     present: [
-      { id: 101, name: "Emma Watson", image: "https://i.pravatar.cc/150?img=1" },
-      { id: 102, name: "James Smith", image: "https://i.pravatar.cc/150?img=2" },
-      { id: 103, name: "Sophia Lee", image: "https://i.pravatar.cc/150?img=3" },
-      { id: 104, name: "Michael Brown", image: "https://i.pravatar.cc/150?img=4" },
-      { id: 105, name: "Olivia Davis", image: "https://i.pravatar.cc/150?img=5" },
-      { id: 106, name: "William Johnson", image: "https://i.pravatar.cc/150?img=6" },
-      { id: 107, name: "Isabella Garcia", image: "https://i.pravatar.cc/150?img=7" },
-      { id: 108, name: "Alexander Miller", image: "https://i.pravatar.cc/150?img=8" },
-      { id: 109, name: "Mia Rodriguez", image: "https://i.pravatar.cc/150?img=9" },
-      { id: 110, name: "Daniel Martinez", image: "https://i.pravatar.cc/150?img=10" },
+      { id: 101, name: "Amjad", image: student1 },
+      { id: 102, name: "Aman", image: student3 },
+      { id: 103, name: "Ameen", image: student5 },
+      { id: 104, name: "Minha", image: student2 },
+      { id: 105, name: "Ozil", image: student6},
+      { id: 106, name: "Amina", image: student4 },
+    
     ],
     absent: [
-      { id: 201, name: "Ethan Thompson", image: "https://i.pravatar.cc/150?img=11" },
-      { id: 202, name: "Charlotte White", image: "https://i.pravatar.cc/150?img=12" },
-      { id: 203, name: "Benjamin Harris", image: "https://i.pravatar.cc/150?img=13" },
-      { id: 204, name: "Amelia Martin", image: "https://i.pravatar.cc/150?img=14" },
-      { id: 205, name: "Lucas Anderson", image: "https://i.pravatar.cc/150?img=15" },
+      { id: 201, name: "Eshal", image: student7},
+      { id: 202, name: "Danish", image: student1 },
+      { id: 203, name: "Ansil", image:student5},
+      { id: 204, name: "Ameesha", image:student2 },
+      
     ]
   };
 
@@ -57,7 +64,7 @@ function ClassRoomTeachr() {
 
   // Sample attendance data generator
   const generateSampleAttendance = (classData, date) => {
-    const totalStudents = 25;
+    const totalStudents = 20;
     const presentCount = 18;
     const absentCount = totalStudents - presentCount;
     

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from 'react'
 import {
   Users,
   GraduationCap,
@@ -7,278 +7,134 @@ import {
   Clock,
   BookOpen,
   Calendar,
-} from "lucide-react";
+} from 'lucide-react'
+
+import student1 from '../../../../../../assets/students/student-01.jpeg';
+import student2 from '../../../../../../assets/students/student-03.jpeg';
+import student3 from '../../../../../../assets/students/student-02.jpeg';
+import student4 from '../../../../../../assets/students/student-06.jpg';
+import student5 from '../../../../../../assets/students/student-05.jpeg';
+import student6 from '../../../../../../assets/students/student-04.jpeg';
+import student7 from '../../../../../../assets/students/student-07.png';
 
 function ClassRoomsPrinci() {
-  const [allClasses, setAllClasses] = useState([]);
-  const [selectedClass, setSelectedClass] = useState(null);
-  const [attendanceData, setAttendanceData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [allClasses, setAllClasses] = useState([
+    { id: 1, std: '1', class: '1', class_teacher: 'Ustadh Abdul Rahman', class_status: 'Class Completed' },
+    { id: 2, std: '2', class: '2', class_teacher: 'Ustadh Ibrahim Khalil', class_status: 'Class Going On' },
+    { id: 3, std: '3', class: '3', class_teacher: 'Sheikh Abdullah Khan', class_status: 'Class Not Started' },
+    { id: 4, std: '4', class: '4', class_teacher: 'Maulana Omar Farooq', class_status: 'Class Going On' },
+    { id: 5, std: '5', class: '5', class_teacher: 'Qari Abdul Basit', class_status: 'Class Completed' },
+  ])
 
-  // Sample data with Muslim names
-  const sampleClasses = [
-    { id: 1, std: "1", class: "1", class_teacher: "Ustadh Abdul Rahman" },
-    { id: 2, std: "2", class: "2", class_teacher: "Ustadh Ibrahim Khalil" },
-    { id: 3, std: "3", class: "3", class_teacher: "Sheikh Abdullah Khan" },
-    { id: 4, std: "4", class: "4", class_teacher: "Maulana Omar Farooq" },
-    { id: 5, std: "5", class: "5", class_teacher: "Qari Abdul Basit" },
-    { id: 6, std: "6", class: "6", class_teacher: "Hafiz Muhammad Salim" },
-    { id: 7, std: "7", class: "7", class_teacher: "Maulana Raza Ali" },
-    { id: 8, std: "8", class: "8", class_teacher: "Ustadh Shafiq Ahmed" },
-    { id: 9, std: "9", class: "9", class_teacher: "Hafiz Qari Mohammad" },
-    { id: 10, std: "10", class: "10", class_teacher: "Sheikh Abdul Wahid" },
-  ];
+  const [selectedClass, setSelectedClass] = useState(null)
+  const [attendanceData, setAttendanceData] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [selectedDate, setSelectedDate] = useState("")
 
-  // Sample attendance data for different classes and dates with Muslim names
-  const sampleAttendanceRecords = {
-    1: {
-      "2024-01-15": {
-        success: true,
-        total_students: 32,
-        present_count: 28,
-        absent_count: 4,
-        present_students: [
-          { id: 101, name: "Muhammad Ahmed", image: null },
-          { id: 102, name: "Fatima Zahra", image: null },
-          { id: 103, name: "Omar Farooq", image: null },
-          { id: 104, name: "Aisha Siddiqua", image: null },
-          { id: 105, name: "Abdullah Malik", image: null },
-          { id: 106, name: "Mariam Alia", image: null },
-          { id: 107, name: "Hassan Raza", image: null },
-          { id: 108, name: "Zainab Khatoon", image: null },
-        ],
-        absent_students: [
-          { id: 109, name: "Bilal Hussain", image: null },
-          { id: 110, name: "Khadija Begum", image: null },
-          { id: 111, name: "Yusuf Ismail", image: null },
-          { id: 112, name: "Safia Rahman", image: null },
-        ],
-        class_status: "Class Completed",
-        class_teacher: "Ustadh Abdul Rahman"
+  // Sample student data
+  const sampleStudents = {
+    present: [
+      {
+        id: 101,
+        name: 'Muhammad Ahmed',
+        parent_name: 'Hassan Ahmed',
+        image: student1 
       },
-      "2024-01-16": {
-        success: true,
-        total_students: 32,
-        present_count: 30,
-        absent_count: 2,
-        present_students: [
-          { id: 101, name: "Muhammad Ahmed", image: null },
-          { id: 102, name: "Fatima Zahra", image: null },
-          { id: 103, name: "Omar Farooq", image: null },
-          { id: 104, name: "Aisha Siddiqua", image: null },
-          { id: 105, name: "Abdullah Malik", image: null },
-          { id: 106, name: "Mariam Alia", image: null },
-          { id: 107, name: "Hassan Raza", image: null },
-          { id: 108, name: "Zainab Khatoon", image: null },
-          { id: 109, name: "Bilal Hussain", image: null },
-          { id: 110, name: "Khadija Begum", image: null },
-        ],
-        absent_students: [
-          { id: 111, name: "Yusuf Ismail", image: null },
-          { id: 112, name: "Safia Rahman", image: null },
-        ],
-        class_status: "Class Completed",
-        class_teacher: "Ustadh Abdul Rahman"
-      }
-    },
-    2: {
-      "2024-01-15": {
-        success: true,
-        total_students: 30,
-        present_count: 25,
-        absent_count: 5,
-        present_students: [
-          { id: 201, name: "Hamza Ali", image: null },
-          { id: 202, name: "Aminah Salim", image: null },
-          { id: 203, name: "Bilal Hussain", image: null },
-          { id: 204, name: "Safia Rahman", image: null },
-          { id: 205, name: "Yusuf Ismail", image: null },
-        ],
-        absent_students: [
-          { id: 206, name: "Khadija Begum", image: null },
-          { id: 207, name: "Ibrahim Khalil", image: null },
-          { id: 208, name: "Nadia Parveen", image: null },
-          { id: 209, name: "Imran Siddiqui", image: null },
-          { id: 210, name: "Rabia Basri", image: null },
-        ],
-        class_status: "Class Going On",
-        class_teacher: "Ustadh Ibrahim Khalil"
-      }
-    },
-    3: {
-      "2024-01-15": {
-        success: true,
-        total_students: 28,
-        present_count: 26,
-        absent_count: 2,
-        present_students: [
-          { id: 301, name: "Mustafa Karim", image: null },
-          { id: 302, name: "Nadia Parveen", image: null },
-          { id: 303, name: "Imran Siddiqui", image: null },
-          { id: 304, name: "Rabia Basri", image: null },
-          { id: 305, name: "Zubair Ansari", image: null },
-        ],
-        absent_students: [
-          { id: 306, name: "Usman Ghani", image: null },
-          { id: 307, name: "Hafsa Khatun", image: null },
-        ],
-        class_status: "Class Not Started",
-        class_teacher: "Sheikh Abdullah Khan"
-      }
-    },
-    4: {
-      "2024-01-15": {
-        success: true,
-        total_students: 35,
-        present_count: 32,
-        absent_count: 3,
-        present_students: [
-          { id: 401, name: "Usman Ghani", image: null },
-          { id: 402, name: "Hafsa Khatun", image: null },
-          { id: 403, name: "Tariq Jameel", image: null },
-          { id: 404, name: "Sumayyah Khan", image: null },
-          { id: 405, name: "Ibrahim Khalil", image: null },
-        ],
-        absent_students: [
-          { id: 406, name: "Asma bint Abu Bakr", image: null },
-          { id: 407, name: "Nuh Abdullah", image: null },
-          { id: 408, name: "Layla Majnun", image: null },
-        ],
-        class_status: "Class Going On",
-        class_teacher: "Maulana Omar Farooq"
-      }
-    }
-  };
+      {
+        id: 102,
+        name: 'Fatima Zahra',
+        parent_name: 'Yusuf Zahra',
+        image: student2
+      },
+      {
+        id: 103,
+        name: 'Abdullah Malik',
+        parent_name: 'Bilal Malik',
+        image: student3
+      },
+      {
+        id: 104,
+        name: 'Aisha Siddiqua',
+        parent_name: 'Ibrahim Siddiqui',
+        image: student4
+      },
+      {
+        id: 105,
+        name: 'Omar Farooq',
+        parent_name: 'Khalid Farooq',
+        image: student5
+      },
+    ],
+    absent: [
+      {
+        id: 201,
+        name: 'Bilal Hussain',
+        parent_name: 'Hussain Bilal',
+        image: student6  
+      },
+      {
+        id: 202,
+        name: 'Safia Rahman',
+        parent_name: 'Rahman Safia',
+        image: student7
+      },
+    ]
+  }
 
-  // Sample total students count for each class
-  const sampleTotalStudents = {
-    1: 32,
-    2: 30,
-    3: 28,
-    4: 35,
-    5: 33,
-    6: 31,
-    7: 29,
-    8: 34,
-    9: 36,
-    10: 30,
-  };
+  const getImageUrl = (url) => {
+    return url || null
+  }
 
-  // Set default date to current date on component mount
-  useEffect(() => {
-    const today = new Date().toISOString().split('T')[0];
-    setSelectedDate(today);
-    
-    // Set sample classes
-    setAllClasses(sampleClasses);
-  }, []);
+  const handleClassSelect = (classData) => {
+    setSelectedClass(classData)
+    setError('')
+    setLoading(true)
+    setAttendanceData(null)
 
-  // Fetch attendance when date changes and class is selected
-  useEffect(() => {
-    if (selectedClass && selectedDate) {
-      fetchAttendanceForDate(selectedClass, selectedDate);
-    }
-  }, [selectedDate, selectedClass]);
-
-  const fetchAttendanceForDate = async (classData, date) => {
-    setLoading(true);
-    setAttendanceData(null);
-    setError(null);
-
-    // Simulate API delay
+    // Simulate API call with timeout
     setTimeout(() => {
-      try {
-        // Get attendance for the specific class and date
-        const classAttendance = sampleAttendanceRecords[classData.id]?.[date];
-        
-        if (classAttendance) {
-          setAttendanceData({
-            ...classAttendance,
-            total_students: sampleTotalStudents[classData.id] || 30
-          });
-          setSelectedClass(prev => ({
-            ...prev,
-            class_status: classAttendance.class_status
-          }));
-        } else {
-          // If no specific record for this date, create a default "no attendance" response
-          setAttendanceData({
-            success: true,
-            total_students: sampleTotalStudents[classData.id] || 30,
-            present_count: 0,
-            absent_count: 0,
-            present_students: [],
-            absent_students: [],
-            class_status: "No Attendance Marked",
-            class_teacher: classData.class_teacher
-          });
-          setError("No attendance records found for this date");
-        }
-      } catch (err) {
-        console.error("Error fetching attendance:", err);
-        setError("Failed to load attendance data. Please try again.");
-      } finally {
-        setLoading(false);
-      }
-    }, 500);
-  };
-
-  const handleClassSelect = async (classData) => {
-    setSelectedClass(classData);
-    // Fetch attendance for the selected class with current selectedDate
-    await fetchAttendanceForDate(classData, selectedDate);
-  };
-
-  const markClassStatus = async () => {
-    if (!selectedClass) {
-      setError("No class selected");
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-      setError(null);
-
-      // Simulate API call
-      setTimeout(() => {
-        // Update the class status in the sample data
-        if (attendanceData) {
-          const updatedAttendance = {
-            ...attendanceData,
-            class_status: "Class Completed"
-          };
-          setAttendanceData(updatedAttendance);
-          setSelectedClass(prev => ({
-            ...prev,
-            class_status: "Class Completed"
-          }));
-        }
-        setIsLoading(false);
-      }, 500);
-
-    } catch (error) {
-      console.error("Error marking class status:", error);
-      setError("Failed to mark class status. Please try again.");
-      setIsLoading(false);
-    }
-  };
+      // Randomly decide number of present students for variety
+      const randomNum = Math.floor(Math.random() * 5) + 6 // 6-10 present students
+      
+      setAttendanceData({
+        present_students: sampleStudents.present.slice(0, randomNum),
+        absent_students: sampleStudents.absent,
+        class_teacher: classData.class_teacher,
+        class_status: classData.class_status,
+        total_students: randomNum + sampleStudents.absent.length
+      })
+      setLoading(false)
+    }, 1000)
+  }
 
   const handleDateChange = (e) => {
-    setSelectedDate(e.target.value);
-  };
+    setSelectedDate(e.target.value)
+  }
 
   const handleTodayClick = () => {
-    const today = new Date().toISOString().split('T')[0];
-    setSelectedDate(today);
-  };
+    const today = new Date().toISOString().split('T')[0]
+    setSelectedDate(today)
+  }
 
   const getTotalStudents = () => {
-    if (!attendanceData) return 0;
-    return attendanceData.total_students || 0;
-  };
+    if (!attendanceData) return 0
+    return (
+      (attendanceData.present_students?.length || 0) +
+      (attendanceData.absent_students?.length || 0)
+    )
+  }
+
+  const getTeacherName = () => {
+    if (attendanceData?.class_teacher) {
+      return attendanceData.class_teacher
+    }
+    return selectedClass?.class_teacher || 'Not Assigned'
+  }
+
+  const getClassStatus = () => {
+    return attendanceData?.class_status || selectedClass?.class_status || 'Status Unknown'
+  }
 
   // Format date for display
   const formatDisplayDate = (dateString) => {
@@ -290,15 +146,8 @@ function ClassRoomsPrinci() {
       month: 'long',
       day: 'numeric'
     });
-  };
-
-  const getTeacherName = () => {
-    if (attendanceData?.class_teacher) {
-      return attendanceData.class_teacher;
-    }
-    return selectedClass?.class_teacher || 'Not Assigned';
-  };
-
+  }
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-1">
       <div className="mx-auto">
@@ -321,8 +170,8 @@ function ClassRoomsPrinci() {
 
         {/* Class Selection */}
         <div className="px-1 mx-auto -mt-3">
-          <div className="max-w-8xl p-1 mx-auto mb-2">
-            <div className="p-6 border shadow-xl bg-white/90 backdrop-blur-xl border-white/20 rounded-2xl">
+          <div className="max-w-8xl mx-auto mb-2">
+            <div className="p-5 border shadow-xl bg-white/90 backdrop-blur-xl border-white/20 rounded-2xl">
               <div className="flex items-center gap-3 mb-6">
                 <BookOpen className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
                 <h2 className="text-xs font-semibold text-blue-600 md:text-lg">
@@ -330,47 +179,48 @@ function ClassRoomsPrinci() {
                 </h2>
               </div>
 
-              {loading && !selectedClass ? (
-                <div className="flex justify-center py-8">
-                  <div className="w-8 h-8 border-b-2 border-blue-600 rounded-full animate-spin"></div>
-                </div>
-              ) : allClasses.length === 0 ? (
-                <div className="py-8 text-center text-gray-500">
-                  No classes available
-                </div>
-              ) : (
-                <div className="grid grid-cols-4 gap-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                  {allClasses.map((classData, index) => (
-                    <button
-                      key={classData.id || index}
-                      onClick={() => handleClassSelect(classData)}
-                      disabled={loading}
-                      className={`group relative overflow-hidden rounded-xl p-2 md:p-4 font-medium transition-all duration-300 ${
-                        selectedClass?.id === classData.id
-                          ? 'bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-xl shadow-blue-500/25 scale-105'
-                          : 'bg-white border-2 border-slate-200 text-slate-700 hover:border-blue-300 hover:shadow-lg hover:scale-105'
-                      } ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    >
-                      <div className="relative z-10">
-                        <div className="text-xs md:text-sm opacity-80">
-                          Class
-                        </div>
-                        <div className="text-xs font-bold md:text-sm">
-                          {classData.std}
-                        </div>
+              <div className="grid grid-cols-4 gap-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                {allClasses.map((classData, index) => (
+                  <button
+                    key={classData.id || index}
+                    onClick={() => handleClassSelect(classData)}
+                    disabled={loading}
+                    className={`group relative overflow-hidden rounded-xl p-2 md:p-4 font-medium transition-all duration-300 ${
+                      selectedClass?.id === classData.id
+                        ? 'bg-gradient-to-r from-blue-600 to-sky-500 text-white shadow-xl shadow-blue-500/25 scale-105'
+                        : 'bg-white border-2 border-slate-200 text-slate-700 hover:border-blue-300 hover:shadow-lg hover:scale-105'
+                    } ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  >
+                    <div className="relative z-10">
+                      <div className="text-xs md:text-sm opacity-80">
+                        Class
                       </div>
-                      {selectedClass?.id !== classData.id && (
-                        <div className="absolute inset-0 transition-opacity opacity-0 bg-gradient-to-br from-blue-600/5 to-purple-600/5 group-hover:opacity-100"></div>
-                      )}
-                    </button>
-                  ))}
+                      <div className="text-xs font-bold md:text-sm">
+                        {classData.std}
+                      </div>
+                    </div>
+                    {selectedClass?.id !== classData.id && (
+                      <div className="absolute inset-0 transition-opacity opacity-0 bg-gradient-to-br from-blue-600/5 to-purple-600/5 group-hover:opacity-100"></div>
+                    )}
+                  </button>
+                ))}
+              </div>
+
+              {/* Footer */}
+              <div className="pt-3 mt-2 border-t border-gray-100 bg-gray-50/50">
+                <div className="flex items-center justify-between text-xs text-gray-500">
+                  <span className="flex items-center">
+                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-1"></span>
+                    Selected Class:{' '}
+                    {selectedClass ? `Class ${selectedClass.std}` : 'None'}
+                  </span>
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Date Selection */}
+        {/* Date Selection - Only show when class is selected */}
         {selectedClass && (
           <div className="max-w-8xl mx-auto p-1 mb-4">
             <div className="bg-white/90 backdrop-blur-xl border border-white/20 rounded-2xl shadow-xl p-6">
@@ -407,37 +257,34 @@ function ClassRoomsPrinci() {
         {selectedClass && (
           <div className="max-w-8xl mx-auto px-1 space-y-8">
             {/* Class Header & Teacher Info */}
-            <div className="bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl shadow-2xl overflow-hidden">
-              <div className="bg-white/10 backdrop-blur p-4">
+            <div className="bg-gradient-to-r from-blue-600 to-sky-500 rounded-2xl shadow-2xl overflow-hidden">
+              <div className="bg-white/10 backdrop-blur p-2 md:p-6">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                  {/* Class Name & Status */}
                   <div className="text-center md:text-left">
-                    <h1 className="text-base md:text-3xl font-bold text-white mb-2">
+                    <h1 className="text-xl md:text-3xl font-bold text-white mb-2">
                       Class {selectedClass.class || selectedClass.std}
                     </h1>
-                    <p className="text-sm text-blue-100">
+                    <p className="text-blue-100 text-xs md:text-sm">
                       Attendance for {formatDisplayDate(selectedDate)}
                     </p>
 
-                    {/* Class Status */}
-                    {attendanceData?.class_status && (
+                    {getClassStatus() && (
                       <span
                         className={`mt-2 inline-block px-3 py-1 rounded-full font-semibold text-xs md:text-sm ${
-                          attendanceData.class_status === "Class Not Started"
-                            ? "bg-yellow-500 text-gray-100"
-                            : attendanceData.class_status === "Class Going On"
-                            ? "bg-red-700 text-gray-100"
-                            : attendanceData.class_status === "Class Completed"
-                            ? "bg-green-700 text-gray-100"
-                            : "bg-gray-500 text-gray-100"
+                          getClassStatus() === 'Class Not Started'
+                            ? 'bg-yellow-500 text-gray-100'
+                            : getClassStatus() === 'Class Going On'
+                            ? 'bg-red-700 text-gray-100'
+                            : getClassStatus() === 'Class Completed'
+                            ? 'bg-green-700 text-gray-100'
+                            : 'bg-gray-500 text-gray-100'
                         }`}
                       >
-                        {attendanceData.class_status}
+                        {getClassStatus()}
                       </span>
                     )}
                   </div>
 
-                  {/* Class Teacher */}
                   <div className="flex items-center gap-4 bg-white/20 rounded-xl p-4 min-w-fit">
                     <div className="w-12 h-12 bg-white/30 rounded-xl flex items-center justify-center">
                       <Users className="w-6 h-6 text-white" />
@@ -448,21 +295,6 @@ function ClassRoomsPrinci() {
                         {getTeacherName()}
                       </p>
                     </div>
-                  </div>
-
-                  {/* Mark Class Completed Button */}
-                  <div className="flex flex-col items-center gap-3">
-                    <button
-                      onClick={markClassStatus}
-                      disabled={isLoading}
-                      className={`px-6 py-3 rounded-2xl font-semibold text-xs md:text-lg text-white flex items-center gap-2 transition-all hover:-translate-y-1 hover:shadow-xl ${
-                        isLoading
-                          ? "bg-gray-400 cursor-not-allowed"
-                          : "bg-gradient-to-br from-blue-500 to-blue-700"
-                      }`}
-                    >
-                      {isLoading ? "Submitting..." : "Mark class Completed"}
-                    </button>
                   </div>
                 </div>
               </div>
@@ -476,8 +308,8 @@ function ClassRoomsPrinci() {
                   <div className="flex items-center justify-between">
                     <div className="space-y-1">
                       <p className="text-xs sm:text-sm text-slate-500 font-medium">Present</p>
-                      <p className="text-2xl lg:text-4xl font-bold text-green-600">
-                        {attendanceData.present_count || 0}
+                      <p className="text-2xl sm:text-3xl lg:text-4xl font-bold text-green-600">
+                        {attendanceData.present_students?.length || 0}
                       </p>
                       <p className="text-[12px] md:text-xs text-slate-400">Today's attendance</p>
                     </div>
@@ -488,7 +320,7 @@ function ClassRoomsPrinci() {
                   <div className="mt-3 sm:mt-4 h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
                     <div 
                       className="h-full bg-green-500 rounded-full transition-all duration-500"
-                      style={{ width: `${(attendanceData.present_count / getTotalStudents()) * 100}%` }}
+                      style={{ width: `${((attendanceData.present_students?.length || 0) / getTotalStudents()) * 100}%` }}
                     ></div>
                   </div>
                 </div>
@@ -499,7 +331,7 @@ function ClassRoomsPrinci() {
                     <div className="space-y-1">
                       <p className="text-xs sm:text-sm text-slate-500 font-medium">Absent</p>
                       <p className="text-2xl sm:text-3xl lg:text-4xl font-bold text-red-600">
-                        {attendanceData.absent_count || 0}
+                        {attendanceData.absent_students?.length || 0}
                       </p>
                       <p className="text-[12px] sm:text-xs text-slate-400">Today's absentees</p>
                     </div>
@@ -510,7 +342,7 @@ function ClassRoomsPrinci() {
                   <div className="mt-3 sm:mt-4 h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
                     <div 
                       className="h-full bg-red-500 rounded-full transition-all duration-500"
-                      style={{ width: `${(attendanceData.absent_count / getTotalStudents()) * 100}%` }}
+                      style={{ width: `${((attendanceData.absent_students?.length || 0) / getTotalStudents()) * 100}%` }}
                     ></div>
                   </div>
                 </div>
@@ -556,16 +388,16 @@ function ClassRoomsPrinci() {
                     Try Again
                   </button>
                 </div>
-              ) : !attendanceData || getTotalStudents() === 0 ? (
+              ) : !attendanceData ? (
                 <div className="p-8 sm:p-12 text-center">
                   <div className="w-16 h-16 sm:w-20 sm:h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
                     <Clock className="w-8 h-8 sm:w-10 sm:h-10 text-yellow-600" />
                   </div>
                   <h3 className="text-lg sm:text-2xl font-bold text-slate-800 mb-2 sm:mb-3">
-                    No Attendance Data
+                    Select a Class
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto">
-                    No attendance records found for this class on {formatDisplayDate(selectedDate)}.
+                    Please select a class to view attendance data.
                   </p>
                 </div>
               ) : (
@@ -578,7 +410,7 @@ function ClassRoomsPrinci() {
                           <UserCheck className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
                         </div>
                         <div>
-                          <h3 className="text-xs sm:text-base font-bold text-slate-800">
+                          <h3 className="text-sm sm:text-base font-bold text-slate-800">
                             Present Students
                           </h3>
                           <p className="text-xs text-slate-500">Currently in class</p>
@@ -586,21 +418,36 @@ function ClassRoomsPrinci() {
                       </div>
                       <div className="flex items-center gap-2">
                         <span className="px-2 sm:px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs sm:text-sm font-medium">
-                          {attendanceData.present_count || 0} Students
+                          {attendanceData.present_students?.length || 0} Students
                         </span>
                       </div>
                     </div>
 
                     {attendanceData.present_students?.length > 0 ? (
                       <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
-                        {attendanceData.present_students.map((student, index) => (
+                        {attendanceData.present_students?.map((student, index) => (
                           <div
                             key={student.id || index}
                             className="group bg-white border border-green-200 rounded-lg sm:rounded-xl p-1 flex flex-col items-center shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105"
                           >
                             <div className="relative mb-2">
+                              {student.image ? (
+                                <img
+                                  src={getImageUrl(student.image)}
+                                  alt={student.name}
+                                  className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full object-cover border-2 border-green-400"
+                                  onError={(e) => {
+                                    e.target.style.display = 'none'
+                                    if (e.target.nextSibling) {
+                                      e.target.nextSibling.style.display = 'flex'
+                                    }
+                                  }}
+                                />
+                              ) : null}
                               <div
-                                className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm"
+                                className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm ${
+                                  student.image ? 'hidden' : 'flex'
+                                }`}
                               >
                                 {student.name?.charAt(0) || 'S'}
                               </div>
@@ -611,6 +458,9 @@ function ClassRoomsPrinci() {
                               <h5 className="text-[9px] md:text-xs font-semibold text-slate-800 truncate w-full">
                                 {student.name || 'Unknown Student'}
                               </h5>
+                              <p className="text-[9px] md:text-xs text-slate-500 truncate">
+                                {student.parent_name || 'Student'}
+                              </p>
                               <span className="inline-block mt-1 px-1.5 py-0.5 bg-green-500 text-white rounded-full text-[10px] md:text-[14px] font-medium">
                                 PRESENT
                               </span>
@@ -635,7 +485,7 @@ function ClassRoomsPrinci() {
                             <UserX className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />
                           </div>
                           <div>
-                            <h3 className="text-xs sm:text-base font-bold text-slate-800">
+                            <h3 className="text-sm sm:text-base font-bold text-slate-800">
                               Absent Students
                             </h3>
                             <p className="text-xs text-slate-500">Not in class today</p>
@@ -643,7 +493,7 @@ function ClassRoomsPrinci() {
                         </div>
                         <div className="flex items-center gap-2">
                           <span className="px-2 sm:px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs sm:text-sm font-medium">
-                            {attendanceData.absent_count || 0} Students
+                            {attendanceData.absent_students.length} Students
                           </span>
                         </div>
                       </div>
@@ -655,8 +505,23 @@ function ClassRoomsPrinci() {
                             className="group bg-white border border-red-200 rounded-lg sm:rounded-xl p-1 flex flex-col items-center shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 opacity-90"
                           >
                             <div className="relative mb-2">
+                              {student.image ? (
+                                <img
+                                  src={getImageUrl(student.image)}
+                                  alt={student.name}
+                                  className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full object-cover border-2 border-red-400 grayscale"
+                                  onError={(e) => {
+                                    e.target.style.display = 'none'
+                                    if (e.target.nextSibling) {
+                                      e.target.nextSibling.style.display = 'flex'
+                                    }
+                                  }}
+                                />
+                              ) : null}
                               <div
-                                className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-red-500 to-rose-600 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm"
+                                className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-red-500 to-rose-600 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm ${
+                                  student.image ? 'hidden' : 'flex'
+                                }`}
                               >
                                 {student.name?.charAt(0) || 'S'}
                               </div>
@@ -667,6 +532,9 @@ function ClassRoomsPrinci() {
                               <h5 className="text-[9px] md:text-xs font-semibold text-slate-800 truncate w-full">
                                 {student.name || 'Unknown Student'}
                               </h5>
+                              <p className="text-[9px] md:text-xs text-slate-500 truncate">
+                                {student.parent_name || 'Student'}
+                              </p>
                               <span className="inline-block mt-1 px-1.5 py-0.5 bg-red-500 text-white rounded-full text-[10px] md:text-[14px] font-medium">
                                 ABSENT
                               </span>
@@ -683,7 +551,7 @@ function ClassRoomsPrinci() {
         )}
       </div>
     </div>
-  );
+  )
 }
 
-export default ClassRoomsPrinci;
+export default ClassRoomsPrinci

@@ -27,26 +27,18 @@ function STDAttendancePie() {
     { id: 3, std: '3', total_students: 11 },
     { id: 4, std: '4', total_students: 12 },
     { id: 5, std: '5', total_students: 8 },
-    { id: 6, std: '6', total_students: 13 },
-    { id: 7, std: '7', total_students: 7 },
-    { id: 8, std: '8', total_students: 10 },
-    { id: 9, std: '9', total_students: 9 },
-    { id: 10, std: '10', total_students: 11 },
+    
     
   ]
 
   // Sample attendance data for each class
   const sampleAttendanceData = {
-    1: { present: 8, absent: 2, present_percentage: 80, absent_percentage: 20 },
+    1: { present: 8, absent: 2, present_percentage: 60, absent_percentage: 40 },
     2: { present: 6, absent: 3, present_percentage: 78.1, absent_percentage: 21.9 },
     3: { present: 10, absent: 1, present_percentage: 84.2, absent_percentage: 15.8 },
     4: { present: 7, absent: 5, present_percentage: 79.4, absent_percentage: 20.6 },
     5: { present: 7, absent: 1, present_percentage: 80.6, absent_percentage: 19.4 },
-    6: { present: 13, absent: 0, present_percentage: 78.8, absent_percentage: 21.2 },
-    7: { present: 6, absent: 1, present_percentage: 83.8, absent_percentage: 16.2 },
-    8: { present: 8, absent: 2, present_percentage: 80, absent_percentage: 20 },
-    9: { present: 7, absent: 2, present_percentage: 85, absent_percentage: 15 },
-    10: { present: 11, absent: 0, present_percentage: 81.6, absent_percentage: 18.4 },
+   
     
   }
 

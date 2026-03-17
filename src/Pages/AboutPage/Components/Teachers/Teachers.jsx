@@ -14,40 +14,26 @@ import {
 // Sample teachers data - all male teachers
 const sampleTeachers = [
     {
-    name: "Prof. Yusuf Ahmed",
-    place: "Kuala Lumpur, Malaysia",
+    name: " Yusuf Ahmed",
+    place: "Kozhikode",
     phone_no: "+60 12 678 9012",
     islamic_qualification: "PhD in Hadith Studies - International Islamic University",
     academic_qualification: "M.Sc in Mathematics",
     image: "https://image.made-in-china.com/202f0j00KeLiuPDRgrzm/Muslim-Arabic-Dubai-Saudi-Arabia-Men-Turban.webp"
   },
-  {
-    name: "Prof. Muhammad Ibrahim",
-    place: "Cairo, Egypt",
-    phone_no: "+20 100 234 5678",
-    islamic_qualification: "Master's in Quranic Sciences - Al-Azhar University",
-    academic_qualification: "Ph.D in Arabic Literature",
-    image: "https://i.etsystatic.com/9507418/r/il/9670c1/1183312141/il_570xN.1183312141_mdvt.jpg"
-  },
+ 
   {
     name: "Hafiz Abdullah ",
-    place: "Lahore, Pakistan",
+    place: "Malappuram",
     phone_no: "+92 300 345 6789",
     islamic_qualification: "Hafiz-ul-Quran, Sanad in Tajweed",
     academic_qualification: "M.Sc in Computer Science",
     image: "https://static.vecteezy.com/system/resources/thumbnails/070/246/232/small/muslim-man-in-white-shirt-and-hat-with-hands-outstretched-photo.JPG"
   },
-  {
-    name: " Omar Al-Mansoor",
-    place: "Dubai, UAE",
-    phone_no: "+971 50 456 7890",
-    islamic_qualification: "PhD in Fiqh - Islamic University of Madinah",
-    academic_qualification: "MBA in Educational Management",
-    image: "https://static.vecteezy.com/system/resources/previews/059/915/145/non_2x/a-muslim-man-with-a-beard-and-white-turban-free-png.png"
-  },
+ 
   {
     name: "Hassan Ali",
-    place: "Istanbul, Turkey",
+    place: "Malappuram",
     phone_no: "+90 533 567 8901",
     islamic_qualification: "Ijazah in Qira'at, Advanced Tafsir",
     academic_qualification: "BA in History",
@@ -77,7 +63,7 @@ function Teachers() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+    <div className=" bg-black text-white relative overflow-hidden">
       {/* Hero Section with Stats */}
       <div className="relative z-10 px-4 pt-8 pb-6 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">

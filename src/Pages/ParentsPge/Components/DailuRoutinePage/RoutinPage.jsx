@@ -33,22 +33,22 @@ function RoutinPage() {
     markRoutine: {
       id: 1,
       studentId: studentId || 'sample-student-123',
-      studentName: "John Doe",
+      studentName: "Jafar",
       routine: [
-        { day: "Monday", subject: "Mathematics", time: "09:00 AM" },
-        { day: "Tuesday", subject: "Science", time: "10:00 AM" },
+        { day: "Monday", subject: "Fiqh", time: "09:00 AM" },
+        { day: "Tuesday", subject: "Ahlaq", time: "10:00 AM" },
       ]
     },
     checkRoutine: {
       id: 2,
       studentId: studentId || 'sample-student-123',
-      studentName: "John Doe",
+      studentName: "Jafar",
       routine: [
-        { day: "Monday", subject: "Mathematics", time: "09:00 AM", teacher: "Mr. Smith" },
-        { day: "Tuesday", subject: "Science", time: "10:00 AM", teacher: "Ms. Johnson" },
-        { day: "Wednesday", subject: "English", time: "11:00 AM", teacher: "Mrs. Davis" },
-        { day: "Thursday", subject: "History", time: "09:00 AM", teacher: "Mr. Wilson" },
-        { day: "Friday", subject: "Geography", time: "10:00 AM", teacher: "Ms. Brown" },
+        { day: "Monday", subject: "Fiqh", time: "09:00 AM", teacher: "Muhammed" },
+        { day: "Tuesday", subject: "Ahlaq", time: "10:00 AM", teacher: "Aboobakkar" },
+        { day: "Wednesday", subject: "Thajweed", time: "11:00 AM", teacher: "Rasaq" },
+        { day: "Thursday", subject: "Thareeh", time: "09:00 AM", teacher: "Mujeeb" },
+        { day: "Friday", subject: "Quran", time: "10:00 AM", teacher: "Mahaboob" },
       ]
     }
   }
@@ -113,20 +113,7 @@ function RoutinPage() {
       </div>
 
       {/* Quick Stats Section (Optional enhancement without changing design) */}
-      {studentId && (
-        <div className="mt-6 px-1">
-          <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-3">
-            <h3 className="text-xs font-semibold text-slate-600 mb-2 flex items-center gap-1">
-              <CalendarDays className="w-3 h-3 text-blue-500" />
-              Today's Routine Overview
-            </h3>
-            <div className="flex items-center justify-between text-xs text-slate-500">
-              <span>Classes Today: 5</span>
-              <span>Next: Mathematics (09:00 AM)</span>
-            </div>
-          </div>
-        </div>
-      )}
+      
     </div>
   )
 }

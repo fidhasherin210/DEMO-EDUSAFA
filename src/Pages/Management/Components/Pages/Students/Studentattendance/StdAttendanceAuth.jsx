@@ -10,6 +10,12 @@ import {
   Award,
 } from 'lucide-react'
 
+import student1 from '../../../../../../assets/students/student-01.jpeg';
+import student2 from '../../../../../../assets/students/student-03.jpeg';
+import student3 from '../../../../../../assets/students/student-02.jpeg';
+import student4 from '../../../../../../assets/students/student-06.jpg';
+import student5 from '../../../../../../assets/students/student-05.jpeg';
+
 const StdAttendanceAuth = () => {
   // Sample data for classes with students
   const sampleClasses = [
@@ -18,49 +24,73 @@ const StdAttendanceAuth = () => {
       std: '1',
       students: [
        {
-          id: 101,
-          name: "Ali Raza",
-          place: "Malappuram",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s"
-        },
-        {
-          id: 102,
-          name: "Muhammed Fadil",
-          place: "Malappuram",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s"
-        },
-        {
-          id: 103,
-          name: "Aysha Mariyam",
-          place: "Malappuram",
-      image: "https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8yMl9waG90b19vZl9hX21pZGRsZV9zY2hvb2xfbXVzbGltX2dpcmxfaG9sZGluZ180YWE1ZDdjMS1mZDU2LTQ0OWMtODVhMy1hNmUzYTc4ZWRjMDRfMS5wbmc.png",
-        
-        }
+            id: 101,
+            name: 'Muhammad Ahmed',
+            parent_name: 'Hassan Ahmed',
+            image: student1 
+          },
+          {
+            id: 102,
+            name: 'Fatima Zahra',
+            parent_name: 'Yusuf Zahra',
+            image: student2
+          },
+          {
+            id: 103,
+            name: 'Abdullah Malik',
+            parent_name: 'Bilal Malik',
+            image: student3
+          },
+          {
+            id: 104,
+            name: 'Aisha Siddiqua',
+            parent_name: 'Ibrahim Siddiqui',
+            image: student4
+          },
+          {
+            id: 105,
+            name: 'Omar Farooq',
+            parent_name: 'Khalid Farooq',
+            image: student5
+          },
+           
       ],
     },
      {
-      id: 3,
+      id: 2,
       std: '2',
       students: [
-       {
-          id: 101,
-          name: "Ali Raza",
-          place: "Malappuram",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s"
-        },
         {
-          id: 102,
-          name: "Muhammed Fadil",
-          place: "Malappuram",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s"
-        },
-        {
-          id: 103,
-          name: "Aysha Mariyam",
-          place: "Malappuram",
-      image: "https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8yMl9waG90b19vZl9hX21pZGRsZV9zY2hvb2xfbXVzbGltX2dpcmxfaG9sZGluZ180YWE1ZDdjMS1mZDU2LTQ0OWMtODVhMy1hNmUzYTc4ZWRjMDRfMS5wbmc.png",
-        
-        }
+             id: 101,
+             name: 'Muhammad Ahmed',
+             parent_name: 'Hassan Ahmed',
+             image: student1 
+           },
+           {
+             id: 102,
+             name: 'Fatima Zahra',
+             parent_name: 'Yusuf Zahra',
+             image: student2
+           },
+           {
+             id: 103,
+             name: 'Abdullah Malik',
+             parent_name: 'Bilal Malik',
+             image: student3
+           },
+           {
+             id: 104,
+             name: 'Aisha Siddiqua',
+             parent_name: 'Ibrahim Siddiqui',
+             image: student4
+           },
+           {
+             id: 105,
+             name: 'Omar Farooq',
+             parent_name: 'Khalid Farooq',
+             image: student5
+           },
+            
       ],
     },
       {
@@ -68,24 +98,36 @@ const StdAttendanceAuth = () => {
       std: '3',
       students: [
        {
-          id: 101,
-          name: "Ali Raza",
-          place: "Malappuram",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s"
-        },
-        {
-          id: 102,
-          name: "Muhammed Fadil",
-          place: "Malappuram",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s"
-        },
-        {
-          id: 103,
-          name: "Aysha Mariyam",
-          place: "Malappuram",
-      image: "https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8yMl9waG90b19vZl9hX21pZGRsZV9zY2hvb2xfbXVzbGltX2dpcmxfaG9sZGluZ180YWE1ZDdjMS1mZDU2LTQ0OWMtODVhMy1hNmUzYTc4ZWRjMDRfMS5wbmc.png",
-        
-        }
+            id: 101,
+            name: 'Muhammad Ahmed',
+            parent_name: 'Hassan Ahmed',
+            image: student1 
+          },
+          {
+            id: 102,
+            name: 'Fatima Zahra',
+            parent_name: 'Yusuf Zahra',
+            image: student2
+          },
+          {
+            id: 103,
+            name: 'Abdullah Malik',
+            parent_name: 'Bilal Malik',
+            image: student3
+          },
+          {
+            id: 104,
+            name: 'Aisha Siddiqua',
+            parent_name: 'Ibrahim Siddiqui',
+            image: student4
+          },
+          {
+            id: 105,
+            name: 'Omar Farooq',
+            parent_name: 'Khalid Farooq',
+            image: student5
+          },
+           
       ],
     },
       {
@@ -93,24 +135,36 @@ const StdAttendanceAuth = () => {
       std: '4',
       students: [
        {
-          id: 101,
-          name: "Ali Raza",
-          place: "Malappuram",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s"
-        },
-        {
-          id: 102,
-          name: "Muhammed Fadil",
-          place: "Malappuram",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s"
-        },
-        {
-          id: 103,
-          name: "Aysha Mariyam",
-          place: "Malappuram",
-      image: "https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8yMl9waG90b19vZl9hX21pZGRsZV9zY2hvb2xfbXVzbGltX2dpcmxfaG9sZGluZ180YWE1ZDdjMS1mZDU2LTQ0OWMtODVhMy1hNmUzYTc4ZWRjMDRfMS5wbmc.png",
-        
-        }
+            id: 101,
+            name: 'Muhammad Ahmed',
+            parent_name: 'Hassan Ahmed',
+            image: student1 
+          },
+          {
+            id: 102,
+            name: 'Fatima Zahra',
+            parent_name: 'Yusuf Zahra',
+            image: student2
+          },
+          {
+            id: 103,
+            name: 'Abdullah Malik',
+            parent_name: 'Bilal Malik',
+            image: student3
+          },
+          {
+            id: 104,
+            name: 'Aisha Siddiqua',
+            parent_name: 'Ibrahim Siddiqui',
+            image: student4
+          },
+          {
+            id: 105,
+            name: 'Omar Farooq',
+            parent_name: 'Khalid Farooq',
+            image: student5
+          },
+           
       ],
     },
   ]

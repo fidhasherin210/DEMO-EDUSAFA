@@ -16,29 +16,17 @@ function AddSubject() {
         { id: 3, std: "Class 3" },
         { id: 4, std: "Class 4" },
         { id: 5, std: "Class 5" },
-        { id: 6, std: "Class 6" },
-        { id: 7, std: "Class 7" },
-        { id: 8, std: "Class 8" },
-        { id: 9, std: "Class 9" },
-        { id: 10, std: "Class 10" },
-        { id: 11, std: "Class 11" },
-        { id: 12, std: "Class 12" }
+      
     ]
 
     // Sample existing subjects data (for validation)
     const [existingSubjects, setExistingSubjects] = useState({
-        1: ["Mathematics", "English", "Hindi"],
-        2: ["Mathematics", "English", "Science"],
-        3: ["Mathematics", "English", "Social Studies"],
-        4: ["Mathematics", "English", "Science", "Social Studies"],
-        5: ["Mathematics", "English", "Science", "Social Studies"],
-        6: ["Mathematics", "English", "Science", "Social Studies", "Sanskrit"],
-        7: ["Mathematics", "English", "Science", "Social Studies", "Sanskrit"],
-        8: ["Mathematics", "English", "Science", "Social Studies", "Computer"],
-        9: ["Mathematics", "English", "Physics", "Chemistry", "Biology", "Computer"],
-        10: ["Mathematics", "English", "Physics", "Chemistry", "Biology", "Computer"],
-        11: ["Mathematics", "English", "Physics", "Chemistry", "Biology", "Computer", "Physical Education"],
-        12: ["Mathematics", "English", "Physics", "Chemistry", "Biology", "Computer", "Physical Education"]
+        1: ["Fiqh", "Ahlaq", "Aqeeda"],
+        2: ["Fiqh", "Ahlaq", "Aqeeda"],
+        3: ["Fiqh", "Ahlaq", "Aqeeda","Thareeh"],
+        4: ["Fiqh", "Ahlaq", "Aqeeda","Thareeh","Thajweed"],
+        5: ["Fiqh", "Ahlaq", "Aqeeda","Thareeh","Thajweed","Quran"],
+        
     })
 
     const handleClassSelect = (classData) => {

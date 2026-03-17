@@ -30,7 +30,7 @@ function FeeAuth() {
       ],
     },
       {
-      id: 1,
+      id: 2,
       std: '2',
       students: [
        {
@@ -55,7 +55,7 @@ function FeeAuth() {
       ],
     },
       {
-      id: 1,
+      id: 3,
       std: '3',
       students: [
        {
@@ -80,7 +80,7 @@ function FeeAuth() {
       ],
     },
       {
-      id: 1,
+      id: 4,
       std: '4',
       students: [
        {

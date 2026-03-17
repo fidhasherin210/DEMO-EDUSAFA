@@ -212,19 +212,19 @@ function MainPage() {
         >
           {[
             {
-              value: '850+',
+              value: '100+',
               label: 'Students',
               icon: '👥',
               color: 'from-sky-400 to-blue-400',
             },
             {
-              value: '65+',
+              value: '5+',
               label: 'Teachers',
               icon: '👩‍🏫',
               color: 'from-emerald-400 to-teal-400',
             },
             {
-              value: '32+',
+              value: '10+',
               label: 'Classes',
               icon: '🏫',
               color: 'from-violet-400 to-purple-400',

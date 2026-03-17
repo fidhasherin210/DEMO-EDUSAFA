@@ -16,76 +16,29 @@ function GivNotificaTHR() {
   const [allClasses, setAllClasses] = useState([
     {
       id: 1,
-      std: "5 A",
-      section: "A",
+      std: "1",
+    
       students_count: 32
     },
     {
       id: 2,
-      std: "5 B",
-      section: "B",
+      std: "2",
+      
       students_count: 30
     },
     {
       id: 3,
-      std: "6 A",
-      section: "A",
+      std: "3",
+      
       students_count: 28
     },
     {
       id: 4,
-      std: "6 B",
-      section: "B",
+      std: "4",
+      
       students_count: 31
     },
-    {
-      id: 5,
-      std: "7 A",
-      section: "A",
-      students_count: 29
-    },
-    {
-      id: 6,
-      std: "7 B",
-      section: "B",
-      students_count: 33
-    },
-    {
-      id: 7,
-      std: "8 A",
-      section: "A",
-      students_count: 27
-    },
-    {
-      id: 8,
-      std: "8 B",
-      section: "B",
-      students_count: 30
-    },
-    {
-      id: 9,
-      std: "9 A",
-      section: "A",
-      students_count: 35
-    },
-    {
-      id: 10,
-      std: "9 B",
-      section: "B",
-      students_count: 34
-    },
-    {
-      id: 11,
-      std: "10 A",
-      section: "A",
-      students_count: 28
-    },
-    {
-      id: 12,
-      std: "10 B",
-      section: "B",
-      students_count: 29
-    }
+    
   ])
   
   const [selectedClass, setSelectedClass] = useState(null)

@@ -276,83 +276,7 @@ function ClassRoomPage() {
         </div>
       </div>
 
-      {/* Student Quick Info (if available) */}
-      {studentData && (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-3 mb-3 mx-1">
-          <div className="flex items-center gap-3">
-            <img 
-              src={studentData.image} 
-              alt={studentData.name}
-              className="w-12 h-12 rounded-full object-cover border-2 border-blue-200"
-            />
-            <div className="flex-1">
-              <h2 className="text-sm font-semibold text-slate-800">{studentData.name}</h2>
-              <p className="text-xs text-slate-500">
-                Class {studentData.class} • Section {studentData.section} • Roll No: {studentData.rollNo}
-              </p>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="text-xs bg-green-100 text-green-600 px-2 py-0.5 rounded-full">
-                  Attendance: {studentData.attendance}
-                </span>
-                <span className="text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full">
-                  {studentData.place}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Quick Stats Section */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3 p-1">
-        <div className="bg-white p-2 rounded-xl shadow-sm border border-slate-100">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-              <Users className="w-4 h-4 text-blue-600" />
-            </div>
-            <div>
-              <p className="text-xs text-slate-500">Total Students</p>
-              <p className="text-sm font-semibold text-slate-800">{classroomStats.totalStudents}</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-white p-2 rounded-xl shadow-sm border border-slate-100">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-              <User className="w-4 h-4 text-green-600" />
-            </div>
-            <div>
-              <p className="text-xs text-slate-500">Present Today</p>
-              <p className="text-sm font-semibold text-green-600">{classroomStats.presentToday}</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-white p-2 rounded-xl shadow-sm border border-slate-100">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
-              <Clock className="w-4 h-4 text-amber-600" />
-            </div>
-            <div>
-              <p className="text-xs text-slate-500">Next Class</p>
-              <p className="text-xs font-semibold text-slate-800">{classroomStats.nextClass}</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-white p-2 rounded-xl shadow-sm border border-slate-100">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-              <BookOpen className="w-4 h-4 text-purple-600" />
-            </div>
-            <div>
-              <p className="text-xs text-slate-500">Homework</p>
-              <p className="text-sm font-semibold text-purple-600">{classroomStats.homeworkPending} Pending</p>
-            </div>
-          </div>
-        </div>
-      </div>
+  
 
       {/* Cards */}
       <div className="grid grid-cols-3 md:grid-cols-5 gap-2 mb-4 p-1">
@@ -365,11 +289,11 @@ function ClassRoomPage() {
                               h-28 transition-all duration-300 
                               hover:shadow-md hover:-translate-y-1 relative">
 
-                {card.badge > 0 && (
+                {/* {card.badge > 0 && (
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
                     {card.badge}
                   </span>
-                )}
+                )} */}
 
                 <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl ${card.bg} 
                                 flex items-center justify-center mb-2`}>
@@ -385,31 +309,7 @@ function ClassRoomPage() {
         })}
       </div>
 
-      {/* Today's Schedule Preview */}
-      {studentData && (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-3 mx-1">
-          <h2 className="text-xs font-semibold text-slate-800 mb-2 flex items-center gap-2">
-            <Clock className="w-4 h-4 text-blue-600" />
-            Today's Schedule
-          </h2>
-          <div className="space-y-2">
-            {studentData.timetable[0].periods.slice(0, 4).map((subject, idx) => (
-              <div key={idx} className="flex items-center justify-between p-1.5 bg-slate-50 rounded-lg">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-medium text-slate-600">{idx + 1}</span>
-                  <span className="text-xs text-slate-800">{subject}</span>
-                </div>
-                <span className="text-xs text-slate-500">
-                  {idx === 0 ? '09:00 AM' : idx === 1 ? '09:45 AM' : idx === 2 ? '10:30 AM' : '11:15 AM'}
-                </span>
-              </div>
-            ))}
-          </div>
-          <Link to={`/parent/check-timetable/${studentId}`} className="block text-center text-xs text-blue-600 mt-2 hover:underline">
-            View Full Timetable
-          </Link>
-        </div>
-      )}
+
     </div>
   )
 }

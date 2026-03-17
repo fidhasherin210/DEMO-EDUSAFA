@@ -15,11 +15,8 @@ function AddTimeTables() {
     { id: 3, std: 'Class 3', has_time_table: true, has_exam_time_table: true, time_table_url: '/sample/class3-timetable.pdf', exam_time_table_url: '/sample/class3-exam-timetable.pdf' },
     { id: 4, std: 'Class 4', has_time_table: false, has_exam_time_table: false, time_table_url: null, exam_time_table_url: null },
     { id: 5, std: 'Class 5', has_time_table: true, has_exam_time_table: false, time_table_url: '/sample/class5-timetable.pdf', exam_time_table_url: null },
-    { id: 6, std: 'Class 6', has_time_table: false, has_exam_time_table: true, time_table_url: null, exam_time_table_url: '/sample/class6-exam-timetable.pdf' },
-    { id: 7, std: 'Class 7', has_time_table: true, has_exam_time_table: true, time_table_url: '/sample/class7-timetable.pdf', exam_time_table_url: '/sample/class7-exam-timetable.pdf' },
-    { id: 8, std: 'Class 8', has_time_table: false, has_exam_time_table: false, time_table_url: null, exam_time_table_url: null },
-    { id: 9, std: 'Class 9', has_time_table: true, has_exam_time_table: false, time_table_url: '/sample/class9-timetable.pdf', exam_time_table_url: null },
-    { id: 10, std: 'Class 10', has_time_table: false, has_exam_time_table: true, time_table_url: null, exam_time_table_url: '/sample/class10-exam-timetable.pdf' },
+    
+    
   ]
 
   const [allClasses] = useState(sampleClasses)

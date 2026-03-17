@@ -139,11 +139,11 @@ function MdrsaMnage() {
                 <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl ${card.bg} 
                                 flex items-center justify-center mb-2 relative`}>
                   <Icon className={`w-5 h-5 md:w-6 md:h-6 ${card.text}`} />
-                  {card.data && (
+                  {/* {card.data && (
                     <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
                       {card.data.length}
                     </span>
-                  )}
+                  )} */}
                 </div>
 
                 <span className="text-[14px] md:text-sm text-slate-700 text-center">
@@ -155,95 +155,9 @@ function MdrsaMnage() {
         })}
       </div>
 
-      {/* Quick Stats Section */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4 p-1">
-        <div className="bg-white p-3 rounded-xl shadow-sm border border-slate-100">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-              <UsersRound className="w-4 h-4 text-blue-600" />
-            </div>
-            <div>
-              <p className="text-xs text-slate-500">Total Management</p>
-              <p className="text-sm font-semibold text-slate-800">{managementData.length}</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-white p-3 rounded-xl shadow-sm border border-slate-100">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
-              <CalendarDays className="w-4 h-4 text-emerald-600" />
-            </div>
-            <div>
-              <p className="text-xs text-slate-500">Upcoming Events</p>
-              <p className="text-sm font-semibold text-slate-800">{eventsData.filter(e => e.status === 'upcoming').length}</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-white p-3 rounded-xl shadow-sm border border-slate-100">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
-              <Users className="w-4 h-4 text-amber-600" />
-            </div>
-            <div>
-              <p className="text-xs text-slate-500">Total Parents</p>
-              <p className="text-sm font-semibold text-slate-800">{parentsData.length}</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-white p-3 rounded-xl shadow-sm border border-slate-100">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-rose-100 rounded-lg flex items-center justify-center">
-              <Heart className="w-4 h-4 text-rose-600" />
-            </div>
-            <div>
-              <p className="text-xs text-slate-500">In Memoriam</p>
-              <p className="text-sm font-semibold text-slate-800">{memorialData.length}</p>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      {/* Recent Activities Preview */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-4">
-        <h2 className="text-sm font-semibold text-slate-800 mb-3 flex items-center gap-2">
-          <Clock className="w-4 h-4 text-blue-600" />
-          Recent Activities
-        </h2>
-        <div className="space-y-2">
-          <div className="flex items-center justify-between p-2 hover:bg-slate-50 rounded-lg transition-colors">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-indigo-100 rounded-full flex items-center justify-center">
-                <UserPlus2 className="w-3 h-3 text-indigo-600" />
-              </div>
-              <span className="text-xs text-slate-600">New management member added</span>
-            </div>
-            <span className="text-xs text-slate-400">2 min ago</span>
-          </div>
-          
-          <div className="flex items-center justify-between p-2 hover:bg-slate-50 rounded-lg transition-colors">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-emerald-100 rounded-full flex items-center justify-center">
-                <CalendarDays className="w-3 h-3 text-emerald-600" />
-              </div>
-              <span className="text-xs text-slate-600">Annual Convocation scheduled</span>
-            </div>
-            <span className="text-xs text-slate-400">1 hour ago</span>
-          </div>
-          
-          <div className="flex items-center justify-between p-2 hover:bg-slate-50 rounded-lg transition-colors">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-amber-100 rounded-full flex items-center justify-center">
-                <Users className="w-3 h-3 text-amber-600" />
-              </div>
-              <span className="text-xs text-slate-600">Parent directory updated</span>
-            </div>
-            <span className="text-xs text-slate-400">3 hours ago</span>
-          </div>
-        </div>
-      </div>
+
+    
     </div>
   )
 }

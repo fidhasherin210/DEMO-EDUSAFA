@@ -36,17 +36,7 @@ function TchrPageManage() {
 ]
 
   // Sample data for demonstration
-  const sampleTeachers = [
-    { id: 1, name: "John Doe", subject: "Mathematics", attendance: "85%" },
-    { id: 2, name: "Jane Smith", subject: "Physics", attendance: "92%" },
-    { id: 3, name: "Robert Johnson", subject: "Chemistry", attendance: "78%" },
-  ]
-
-  const sampleAttendance = [
-    { date: "2024-01-15", present: 25, absent: 3, leave: 2 },
-    { date: "2024-01-16", present: 24, absent: 4, leave: 2 },
-    { date: "2024-01-17", present: 26, absent: 2, leave: 2 },
-  ]
+ 
 
   return (
     <div className="min-h-screen bg-slate-50 p-1">
@@ -95,64 +85,7 @@ function TchrPageManage() {
         })}
       </div>
 
-      {/* Sample Data Display Section */}
-      <div className="mt-6 p-4 bg-white rounded-xl shadow-sm border border-slate-100">
-        <h2 className="text-lg font-semibold text-slate-800 mb-4">Sample Teacher Data</h2>
-        
-        {/* Teachers List */}
-        <div className="mb-6">
-          <h3 className="text-sm font-medium text-slate-600 mb-2">Teachers List</h3>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-slate-200">
-              <thead className="bg-slate-50">
-                <tr>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase">ID</th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase">Name</th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase">Subject</th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase">Attendance</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-slate-200">
-                {sampleTeachers.map((teacher) => (
-                  <tr key={teacher.id}>
-                    <td className="px-4 py-2 text-sm text-slate-600">{teacher.id}</td>
-                    <td className="px-4 py-2 text-sm text-slate-600">{teacher.name}</td>
-                    <td className="px-4 py-2 text-sm text-slate-600">{teacher.subject}</td>
-                    <td className="px-4 py-2 text-sm text-slate-600">{teacher.attendance}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
 
-        {/* Attendance Records */}
-        <div>
-          <h3 className="text-sm font-medium text-slate-600 mb-2">Recent Attendance</h3>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-slate-200">
-              <thead className="bg-slate-50">
-                <tr>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase">Date</th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase">Present</th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase">Absent</th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase">On Leave</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-slate-200">
-                {sampleAttendance.map((record, index) => (
-                  <tr key={index}>
-                    <td className="px-4 py-2 text-sm text-slate-600">{record.date}</td>
-                    <td className="px-4 py-2 text-sm text-green-600">{record.present}</td>
-                    <td className="px-4 py-2 text-sm text-red-600">{record.absent}</td>
-                    <td className="px-4 py-2 text-sm text-yellow-600">{record.leave}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
 
     </div>
   )

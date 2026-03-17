@@ -14,8 +14,8 @@ const MarkStdAtteTCH = () => {
   const sampleClasses = [
     {
       id: 1,
-      std: "10",
-      class: "10",
+      std: "1",
+      class: "1",
       students: [
         {
           id: 101,
@@ -40,8 +40,8 @@ const MarkStdAtteTCH = () => {
     },
     {
       id: 2,
-      std: "9",
-      class: "9",
+      std: "2",
+      class: "2",
       students: [
        {
           id: 201,
@@ -66,8 +66,8 @@ const MarkStdAtteTCH = () => {
     },
     {
       id: 3,
-      std: "8",
-      class: "8",
+      std: "3",
+      class: "3",
       students: [
         {
           id: 301,

@@ -55,13 +55,13 @@ function Madrasa() {
       bg: 'bg-rose-100',
       text: 'text-rose-600',
     },
-    {
-      to: '/principal/parents-details',
-      label: 'Parents Directory',
-      icon: Book,
-      bg: 'bg-rose-100',
-      text: 'text-rose-600',
-    },
+    // {
+    //   to: '/principal/parents-details',
+    //   label: 'Parents Directory',
+    //   icon: Book,
+    //   bg: 'bg-rose-100',
+    //   text: 'text-rose-600',
+    // },
     {
       to: '/principal/add-parents',
       label: 'Parents Directory',

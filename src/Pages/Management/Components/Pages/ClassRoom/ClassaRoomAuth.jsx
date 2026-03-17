@@ -8,18 +8,25 @@ import {
   BookOpen,
 } from 'lucide-react'
 
+
+import student1 from '../../../../../assets/students/student-01.jpeg';
+import student2 from '../../../../../assets/students/student-03.jpeg';
+import student3 from '../../../../../assets/students/student-02.jpeg';
+import student4 from '../../../../../assets/students/student-06.jpg';
+import student5 from '../../../../../assets/students/student-05.jpeg';
+import student6 from '../../../../../assets/students/student-04.jpeg';
+import student7 from '../../../../../assets/students/student-07.png';
+
+
+
 function ClassaRoomAuth() {
   const [allClasses, setAllClasses] = useState([
-    { id: 1, std: '1', class_teacher: 'Mr. Sharma', class_status: 'Class Going On' },
-    { id: 2, std: '2', class_teacher: 'Mrs. Gupta', class_status: 'Class Going On' },
-    { id: 3, std: '3', class_teacher: 'Mr. Singh', class_status: 'Class Not Started' },
-    { id: 4, std: '4', class_teacher: 'Ms. Patel', class_status: 'Class Going On' },
-    { id: 5, std: '5', class_teacher: 'Mr. Kumar', class_status: 'Class Over' },
-    { id: 6, std: '6', class_teacher: 'Mrs. Desai', class_status: 'Class Going On' },
-    { id: 7, std: '7', class_teacher: 'Mr. Joshi', class_status: 'Class Not Started' },
-    { id: 8, std: '8', class_teacher: 'Ms. Rao', class_status: 'Class Going On' },
-    { id: 9, std: '9', class_teacher: 'Mr. Mehta', class_status: 'Class Over' },
-    { id: 10, std: '10', class_teacher: 'Mrs. Shah', class_status: 'Class Going On' },
+    { id: 1, std: '1', class_teacher: 'Aboobakkar', class_status: 'Class Going On' },
+    { id: 2, std: '2', class_teacher: 'Muhammed', class_status: 'Class Going On' },
+    { id: 3, std: '3', class_teacher: 'Abdurahman', class_status: 'Class Not Started' },
+    { id: 4, std: '4', class_teacher: 'Mujeeb', class_status: 'Class Going On' },
+    { id: 5, std: '5', class_teacher: 'Ayyoob', class_status: 'Class Over' },
+
   ])
 
   const [selectedClass, setSelectedClass] = useState(null)
@@ -30,92 +37,52 @@ function ClassaRoomAuth() {
   // Sample student data
   const sampleStudents = {
    present: [
-      {
-        id: 101,
-        name: 'Muhammad Ahmed',
-        parent_name: 'Hassan Ahmed',
-        image: 'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTEyL2hpcHBvdW5pY29ybl9waG90b19vZl9hX3NtaWxlX3N0dWRlbnRfbXVzbGltX2JveV9ob2xkaW5nX2Jvb2tfbF9iY2MxMWQ4Zi1lOTU4LTQwNGQtYTUyZC1jMWJhMmU2NTA5MjgucG5n.png'
-      },
-      {
-        id: 102,
-        name: 'Fatima Zahra',
-        parent_name: 'Yusuf Zahra',
-        image: 'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTExL3Jhd3BpeGVsX29mZmljZV8zMF9waG90b19vZl95b3VuZ19tdXNsaW1fZ2lybF9ob2xkaW5nX3N0dWRlbnRfYl84ZGFlYmRlNy0zODkyLTRhMTAtOWE0ZS0wNDQyYjM3OTBjNjZfMS5wbmc.png'
-      },
-      {
-        id: 103,
-        name: 'Abdullah Malik',
-        parent_name: 'Bilal Malik',
-        image: 'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTEyL2hpcHBvdW5pY29ybl9waG90b19vZl9hX3NtaWxlX3N0dWRlbnRfbXVzbGltX2JveV9ob2xkaW5nX2Jvb2tfbF9iY2MxMWQ4Zi1lOTU4LTQwNGQtYTUyZC1jMWJhMmU2NTA5MjgucG5n.png'
-      },
-      {
-        id: 104,
-        name: 'Aisha Siddiqua',
-        parent_name: 'Ibrahim Siddiqui',
-        image: 'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTExL3Jhd3BpeGVsX29mZmljZV8zMF9waG90b19vZl95b3VuZ19tdXNsaW1fZ2lybF9ob2xkaW5nX3N0dWRlbnRfYl84ZGFlYmRlNy0zODkyLTRhMTAtOWE0ZS0wNDQyYjM3OTBjNjZfMS5wbmc.png'
-      },
-      {
-        id: 105,
-        name: 'Omar Farooq',
-        parent_name: 'Khalid Farooq',
-        image: 'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTEyL2hpcHBvdW5pY29ybl9waG90b19vZl9hX3NtaWxlX3N0dWRlbnRfbXVzbGltX2JveV9ob2xkaW5nX2Jvb2tfbF9iY2MxMWQ4Zi1lOTU4LTQwNGQtYTUyZC1jMWJhMmU2NTA5MjgucG5n.png'
-      },
-      {
-        id: 106,
-        name: 'Mariam Alia',
-        parent_name: 'Jamal Alia',
-        image: 'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTExL3Jhd3BpeGVsX29mZmljZV8zMF9waG90b19vZl95b3VuZ19tdXNsaW1fZ2lybF9ob2xkaW5nX3N0dWRlbnRfYl84ZGFlYmRlNy0zODkyLTRhMTAtOWE0ZS0wNDQyYjM3OTBjNjZfMS5wbmc.png'
-      },
-      {
-        id: 107,
-        name: 'Hassan Raza',
-        parent_name: 'Abbas Raza',
-        image: 'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTEyL2hpcHBvdW5pY29ybl9waG90b19vZl9hX3NtaWxlX3N0dWRlbnRfbXVzbGltX2JveV9ob2xkaW5nX2Jvb2tfbF9iY2MxMWQ4Zi1lOTU4LTQwNGQtYTUyZC1jMWJhMmU2NTA5MjgucG5n.png'
-      },
-      {
-        id: 108,
-        name: 'Zainab Khatoon',
-        parent_name: 'Mohsin Khatoon',
-        image: 'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTExL3Jhd3BpeGVsX29mZmljZV8zMF9waG90b19vZl95b3VuZ19tdXNsaW1fZ2lybF9ob2xkaW5nX3N0dWRlbnRfYl84ZGFlYmRlNy0zODkyLTRhMTAtOWE0ZS0wNDQyYjM3OTBjNjZfMS5wbmc.png'
-      },
-      {
-        id: 109,
-        name: 'Yusuf Ismail',
-        parent_name: 'Ismail Yusuf',
-        image: 'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTEyL2hpcHBvdW5pY29ybl9waG90b19vZl9hX3NtaWxlX3N0dWRlbnRfbXVzbGltX2JveV9ob2xkaW5nX2Jvb2tfbF9iY2MxMWQ4Zi1lOTU4LTQwNGQtYTUyZC1jMWJhMmU2NTA5MjgucG5n.png'
-      },
-      {
-        id: 110,
-        name: 'Khadija Begum',
-        parent_name: 'Rashid Begum',
-        image: 'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTExL3Jhd3BpeGVsX29mZmljZV8zMF9waG90b19vZl95b3VuZ19tdXNsaW1fZ2lybF9ob2xkaW5nX3N0dWRlbnRfYl84ZGFlYmRlNy0zODkyLTRhMTAtOWE0ZS0wNDQyYjM3OTBjNjZfMS5wbmc.png'
-      }
+    {
+      id: 101,
+      name: 'Muhammad Ahmed',
+      parent_name: 'Hassan Ahmed',
+      image: student1 
+    },
+    {
+      id: 102,
+      name: 'Fatima Zahra',
+      parent_name: 'Yusuf Zahra',
+      image: student2
+    },
+    {
+      id: 103,
+      name: 'Abdullah Malik',
+      parent_name: 'Bilal Malik',
+      image: student3
+    },
+    {
+      id: 104,
+      name: 'Aisha Siddiqua',
+      parent_name: 'Ibrahim Siddiqui',
+      image: student4
+    },
+    {
+      id: 105,
+      name: 'Omar Farooq',
+      parent_name: 'Khalid Farooq',
+      image: student5
+    },
+     
     ],
     absent: [
-      {
-        id: 201,
-        name: 'Bilal Hussain',
-        parent_name: 'Hussain Bilal',
-        image: 'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTEyL2hpcHBvdW5pY29ybl9waG90b19vZl9hX3NtaWxlX3N0dWRlbnRfbXVzbGltX2JveV9ob2xkaW5nX2Jvb2tfbF9iY2MxMWQ4Zi1lOTU4LTQwNGQtYTUyZC1jMWJhMmU2NTA5MjgucG5n.png'
-      },
-      {
-        id: 202,
-        name: 'Safia Rahman',
-        parent_name: 'Rahman Safia',
-        image: 'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTExL3Jhd3BpeGVsX29mZmljZV8zMF9waG90b19vZl95b3VuZ19tdXNsaW1fZ2lybF9ob2xkaW5nX3N0dWRlbnRfYl84ZGFlYmRlNy0zODkyLTRhMTAtOWE0ZS0wNDQyYjM3OTBjNjZfMS5wbmc.png'
-      },
-      {
-        id: 203,
-        name: 'Hamza Ali',
-        parent_name: 'Ali Hamza',
-        image: 'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTEyL2hpcHBvdW5pY29ybl9waG90b19vZl9hX3NtaWxlX3N0dWRlbnRfbXVzbGltX2JveV9ob2xkaW5nX2Jvb2tfbF9iY2MxMWQ4Zi1lOTU4LTQwNGQtYTUyZC1jMWJhMmU2NTA5MjgucG5n.png'
-      },
-      {
-        id: 204,
-        name: 'Aminah Salim',
-        parent_name: 'Salim Aminah',
-        image: 'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTExL3Jhd3BpeGVsX29mZmljZV8zMF9waG90b19vZl95b3VuZ19tdXNsaW1fZ2lybF9ob2xkaW5nX3N0dWRlbnRfYl84ZGFlYmRlNy0zODkyLTRhMTAtOWE0ZS0wNDQyYjM3OTBjNjZfMS5wb'
-      }
+     {
+      id: 201,
+      name: 'Bilal Hussain',
+      parent_name: 'Hussain Bilal',
+      image: student6  
+    },
+    {
+      id: 202,
+      name: 'Safia Rahman',
+      parent_name: 'Rahman Safia',
+      image: student7
+    },
+     
     ]
   }
 
@@ -186,9 +153,10 @@ function ClassaRoomAuth() {
         </div>
 
         {/* Class Selection */}
-        <div className="px-1 mx-auto -mt-3 ">
-          <div className="max-w-8xl p-1 mx-auto mb-2">
-            <div className="p-6 border shadow-xl bg-white/90 backdrop-blur-xl border-white/20 rounded-2xl">
+       {/* Class Selection */}
+        <div className="px-1 mx-auto -mt-3">
+          <div className="max-w-8xl mx-auto mb-2">
+            <div className="p-5 border shadow-xl bg-white/90 backdrop-blur-xl border-white/20 rounded-2xl">
               <div className="flex items-center gap-3 mb-6">
                 <BookOpen className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
                 <h2 className="text-xs font-semibold text-blue-600 md:text-lg">
@@ -196,9 +164,9 @@ function ClassaRoomAuth() {
                 </h2>
               </div>
 
-              {loading && !selectedClass ? (
+              {loading ? (
                 <div className="flex justify-center py-8">
-                  <div className="w-8 h-8 border-b-2 border-blue-500 rounded-full animate-spin"></div>
+                  <div className="w-8 h-8 border-b-2 border-blue-600 rounded-full animate-spin"></div>
                 </div>
               ) : allClasses.length === 0 ? (
                 <div className="py-8 text-center text-gray-500">
@@ -232,10 +200,19 @@ function ClassaRoomAuth() {
                   ))}
                 </div>
               )}
+              {/* Footer */}
+              <div className="pt-3 mt-2 border-t border-gray-100 bg-gray-50/50">
+                <div className="flex items-center justify-between text-xs text-gray-500">
+                  <span className="flex items-center">
+                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-1"></span>
+                    Selected Class:{' '}
+                    {selectedClass ? `Class ${selectedClass.std}` : 'None'}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
         {/* Selected Class Details */}
         {selectedClass && (
           <div className="max-w-8xl mx-auto px-1 space-y-8">

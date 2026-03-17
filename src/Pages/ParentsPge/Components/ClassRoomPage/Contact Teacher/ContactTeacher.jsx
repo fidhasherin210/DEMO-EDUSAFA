@@ -27,10 +27,10 @@ function ContactTeacher() {
   const sampleTeacherData = {
     teacher: {
       id: 1,
-      name: "Hafiz Abdullah Khan",
+      name: "Hafiz Abdullah ",
       reg_no: "TCH2021001",
       image: "https://static.vecteezy.com/system/resources/thumbnails/070/246/232/small/muslim-man-in-white-shirt-and-hat-with-hands-outstretched-photo.JPG",
-      place: "Mumbai, Maharashtra",
+      place: "Mavoor",
       phone_no: "+919876543210",
       email: "ahmed.hassan@school.edu",
       salary: 45000,

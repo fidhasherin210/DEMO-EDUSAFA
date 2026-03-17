@@ -16,43 +16,35 @@ function MarkTchrAtte() {
 
   // Sample teacher data with Muslim names
   const sampleTeachers = [
-     {
-      id: 1,
-      name: ". Abdul Rahman Al-Qasim",
-      place: "Mathematics Department",
-      image: "https://m.media-amazon.com/images/I/51Wz9iQFntL._AC_UY1100_.jpghttps://m.media-amazon.com/images/I/51Wz9iQFntL._AC_UY1100_.jpg"
-    },
-    {
-      id: 2,
-      name: "Muhammad Ibrahim",
-      place: "Physics Department",
-      image: "https://i.etsystatic.com/9507418/r/il/9670c1/1183312141/il_570xN.1183312141_mdvt.jpg"
-    },
-    {
-      id: 3,
-      name: "Hafiz Abdullah Khan",
-      place: "English Literature",
-      image: "https://static.vecteezy.com/system/resources/thumbnails/070/246/232/small/muslim-man-in-white-shirt-and-hat-with-hands-outstretched-photo.JPG"
-
-    },
-    {
-      id: 4,
-      name: "Dr. Omar Al-Mansouri",
-      place: "History Department",
-      image: "https://static.vecteezy.com/system/resources/previews/059/915/145/non_2x/a-muslim-man-with-a-beard-and-white-turban-free-png.png"
-    },
-    {
-      id: 5,
-      name: "Sheikh Hassan Ali",
-      place: "Chemistry Department",
-      image: "https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTA5L3Jhd3BpeGVsb2ZmaWNlMTJfbXVzbGltX21hbl91c2luZ19pcGFkX2xvb2tfYXRfY2FtZXJhX2hhcHB5X2lzb18xNjJmNWE0Yy1hZjJjLTQzMDQtYTQ4MC1hYjI2YzcwZGM0ZGEucG5n.png"
-    },
-    {
-      id: 6,
-      name: "Yusuf Ahmed",
-      place: "Computer Science",
-      image: "https://image.made-in-china.com/202f0j00KeLiuPDRgrzm/Muslim-Arabic-Dubai-Saudi-Arabia-Men-Turban.webp"
-    }
+{
+  id:1,
+    name: " Yusuf Ahmed",
+    place: "Kozhikode",
+    phone_no: "+60 12 678 9012",
+    islamic_qualification: "PhD in Hadith Studies - International Islamic University",
+    academic_qualification: "M.Sc in Mathematics",
+    image: "https://image.made-in-china.com/202f0j00KeLiuPDRgrzm/Muslim-Arabic-Dubai-Saudi-Arabia-Men-Turban.webp"
+  },
+ 
+  {
+    id:2,
+    name: "Hafiz Abdullah ",
+    place: "Malappuram",
+    phone_no: "+92 300 345 6789",
+    islamic_qualification: "Hafiz-ul-Quran, Sanad in Tajweed",
+    academic_qualification: "M.Sc in Computer Science",
+    image: "https://static.vecteezy.com/system/resources/thumbnails/070/246/232/small/muslim-man-in-white-shirt-and-hat-with-hands-outstretched-photo.JPG"
+  },
+ 
+  {
+    id:3,
+    name: "Hassan Ali",
+    place: "Malappuram",
+    phone_no: "+90 533 567 8901",
+    islamic_qualification: "Ijazah in Qira'at, Advanced Tafsir",
+    academic_qualification: "BA in History",
+    image: "https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTA5L3Jhd3BpeGVsb2ZmaWNlMTJfbXVzbGltX21hbl91c2luZ19pcGFkX2xvb2tfYXRfY2FtZXJhX2hhcHB5X2lzb18xNjJmNWE0Yy1hZjJjLTQzMDQtYTQ4MC1hYjI2YzcwZGM0ZGEucG5n.png"
+  },
   ]
 
   // Sample attendance records for different dates

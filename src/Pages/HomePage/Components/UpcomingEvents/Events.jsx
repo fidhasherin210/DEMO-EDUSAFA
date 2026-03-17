@@ -8,17 +8,9 @@ function Events() {
 
   // Sample upcoming events data for 2026
   const sampleEvents = [
+   
     {
       id: 1,
-      event: "Annual Sports Day 2026",
-      date: "2026-04-15",
-      time: "9:00 AM - 4:00 PM",
-      description: "Join us for the Annual Sports Day featuring various athletic competitions including running races, long jump, high jump, and team sports. All parents are cordially invited to cheer for their children.",
-      location: "School Main Ground",
-      posters: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&auto=format&fit=crop"
-    },
-    {
-      id: 2,
       event: "Parent-Teacher Meeting",
       date: "2026-04-20",
       time: "10:00 AM - 2:00 PM",
@@ -27,7 +19,7 @@ function Events() {
       posters: "https://www.aljumuah.com/wp-content/uploads/2022/05/The-Role-of-Parents-in-Training-Their-Children-1.jpg"
     },
     {
-      id: 3,
+      id: 2,
       event: "Science Exhibition 2026",
       date: "2026-04-25",
       time: "11:00 AM - 3:00 PM",
@@ -36,7 +28,7 @@ function Events() {
       posters: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&auto=format&fit=crop"
     },
     {
-      id: 4,
+      id: 3,
       event: "Cultural Fest 2026",
       date: "2026-04-28",
       time: "5:00 PM - 8:00 PM",
@@ -44,17 +36,9 @@ function Events() {
       location: "School Auditorium",
       posters: "https://images.unsplash.com/photo-1698967406711-ede239b6c07e?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
+   
     {
-      id: 5,
-      event: "Educational Field Trip",
-      date: "2026-05-05",
-      time: "8:00 AM - 5:00 PM",
-      description: "Field trip to the Science Museum for grades 6-8. Students will explore interactive exhibits and learn about scientific concepts through hands-on experiences. Permission slips must be submitted by May 3rd.",
-      location: "City Science Museum",
-      posters: "https://images.unsplash.com/photo-1564981797816-1043664bf78d?w=800&auto=format&fit=crop"
-    },
-    {
-      id: 6,
+      id: 4,
       event: "Summer Vacation Begins",
       date: "2026-05-10",
       time: "All Day",
@@ -63,7 +47,7 @@ function Events() {
       posters: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop"
     },
     {
-      id: 7,
+      id: 5,
       event: "Book Fair 2026",
       date: "2026-04-18",
       time: "9:00 AM - 4:00 PM",
@@ -71,17 +55,9 @@ function Events() {
       location: "School Library",
       posters: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&auto=format&fit=crop"
     },
+   
     {
-      id: 8,
-      event: "Career Counseling Session",
-      date: "2026-04-22",
-      time: "2:00 PM - 4:00 PM",
-      description: "Career counseling session for grade 10 and 12 students. Expert counselors will discuss various career paths, college admissions, and future opportunities.",
-      location: "Conference Hall",
-      posters: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop"
-    },
-    {
-      id: 9,
+      id: 6,
       event: "Ramadan Celebration",
       date: "2026-03-10",
       time: "2:00 PM - 5:00 PM",
@@ -90,7 +66,7 @@ function Events() {
       posters: "https://images.unsplash.com/photo-1612176894219-8493bf9b9b1c?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
-      id: 10,
+      id: 7,
       event: "Eid-ul-Fitr Celebration",
       date: "2026-03-25",
       time: "9:00 AM - 12:00 PM",
@@ -98,15 +74,7 @@ function Events() {
       location: "School Main Ground",
       posters: "https://plus.unsplash.com/premium_photo-1770455065741-2f643f2b1b97?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
-    {
-      id: 11,
-      event: "Annual Day & Award Ceremony",
-      date: "2026-03-30",
-      time: "4:00 PM - 8:00 PM",
-      description: "Annual day celebration with award distribution for academic excellence, cultural performances, and recognition of student achievements throughout the year.",
-      location: "School Auditorium",
-      posters: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&auto=format&fit=crop"
-    }
+   
   ]
 
   // Initialize events with sample data

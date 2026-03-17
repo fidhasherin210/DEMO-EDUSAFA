@@ -29,25 +29,17 @@ function EditClasses() {
     { id: 3, std: '3', class_teacher: '3' },
     { id: 4, std: '4', class_teacher: '4' },
     { id: 5, std: '5', class_teacher: '5' },
-    { id: 6, std: '6', class_teacher: '6' },
-    { id: 7, std: '7', class_teacher: '7' },
-    { id: 8, std: '8', class_teacher: '8' },
-    { id: 9, std: '9', class_teacher: '9' },
-    { id: 10, std: '10', class_teacher: '10' },
+
   ]
 
   // Sample teachers data
   const sampleTeachers = [
-    { id: 1, name: 'Mrs. Smith' },
-    { id: 2, name: 'Mr. Johnson' },
-    { id: 3, name: 'Ms. Williams' },
-    { id: 4, name: 'Dr. Brown' },
-    { id: 5, name: 'Mrs. Davis' },
-    { id: 6, name: 'Mr. Miller' },
-    { id: 7, name: 'Ms. Wilson' },
-    { id: 8, name: 'Mrs. Moore' },
-    { id: 9, name: 'Mr. Taylor' },
-    { id: 10, name: 'Ms. Anderson' },
+    { id: 1, name: ' Yusuf Ahmed' },
+    { id: 2, name: 'Aboobakkar' },
+    { id: 3, name: 'Abdullah' },
+    { id: 4, name: 'Abdul Majeed' },
+    { id: 5, name: 'Omar Abdullah' },
+   
   ]
 
   // Load sample data

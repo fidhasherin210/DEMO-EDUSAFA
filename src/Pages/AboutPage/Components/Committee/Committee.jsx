@@ -18,35 +18,23 @@ function Committee() {
  {
     name: "Yusuf Ali",
     position: "Chairperson",
-    place: "New York, USA",
+    place: "kozhikode",
     number: "+1 (555) 123-4567",
     image: "https://plus.unsplash.com/premium_photo-1726863202242-a5f18a2ae44f?q=80&w=1017&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
   },
   {
     name: "Ibrahim Khalid",
     position: "Vice Chairperson",
-    place: "Singapore",
+    place: "Malappuram",
     number: "+65 9123 4567",
     image: "https://plus.unsplash.com/premium_photo-1770674918463-685eafd1e6b5?q=80&w=1039&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
   },
-  {
-    name: " Saeed Rahman",
-    position: "Secretary",
-    place: "London, UK",
-    number: "+44 20 7946 0123",
-    image: "https://images.unsplash.com/photo-1645864833809-39c64b85e65d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-  },
-  {
-    name: "Tariq Mahmood",
-    position: "Treasurer",
-    place: "Toronto, Canada",
-    number: "+1 (416) 555-7890",
-    image: "https://images.unsplash.com/photo-1641106269337-2a0a3a8e73f3?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-  },
+ 
+ 
   {
     name: "Omar Abdullah",
     position: "Executive Member",
-    place: "Mumbai, India",
+    place: "Kozhikode",
     number: "+91 98765 43210",
     image: "https://images.unsplash.com/photo-1627091908405-30bd51eec537?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
   },
@@ -70,9 +58,9 @@ function Committee() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+    <div className=" bg-black text-white relative overflow-hidden">
       {/* Hero Section */}
-      <div className="relative z-10 px-4 pt-8 pb-6 sm:px-6 lg:px-8">
+      <div className="relative z-10 px-4 pt-4 pb-6 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-yellow-500/10 px-4 py-2 rounded-full border border-yellow-500/20 mb-4">
             <Crown className="w-4 h-4 text-yellow-400" />

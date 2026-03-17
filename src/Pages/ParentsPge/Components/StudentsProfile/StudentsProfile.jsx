@@ -22,26 +22,7 @@ function StudentsProfile() {
   const navigate = useNavigate();
 
   // Sample Data
-  const sampleStudentData = {
-    student: {
-      name: "John Doe",
-      image: null, // Set to null to use avatar fallback
-      place: "New York",
-      gender: "M",
-      reg_no: "REG2024001",
-      standard: "10th Grade",
-      admission_date: "2024-06-01",
-      blood_group: "O+",
-      dob: "2010-05-15"
-    },
-    parent: {
-      name: "Robert Doe",
-      occupation: "Software Engineer",
-      number: "+1 234-567-8900",
-      address: "123 Main Street, New York, NY 10001"
-    }
-  };
-
+  
   useEffect(() => {
     // Simulate loading data
     const loadStudentData = () => {

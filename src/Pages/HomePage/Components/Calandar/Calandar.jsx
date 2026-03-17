@@ -18,15 +18,7 @@ function EventsCalendar() {
 
   // Sample events data with current and future dates
   const sampleEvents = [
-    {
-      id: 1,
-      event: "Annual Sports Day",
-      date: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 5).toISOString().split('T')[0],
-      time: "9:00 AM - 4:00 PM",
-      description: "Annual sports day competition with various athletic events including running, jumping, and team sports. All parents are cordially invited to cheer for their children.",
-      location: "School Main Ground",
-      posters: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&auto=format&fit=crop"
-    },
+  
     {
       id: 2,
       event: "Parent-Teacher Meeting",

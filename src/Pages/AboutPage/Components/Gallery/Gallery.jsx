@@ -5,8 +5,8 @@ import { Camera, ChevronLeft, ChevronRight, X } from 'lucide-react'
 const sampleGallery = [
   {
     id: 1,
-    title: "Annual Sports Day 2024",
-    image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&h=600&fit=crop"
+    title: "Moulid Competition",
+    image: "https://ceyoosbookworld.com/cdn/shop/collections/rn-image_picker_lib_temp_9d6095bf-b8b7-4297-a408-90f756a29491.jpg?v"
   },
   {
     id: 2,
@@ -20,8 +20,8 @@ const sampleGallery = [
   },
   {
     id: 4,
-    title: "Cultural Fest 2024",
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop"
+    title: "Milad-un-Nabi program",
+    image: "https://nationaltoday.com/wp-content/uploads/2020/10/Milad-an-Nabi-Mawlid-1200x834.jpg"
   },
   {
     id: 5,
@@ -31,12 +31,12 @@ const sampleGallery = [
   {
     id: 6,
     title: "Art Competition",
-    image: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=800&h=600&fit=crop"
+    image: "https://nuriaart.com/wp-content/uploads/2019/11/DSC_0064-940x1024.jpg"
   },
  {
   id: 7,
   title: "Ziyarath Program",
-  image: "https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=800&h=600&fit=crop"
+  image: "https://alqadhiriyaziyarath.in/wp-content/uploads/2024/01/1.jpg"
 },
   {
     id: 8,
@@ -77,7 +77,7 @@ function Gallery() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+    <div className=" bg-black text-white relative overflow-hidden">
       {/* Header Section */}
       <div className="relative z-10 pt-8">
         <div className="max-w-6xl mx-auto text-center">

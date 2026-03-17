@@ -9,70 +9,35 @@ import {
 
 const MarkTchrAttendancAuth = () => {
   const [teachers, setTeachers] = useState([
-{
-      id: 1,
-      name: "Ustadh Abdul Rahman Al-Qasim",
-      image: "https://ui-avatars.com/api/?name=Abdul+Rahman&background=2E7D32&color=fff&size=200&bold=true&length=2",
-      subject: "Fiqh",
-      qualification: "Ph.D. in Islamic Jurisprudence",
-      experience: "15 years"
-    },
-    {
-      id: 2,
-      name: "Ustadhah Fatima bint Yusuf",
-      image: "https://ui-avatars.com/api/?name=Fatima+Yusuf&background=8B4513&color=fff&size=200&bold=true&length=2",
-      subject: "Akhlaq",
-      qualification: "M.A. Islamic Ethics",
-      experience: "12 years"
-    },
-    {
-      id: 3,
-      name: "Sheikh Muhammad Ibrahim",
-      image: "https://ui-avatars.com/api/?name=Muhammad+Ibrahim&background=1565C0&color=fff&size=200&bold=true&length=2",
-      subject: "Tajweed",
-      qualification: "Hafiz & Qari",
-      experience: "18 years"
-    },
-    {
-      id: 4,
-      name: "Ustadhah Aisha Siddiqua",
-      image: "https://ui-avatars.com/api/?name=Aisha+Siddiqua&background=9C27B0&color=fff&size=200&bold=true&length=2",
-      subject: "Tareekh",
-      qualification: "Ph.D. Islamic History",
-      experience: "10 years"
-    },
-    {
-      id: 5,
-      name: "Qari Omar Farooq Hassan",
-      image: "https://ui-avatars.com/api/?name=Omar+Farooq&background=0077BE&color=fff&size=200&bold=true&length=2",
-      subject: "Quran",
-      qualification: "Qari & Hafiz",
-      experience: "14 years"
-    },
-    {
-      id: 6,
-      name: "Ustadhah Khadija Begum",
-      image: "https://ui-avatars.com/api/?name=Khadija+Begum&background=D32F2F&color=fff&size=200&bold=true&length=2",
-      subject: "Arabic",
-      qualification: "M.A. Arabic Literature",
-      experience: "9 years"
-    },
-    {
-      id: 7,
-      name: "Hafiz Abdullah Malik",
-      image: "https://ui-avatars.com/api/?name=Abdullah+Malik&background=283593&color=fff&size=200&bold=true&length=2",
-      subject: "Tajweed",
-      qualification: "Hafiz & Qari",
-      experience: "11 years"
-    },
-    {
-      id: 8,
-      name: "Ustadhah Zainab Khatoon",
-      image: "https://ui-avatars.com/api/?name=Zainab+Khatoon&background=4A148C&color=fff&size=200&bold=true&length=2",
-      subject: "Fiqh",
-      qualification: "M.A. Islamic Studies",
-      experience: "8 years"
-    },
+ {
+  id:1,
+    name: " Yusuf Ahmed",
+    place: "Kozhikode",
+    phone_no: "+60 12 678 9012",
+    islamic_qualification: "PhD in Hadith Studies - International Islamic University",
+    academic_qualification: "M.Sc in Mathematics",
+    image: "https://image.made-in-china.com/202f0j00KeLiuPDRgrzm/Muslim-Arabic-Dubai-Saudi-Arabia-Men-Turban.webp"
+  },
+ 
+  {
+    id:2,
+    name: "Hafiz Abdullah ",
+    place: "Malappuram",
+    phone_no: "+92 300 345 6789",
+    islamic_qualification: "Hafiz-ul-Quran, Sanad in Tajweed",
+    academic_qualification: "M.Sc in Computer Science",
+    image: "https://static.vecteezy.com/system/resources/thumbnails/070/246/232/small/muslim-man-in-white-shirt-and-hat-with-hands-outstretched-photo.JPG"
+  },
+ 
+  {
+    id:3,
+    name: "Hassan Ali",
+    place: "Malappuram",
+    phone_no: "+90 533 567 8901",
+    islamic_qualification: "Ijazah in Qira'at, Advanced Tafsir",
+    academic_qualification: "BA in History",
+    image: "https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTA5L3Jhd3BpeGVsb2ZmaWNlMTJfbXVzbGltX21hbl91c2luZ19pcGFkX2xvb2tfYXRfY2FtZXJhX2hhcHB5X2lzb18xNjJmNWE0Yy1hZjJjLTQzMDQtYTQ4MC1hYjI2YzcwZGM0ZGEucG5n.png"
+  },
   ])
   
   const [selectedDate, setSelectedDate] = useState('')

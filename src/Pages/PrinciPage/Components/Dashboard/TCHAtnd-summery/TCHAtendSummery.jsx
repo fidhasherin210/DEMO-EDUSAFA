@@ -11,7 +11,7 @@ function TCHAtendSummery() {
   const sampleAttendance = {
     present: 4,
     absent: 1,
-    present_percentage: 84,
+    present_percentage: 94,
     absent_percentage: 16,
     total_teachers: 5,
     date: new Date().toISOString().split('T')[0]
@@ -182,7 +182,7 @@ function TCHAtendSummery() {
               
               <div className="flex items-end justify-between">
                 <div>
-                  <p className="text-lg font-bold text-emerald-700 leading-none">{attendance.present || 0}</p>
+                  <p className="text-lg font-bold text-emerald-700 leading-none">{attendance.present || 90}</p>
                   <p className="text-[9px] md:text-xs text-gray-400 mt-0.5">Present Today</p>
                 </div>
                 

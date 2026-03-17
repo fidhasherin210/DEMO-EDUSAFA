@@ -31,7 +31,7 @@ const SAMPLE_STUDENTS = [
   {
     id: 101,
     name: "Ahmed Raza",
-    standard: "10 ",
+    standard: "1 ",
     place: "Malappuram",
     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s",
     attendance_percentage: 92,
@@ -40,7 +40,7 @@ const SAMPLE_STUDENTS = [
   {
     id: 102,
     name: "Fatima Zahra",
-    standard: "8 ",
+    standard: "2",
     place: "Kozhikode",
     image: "https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8yMl9waG90b19vZl9hX21pZGRsZV9zY2hvb2xfbXVzbGltX2dpcmxfaG9sZGluZ180YWE1ZDdjMS1mZDU2LTQ0OWMtODVhMy1hNmUzYTc4ZWRjMDRfMS5wbmc.png",
     attendance_percentage: 88,

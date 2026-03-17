@@ -123,11 +123,11 @@ function ClassRoomPageTCHR() {
                 </span>
 
                 {/* Notification badge */}
-                {card.count > 0 && card.label === "Add Notification" && (
+                {/* {card.count > 0 && card.label === "Add Notification" && (
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
                     {card.count}
                   </span>
-                )}
+                )} */}
               </div>
             </Link>
           )

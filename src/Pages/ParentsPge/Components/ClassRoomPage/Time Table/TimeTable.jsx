@@ -24,86 +24,27 @@ function TimeTable() {
   const sampleTimetables = {
     // Class 5 Timetables
     101: {
-      class: "5 A",
+      class: "1",
       timetable: "https://images.unsplash.com/photo-1506784365847-bbad939e9335?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
       exam_timetable: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
     },
     102: {
-      class: "5 A",
+      class: "2",
       timetable: "https://images.unsplash.com/photo-1506784365847-bbad939e9335?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
       exam_timetable: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
     },
     // Class 5 B
     201: {
-      class: "5 B",
+      class: "3",
       timetable: "https://images.unsplash.com/photo-1506784365847-bbad939e9335?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
       exam_timetable: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
     },
     202: {
-      class: "5 B",
+      class: "4",
       timetable: "https://images.unsplash.com/photo-1506784365847-bbad939e9335?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
       exam_timetable: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
     },
-    // Class 6 A
-    301: {
-      class: "6 A",
-      timetable: "https://images.unsplash.com/photo-1506784365847-bbad939e9335?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-      exam_timetable: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-    },
-    302: {
-      class: "6 A",
-      timetable: "https://images.unsplash.com/photo-1506784365847-bbad939e9335?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-      exam_timetable: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-    },
-    303: {
-      class: "6 A",
-      timetable: "https://images.unsplash.com/photo-1506784365847-bbad939e9335?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-      exam_timetable: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-    },
-    // Class 6 B
-    401: {
-      class: "6 B",
-      timetable: "https://images.unsplash.com/photo-1506784365847-bbad939e9335?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-      exam_timetable: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-    },
-    402: {
-      class: "6 B",
-      timetable: "https://images.unsplash.com/photo-1506784365847-bbad939e9335?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-      exam_timetable: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-    },
-    // Class 7 A
-    501: {
-      class: "7 A",
-      timetable: "https://images.unsplash.com/photo-1506784365847-bbad939e9335?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-      exam_timetable: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-    },
-    502: {
-      class: "7 A",
-      timetable: "https://images.unsplash.com/photo-1506784365847-bbad939e9335?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-      exam_timetable: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-    },
-    // Class 7 B (No exam timetable to test fallback)
-    601: {
-      class: "7 B",
-      timetable: "https://images.unsplash.com/photo-1506784365847-bbad939e9335?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-      // exam_timetable intentionally missing
-    },
-    602: {
-      class: "7 B",
-      timetable: "https://images.unsplash.com/photo-1506784365847-bbad939e9335?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-      // exam_timetable intentionally missing
-    },
-    // Class 8 A (No regular timetable to test fallback)
-    701: {
-      class: "8 A",
-      // timetable intentionally missing
-      exam_timetable: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-    },
-    702: {
-      class: "8 A",
-      // timetable intentionally missing
-      exam_timetable: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-    }
+   
   }
 
   useEffect(() => {

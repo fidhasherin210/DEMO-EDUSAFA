@@ -5,8 +5,8 @@ const TeacherInfoAuth = () => {
   const [teachers, setTeachers] = useState([
     {
       id: 1,
-      name: 'Prof. Yusuf Ahmed',
-      place: 'Kuala Lumpur, Malaysia',
+      name: ' Yusuf Ahmed',
+      place: 'Kozhikode',
       image: 'https://image.made-in-china.com/202f0j00KeLiuPDRgrzm/Muslim-Arabic-Dubai-Saudi-Arabia-Men-Turban.webp',
       reg_no: 'TCH001',
       father_name: 'Ahmed Abdullah',
@@ -23,8 +23,8 @@ const TeacherInfoAuth = () => {
     },
     {
       id: 2,
-      name: 'Dr. Abdul Rahman Al-Qasim',
-      place: 'Medina, Saudi Arabia',
+      name: ' Abdul Rahman Al-Qasim',
+      place: 'Malappuram',
       image: 'https://m.media-amazon.com/images/I/51Wz9iQFntL._AC_UY1100_.jpg',
       reg_no: 'TCH002',
       father_name: 'Mohammed Al-Qasim',
@@ -41,8 +41,8 @@ const TeacherInfoAuth = () => {
     },
     {
       id: 3,
-      name: 'Prof. Muhammad Ibrahim',
-      place: 'Cairo, Egypt',
+      name: 'Muhammad Ibrahim',
+      place: 'Kozhikode',
       image: 'https://i.etsystatic.com/9507418/r/il/9670c1/1183312141/il_570xN.1183312141_mdvt.jpg',
       reg_no: 'TCH003',
       father_name: 'Ibrahim Hassan',
