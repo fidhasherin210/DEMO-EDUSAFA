@@ -10,8 +10,8 @@ export default defineConfig({
       // apple-touch-icon.png നിങ്ങളുടെ public ഫോൾഡറിൽ ഉണ്ടെന്ന് ഉറപ്പുവരുത്തുക
       includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
-        name: 'DEMO',
-        short_name: 'DEMO',
+        name: 'Edusafa',
+        short_name: 'Edusafa',
         description: 'Edusafa Demo Madrasa App',
         theme_color: '#ffffff',
         background_color: '#ffffff',
