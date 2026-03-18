@@ -424,7 +424,7 @@ const StdAttendanceAuth = () => {
         {selectedStudent && (
           <div className="bg-white rounded-2xl shadow-lg p-2 mt-4 border border-gray-100">
             {/* Student Header */}
-            <div className="flex items-center gap-4 mb-6 p-2 bg-gradient-to-r from-blue-600 to-purple-500 rounded-xl text-white">
+            <div className="flex items-center gap-4 mb-6 p-2 bg-gradient-to-r from-blue-600 to-sky-500 rounded-xl text-white">
               <div className="flex items-center gap-4 flex-1">
                 <img
                   src={getImageUrl(selectedStudent.image)}

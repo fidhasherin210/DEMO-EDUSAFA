@@ -8,7 +8,7 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
   const [userDetails, setUserDetails] = useState({
     name: '',
     phone: '',
-    place: ''
+    place: '',
   })
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -16,39 +16,39 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
 
   const validateForm = () => {
     const newErrors = {}
-    
+
     if (!userDetails.name.trim()) {
       newErrors.name = 'Name is required'
     } else if (userDetails.name.length < 2) {
       newErrors.name = 'Name must be at least 2 characters'
     }
-    
+
     if (!userDetails.phone.trim()) {
       newErrors.phone = 'Phone number is required'
     } else if (!/^\d{10}$/.test(userDetails.phone.replace(/\D/g, ''))) {
       newErrors.phone = 'Enter a valid 10-digit phone number'
     }
-    
+
     if (!userDetails.place.trim()) {
       newErrors.place = 'Place is required'
     } else if (userDetails.place.length < 2) {
       newErrors.place = 'Place must be at least 2 characters'
     }
-    
+
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
-    setUserDetails(prev => ({
+    setUserDetails((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }))
     if (errors[name]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: ''
+        [name]: '',
       }))
     }
     if (submitError) {
@@ -65,13 +65,13 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
             name: userData.name,
             phone: userData.phone.replace(/\D/g, ''),
             place: userData.place,
-            created_at: new Date().toISOString()
-          }
+            created_at: new Date().toISOString(),
+          },
         ])
         .select()
 
       if (error) throw error
-      
+
       return { success: true, data }
     } catch (error) {
       console.error('Error saving user:', error.message)
@@ -87,7 +87,7 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
         .eq('phone', phone.replace(/\D/g, ''))
 
       if (error) throw error
-      
+
       return { exists: data && data.length > 0, data }
     } catch (error) {
       console.error('Error checking user:', error.message)
@@ -97,7 +97,7 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+
     if (!validateForm()) {
       return
     }
@@ -107,9 +107,9 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
 
     try {
       const cleanPhone = userDetails.phone.replace(/\D/g, '')
-      
+
       const existingUser = await checkExistingUser(cleanPhone)
-      
+
       if (existingUser.error) {
         setSubmitError('Error checking user. Please try again.')
         setIsSubmitting(false)
@@ -117,26 +117,27 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
       }
 
       let userData
-      
+
       if (existingUser.exists) {
         userData = existingUser.data[0]
       } else {
         const result = await saveUserToSupabase({
           ...userDetails,
-          phone: cleanPhone
+          phone: cleanPhone,
         })
-        
+
         if (!result.success) {
-          setSubmitError(result.error || 'Failed to save user. Please try again.')
+          setSubmitError(
+            result.error || 'Failed to save user. Please try again.',
+          )
           setIsSubmitting(false)
           return
         }
-        
+
         userData = result.data[0]
       }
 
       onSubmit(userData)
-      
     } catch (error) {
       console.error('Submit error:', error)
       setSubmitError('An unexpected error occurred. Please try again.')
@@ -150,24 +151,19 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 backdrop-blur-sm">
       <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-sky-500/20 to-cyan-500/20 backdrop-blur-md" />
-      
+
       <div className="relative w-full max-w-md transform transition-all duration-500 scale-100">
         <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
-          
           <div className="h-1.5 w-full bg-gradient-to-r from-blue-600 to-sky-500" />
-          
+
           <div className="p-8">
             <div className="text-center">
-              <img 
-                src={logo} 
-                alt="EduSafa" 
-                className="h-16 mx-auto"
-              />
+              <img src={logo} alt="EduSafa" className="h-16 mx-auto" />
             </div>
             <p className="text-center text-gray-600 mb-8 text-sm">
               Welcome to edusafa demo app
-            </p> 
-            
+            </p>
+
             {submitError && (
               <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
                 <p className="text-red-600 text-sm flex items-center">
@@ -176,7 +172,7 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
                 </p>
               </div>
             )}
-            
+
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <input
@@ -184,7 +180,7 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
                   name="name"
                   value={userDetails.name}
                   onChange={handleInputChange}
-                  placeholder="Enter your full name"
+                  placeholder="Enter your name"
                   autoComplete="off"
                   disabled={isSubmitting}
                   className={`w-full px-4 py-3 bg-gray-50 border ${
@@ -199,7 +195,7 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
                   </p>
                 )}
               </div>
-              
+
               <div>
                 <div className="relative">
                   <input
@@ -207,7 +203,7 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
                     name="phone"
                     value={userDetails.phone}
                     onChange={handleInputChange}
-                    placeholder="Enter your phone number"
+                    placeholder="Enter phone number"
                     maxLength="10"
                     autoComplete="off"
                     disabled={isSubmitting}
@@ -218,20 +214,20 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
                     }`}
                   />
                 </div>
-                
+
                 {errors.phone && (
-                  <p className="text-red-500 text-xs mt-1">
-                    ⚠️ {errors.phone}
-                  </p>
+                  <p className="text-red-500 text-xs mt-1">⚠️ {errors.phone}</p>
                 )}
-                
-                {!errors.phone && userDetails.phone && userDetails.phone.length === 10 && (
-                  <p className="text-green-600 text-xs mt-1">
-                    ✓ Valid phone number
-                  </p>
-                )}
+
+                {!errors.phone &&
+                  userDetails.phone &&
+                  userDetails.phone.length === 10 && (
+                    <p className="text-green-600 text-xs mt-1">
+                      ✓ Valid phone number
+                    </p>
+                  )}
               </div>
-              
+
               <div>
                 <input
                   type="text"
@@ -253,22 +249,38 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
                   </p>
                 )}
               </div>
-              
+
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3.5 px-4 bg-gradient-to-r from-blue-600 to-sky-500 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-sky-600 transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-lg hover:shadow-xl mt-6 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                className="w-full py-3.5 text-xs px-4 bg-gradient-to-r from-blue-600 to-sky-500 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-sky-600 transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-lg hover:shadow-xl mt-6 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 {isSubmitting ? (
                   <div className="flex items-center justify-center">
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
                     </svg>
                     Processing...
                   </div>
                 ) : (
-                  'Continue to Dashboard →'
+                  'Continue to Dashboard'
                 )}
               </button>
             </form>
@@ -326,18 +338,17 @@ function MainPage() {
   const handleLoginSubmit = async (userDetails) => {
     try {
       setIsLoading(true)
-      
+
       // Store user data in state and localStorage
       setUserData(userDetails)
       localStorage.setItem('edusafa_user', JSON.stringify(userDetails))
-      
+
       // Hide modal and show main content
       setShowLoginModal(false)
       setIsVisible(true)
-      
+
       // You can also send this data to your backend if needed
       console.log('User logged in:', userDetails)
-      
     } catch (error) {
       console.error('Login failed:', error)
       setError('Login failed. Please try again.')
@@ -366,7 +377,7 @@ function MainPage() {
         ? '/parent/dashboard'
         : '/parent/login',
     },
-    
+
     {
       id: 'teacher',
       title: 'Teacher',
@@ -412,14 +423,13 @@ function MainPage() {
 
   return (
     <div className="min-h-screen bg-white relative overflow-hidden font-sans">
-      <LoginModal 
-        show={showLoginModal} 
+      <LoginModal
+        show={showLoginModal}
         onSubmit={handleLoginSubmit}
         isLoading={isLoading}
       />
 
       {/* User Info Bar - Show when logged in */}
-      
 
       {error && (
         <div className="fixed top-4 right-4 z-50 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg shadow-lg">
@@ -447,7 +457,11 @@ function MainPage() {
       )}
 
       {/* Main Content */}
-      <div className={`relative z-10 container mx-auto px-4 py-4 min-h-screen flex flex-col ${showLoginModal ? 'blur-sm pointer-events-none' : ''}`}>
+      <div
+        className={`relative z-10 container mx-auto px-4 py-4 min-h-screen flex flex-col ${
+          showLoginModal ? 'blur-sm pointer-events-none' : ''
+        }`}
+      >
         {/* Top Bar */}
         <div
           className={`flex justify-between items-center w-full max-w-md md:max-w-2xl lg:max-w-3xl mx-auto mb-4 md:mb-5 lg:mb-6 transform transition-all duration-700 ${
@@ -481,8 +495,10 @@ function MainPage() {
         </div>
 
         <div
-          className={`flex justify-center mt-4 items-center mb-6 md:mb-8 lg:mb-10 transform transition-all duration-700 delay-200 ${
-            isVisible && !showLoginModal ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          className={`flex justify-center mt-2 items-center mb-1 md:mb-8 lg:mb-10 transform transition-all duration-700 delay-200 ${
+            isVisible && !showLoginModal
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-10'
           }`}
         >
           <img
@@ -491,7 +507,13 @@ function MainPage() {
             className="h-24 sm:h-28 md:h-32 lg:h-36 xl:h-40 w-auto object-contain"
           />
         </div>
-
+        <p className="mb-2 px-4 py-3 text-[13px] md:text-xs max-w-md md:max-w-2xl lg:max-w-3xl mx-auto text-center  text-slate-500 leading-relaxed bg-white/70 backdrop-blur-md border border-slate-200/60 rounded-xl  shadow-sm hover:shadow-md transition-all duration-300">
+          This is a demo version of the Edusafy app. It is only meant to help
+          you understand how the original app works. This app should not be used
+          for any other purposes. All the people, images, and data shown here
+          are purely fictional. The original app may have differences compared
+          to this demo version.
+        </p>
         {/* Role Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 lg:gap-5 max-w-md md:max-w-3xl lg:max-w-4xl mx-auto w-full mb-5 md:mb-6 lg:mb-7">
           {roles.map((role, index) => (
@@ -537,7 +559,9 @@ function MainPage() {
         {/* Quick Stats */}
         <div
           className={`grid grid-cols-4 gap-2 md:gap-3 lg:gap-4 max-w-md md:max-w-2xl lg:max-w-3xl mx-auto w-full md:mb-5 lg:mb-6 transition-all duration-700 delay-1000 ${
-            isVisible && !showLoginModal ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            isVisible && !showLoginModal
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-10'
           }`}
         >
           {[
@@ -593,7 +617,7 @@ function MainPage() {
         >
           <div className="max-w-md md:max-w-2xl lg:max-w-3xl mx-auto w-full border-t border-slate-200/60 pt-1">
             <p className="text-slate-400 text-[12px] md:text-sm flex items-center justify-center space-x-2">
-              <span>© 2025 EduSmart</span>
+              <span>© 2026 Edusafa Demo</span>
               <span className="hidden md:inline w-1 h-1 rounded-full bg-slate-300"></span>
               <span className="hidden md:inline">Secure Learning Platform</span>
             </p>

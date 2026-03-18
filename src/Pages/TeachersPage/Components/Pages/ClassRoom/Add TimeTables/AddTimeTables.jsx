@@ -10,11 +10,11 @@ import {
 function AddTimeTables() {
   // Sample data for classes
   const sampleClasses = [
-    { id: 1, std: 'Class 1', has_time_table: true, has_exam_time_table: false, time_table_url: '/sample/class1-timetable.pdf', exam_time_table_url: null },
-    { id: 2, std: 'Class 2', has_time_table: false, has_exam_time_table: true, time_table_url: null, exam_time_table_url: '/sample/class2-exam-timetable.pdf' },
-    { id: 3, std: 'Class 3', has_time_table: true, has_exam_time_table: true, time_table_url: '/sample/class3-timetable.pdf', exam_time_table_url: '/sample/class3-exam-timetable.pdf' },
-    { id: 4, std: 'Class 4', has_time_table: false, has_exam_time_table: false, time_table_url: null, exam_time_table_url: null },
-    { id: 5, std: 'Class 5', has_time_table: true, has_exam_time_table: false, time_table_url: '/sample/class5-timetable.pdf', exam_time_table_url: null },
+    { id: 1, std: ' 1', has_time_table: true, has_exam_time_table: false, time_table_url: '/sample/class1-timetable.pdf', exam_time_table_url: null },
+    { id: 2, std: ' 2', has_time_table: false, has_exam_time_table: true, time_table_url: null, exam_time_table_url: '/sample/class2-exam-timetable.pdf' },
+    { id: 3, std: ' 3', has_time_table: true, has_exam_time_table: true, time_table_url: '/sample/class3-timetable.pdf', exam_time_table_url: '/sample/class3-exam-timetable.pdf' },
+    { id: 4, std: ' 4', has_time_table: false, has_exam_time_table: false, time_table_url: null, exam_time_table_url: null },
+    { id: 5, std: ' 5', has_time_table: true, has_exam_time_table: false, time_table_url: '/sample/class5-timetable.pdf', exam_time_table_url: null },
     
     
   ]
@@ -120,25 +120,26 @@ function AddTimeTables() {
         </div>
 
         {/* Class Selection */}
+        {/* Class Selection */}
         <div className="px-1 mx-auto -mt-3">
           <div className="max-w-8xl p-1 mx-auto mb-2">
             <div className="p-6 border shadow-xl bg-white/90 backdrop-blur-xl border-white/20 rounded-2xl">
               <div className="flex items-center gap-3 mb-6">
                 <BookOpen className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
                 <h2 className="text-xs font-semibold text-blue-600 md:text-lg">
-                  Select Your Class
+                  Select Class
                 </h2>
               </div>
 
               {allClasses.length === 0 ? (
                 <div className="py-8 text-center text-gray-500">
-                  No classes assigned to you
+                  No classes available
                 </div>
               ) : (
                 <div className="grid grid-cols-4 gap-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                  {allClasses.map((classData) => (
+                  {allClasses.map((classData, index) => (
                     <button
-                      key={classData.id}
+                      key={classData.id || index}
                       onClick={() => handleClassSelect(classData)}
                       className={`group relative overflow-hidden rounded-xl p-2 md:p-4 font-medium transition-all duration-300 ${
                         selectedClass?.id === classData.id
@@ -153,12 +154,10 @@ function AddTimeTables() {
                         <div className="text-xs font-bold md:text-sm">
                           {classData.std}
                         </div>
-                        {classData.has_time_table && (
-                          <div className="mt-1 text-[8px] md:text-[10px] text-green-600">
-                            ✓ Timetable
-                          </div>
-                        )}
                       </div>
+                      {selectedClass?.id !== classData.id && (
+                        <div className="absolute inset-0 transition-opacity opacity-0 bg-gradient-to-br from-blue-600/5 to-purple-600/5 group-hover:opacity-100"></div>
+                      )}
                     </button>
                   ))}
                 </div>

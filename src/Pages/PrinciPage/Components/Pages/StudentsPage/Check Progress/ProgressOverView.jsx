@@ -11,42 +11,75 @@ import {
 } from 'recharts'
 
 const ProgressOverView = ({ progressData, stats }) => {
-  // Generate sample data if none provided
+  // Enhanced sample data with more realistic values
   const sampleProgressData = [
     {
       subject: "Fiqh",
-      marks: 85,
-      full_mark: 100,
-      pass_mark: 35
+      marks: "85",
+      full_mark: "100",
+      pass_mark: "33"
     },
     {
       subject: "Ahlaq",
-      marks: 78,
-      full_mark: 100,
-      pass_mark: 35
+      marks: "72",
+      full_mark: "100",
+      pass_mark: "33"
     },
     {
       subject: "Thajweed",
-      marks: 92,
-      full_mark: 100,
-      pass_mark: 35
+      marks: "68",
+      full_mark: "100",
+      pass_mark: "33"
     },
     {
       subject: "Thareeh",
-      marks: 65,
-      full_mark: 100,
-      pass_mark: 35
+      marks: "91",
+      full_mark: "100",
+      pass_mark: "33"
     },
-    
+   
   ]
 
   const sampleStats = {
-    total_marks: 460,
-    total_subjects: 6,
-    average_marks: 76.7
+    total_marks: 615,
+    total_subjects: 8,
+    average_marks: "76.9",
+    total_students: 45,
+    rank: 3,
+    grade: "A"
   }
 
-  // Use provided data or fall back to sample data
+  // Alternative sample data for different scenarios (can be used based on props)
+  const alternativeProgressData = [
+     {
+      subject: "Fiqh",
+      marks: "35",
+      full_mark: "100",
+      pass_mark: "33"
+    },
+    {
+      subject: "Ahlaq",
+      marks: "42",
+      full_mark: "100",
+      pass_mark: "33"
+    },
+    {
+      subject: "Thajweed",
+      marks: "68",
+      full_mark: "100",
+      pass_mark: "33"
+    },
+    {
+      subject: "Thareeh",
+      marks: "71",
+      full_mark: "100",
+      pass_mark: "33"
+    },
+  ]
+
+  // Use provided data or fallback to sample data
+  // You can change which sample data to use based on some condition
+  // For example, if you want to show a failing scenario, use alternativeProgressData
   const effectiveProgressData = progressData || sampleProgressData
   const effectiveStats = stats || sampleStats
 
@@ -136,7 +169,7 @@ const ProgressOverView = ({ progressData, stats }) => {
     return null
   }
 
-  // Calculate total marks from effectiveProgressData if stats not provided
+  // Calculate total marks from progressData if stats not provided
   const totalMarks = effectiveProgressData.reduce(
     (sum, item) => sum + (parseFloat(item.marks) || 0),
     0,

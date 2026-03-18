@@ -20,20 +20,19 @@ const CheckProgressPrinci = () => {
           id: 101,
           name: "Ali Raza",
           place: "Malappuram",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s"
+          image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s"
         },
         {
           id: 102,
           name: "Muhammed Fadil",
           place: "Malappuram",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s"
+          image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s"
         },
         {
           id: 103,
           name: "Aysha Mariyam",
           place: "Malappuram",
-      image: "https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8yMl9waG90b19vZl9hX21pZGRsZV9zY2hvb2xfbXVzbGltX2dpcmxfaG9sZGluZ180YWE1ZDdjMS1mZDU2LTQ0OWMtODVhMy1hNmUzYTc4ZWRjMDRfMS5wbmc.png",
-        
+          image: "https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8yMl9waG90b19vZl9hX21pZGRsZV9zY2hvb2xfbXVzbGltX2dpcmxfaG9sZGluZ180YWE1ZDdjMS1mZDU2LTQ0OWMtODVhMy1hNmUzYTc4ZWRjMDRfMS5wbmc.png",
         }
       ]
     },
@@ -41,43 +40,41 @@ const CheckProgressPrinci = () => {
       id: 2,
       std: "2",
       students: [
-  {
+        {
           id: 201,
           name: "Ali Raza",
           place: "Malappuram",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s"
+          image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s"
         },
         {
           id: 202,
           name: "Muhammed Fadil",
           place: "Malappuram",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s"
+          image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s"
         },
-       
       ]
     },
     {
       id: 3,
       std: "3",
       students: [
-         {
+        {
           id: 301,
           name: "Ali Raza",
           place: "Malappuram",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s"
+          image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s"
         },
         {
           id: 302,
           name: "Muhammed Fadil",
           place: "Malappuram",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s"
+          image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS334-ZDEk8_84g7paYrujaqm_QwAtCvO_gew&s"
         },
         {
           id: 303,
           name: "Aysha Mariyam",
           place: "Malappuram",
-      image: "https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8yMl9waG90b19vZl9hX21pZGRsZV9zY2hvb2xfbXVzbGltX2dpcmxfaG9sZGluZ180YWE1ZDdjMS1mZDU2LTQ0OWMtODVhMy1hNmUzYTc4ZWRjMDRfMS5wbmc.png",
-        
+          image: "https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA4L3Jhd3BpeGVsX29mZmljZV8yMl9waG90b19vZl9hX21pZGRsZV9zY2hvb2xfbXVzbGltX2dpcmxfaG9sZGluZ180YWE1ZDdjMS1mZDU2LTQ0OWMtODVhMy1hNmUzYTc4ZWRjMDRfMS5wbmc.png",
         }
       ]
     }
@@ -89,37 +86,46 @@ const CheckProgressPrinci = () => {
     { id: 3, name: "Term 3" }
   ]
 
+  // Updated sampleProgressData with correct property names for ProgressOverView
   const sampleProgressData = [
     {
       id: 1,
-      subject_name: "Fiqh",
-      mark: 85,
-      total_mark: 100,
-      grade: "A"
+      subject: "Fiqh",  // Changed from 'subject_name' to 'subject'
+      marks: "85",       // Changed from 'mark' to 'marks' (string)
+      full_mark: "100",  // Changed from 'total_mark' to 'full_mark' (string)
+      pass_mark: "35"    // Added pass_mark
     },
     {
       id: 2,
-      subject_name: "Ahlaq",
-      mark: 92,
-      total_mark: 100,
-      grade: "A+"
+      subject: "Ahlaq",
+      marks: "92",
+      full_mark: "100",
+      pass_mark: "33"
     },
     {
       id: 3,
-      subject_name: "Thareeh",
-      mark: 78,
-      total_mark: 100,
-      grade: "B+"
+      subject: "Thareeh",
+      marks: "78",
+      full_mark: "100",
+      pass_mark: "33"
     },
     {
       id: 4,
-      subject_name: "Thajweed",
-      mark: 88,
-      total_mark: 100,
-      grade: "A"
+      subject: "Thajweed",
+      marks: "88",
+      full_mark: "100",
+      pass_mark: "35"
     },
-  
   ]
+
+  // Add sample stats data if needed
+  const sampleStats = {
+    total_marks: 343,
+    total_subjects: 4,
+    average_marks: 85.75,
+    pass_count: 4,
+    fail_count: 0
+  }
 
   const [allClasses] = useState(sampleClasses)
   const [allTerms] = useState(sampleTerms)
@@ -127,6 +133,7 @@ const CheckProgressPrinci = () => {
   const [selectedStudent, setSelectedStudent] = useState(null)
   const [selectedTerm, setSelectedTerm] = useState('')
   const [studentProgress, setStudentProgress] = useState([])
+  const [studentStats, setStudentStats] = useState(null) // Added for stats
   const [loading, setLoading] = useState(false)
   const [academicYears] = useState(sampleAcademicYears)
   const [selectedAcademicYear, setSelectedAcademicYear] = useState('1')
@@ -137,6 +144,7 @@ const CheckProgressPrinci = () => {
     setSelectedClass(classData)
     setSelectedStudent(null)
     setStudentProgress([])
+    setStudentStats(null)
   }
 
   const handleStudentSelect = (studentData) => {
@@ -145,6 +153,7 @@ const CheckProgressPrinci = () => {
     setLoading(true)
     setTimeout(() => {
       setStudentProgress(sampleProgressData)
+      setStudentStats(sampleStats) // Set stats data
       setStandard(selectedClass?.std || '10')
       setLoading(false)
     }, 500)
@@ -154,6 +163,7 @@ const CheckProgressPrinci = () => {
     setSelectedAcademicYear(e.target.value)
     setSelectedTerm('')
     setStudentProgress([])
+    setStudentStats(null)
   }
 
   const getImageUrl = (url) => {
@@ -379,7 +389,10 @@ const CheckProgressPrinci = () => {
           {studentProgress.length > 0 ? (
             <div className="mt-3 grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch">
               <div className="w-full shadow-lg bg-white/90 rounded-2xl overflow-hidden h-full">
-                <ProgressOverView progressData={studentProgress} />
+                <ProgressOverView 
+                  progressData={studentProgress}
+                  stats={studentStats} // Pass stats if available
+                />
               </div>
 
               <div className="w-full shadow-lg bg-white/90 rounded-2xl overflow-hidden h-full">

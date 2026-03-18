@@ -445,7 +445,7 @@ function DailyRoutinePrinci() {
         </div>
       </div>
       {selectedClass && selectedStudent && (
-        <div>
+        <div className='mt-3'>
           <DailyRoutineOverview studentId={selectedStudent.id} />
         </div>
       )}

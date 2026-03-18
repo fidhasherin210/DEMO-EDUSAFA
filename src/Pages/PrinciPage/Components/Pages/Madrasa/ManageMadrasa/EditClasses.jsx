@@ -181,7 +181,7 @@ function EditClasses() {
                       disabled={loading}
                       className={`group relative overflow-hidden rounded-xl p-2 md:p-4 font-medium transition-all duration-300 ${
                         selectedClass?.id === classData.id
-                          ? 'bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-xl shadow-blue-500/25 scale-105'
+                          ? 'bg-gradient-to-r from-blue-600 to-sky-500 text-white shadow-xl shadow-blue-500/25 scale-105'
                           : 'bg-white border-2 border-slate-200 text-slate-700 hover:border-blue-300 hover:shadow-lg hover:scale-105'
                       } ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
@@ -224,9 +224,9 @@ function EditClasses() {
             ) : (
               <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
                 {/* Form Header */}
-                <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-6">
+                <div className="bg-gradient-to-r from-blue-600 to-sky-500 p-6">
                   <h2 className="text-sm font-semibold text-white">
-                    Editing Class {selectedClass.std}
+                    Edit Class {selectedClass.std}
                   </h2>
                   <p className="text-green-100 mt-1 text-xs">
                     Update class information below
@@ -323,7 +323,7 @@ function EditClasses() {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 focus:ring-4 focus:ring-blue-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg hover:shadow-xl"
+                      className="px-8 py-4 bg-gradient-to-r from-blue-600 to-sky-500 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 focus:ring-4 focus:ring-blue-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg hover:shadow-xl"
                     >
                       {loading ? (
                         <>

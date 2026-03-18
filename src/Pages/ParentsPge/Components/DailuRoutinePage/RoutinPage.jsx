@@ -74,20 +74,7 @@ function RoutinPage() {
         </div>
       </div>
 
-      {/* Student Info Card (Optional - shows current student) */}
-      {studentId && (
-        <div className="mb-4 p-3 bg-white rounded-xl shadow-sm border border-slate-100 mx-1">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-              <User className="w-4 h-4 text-blue-600" />
-            </div>
-            <div>
-              <p className="text-xs text-slate-500">Current Student ID</p>
-              <p className="text-sm font-medium text-slate-800">{studentId}</p>
-            </div>
-          </div>
-        </div>
-      )}
+    
 
       {/* Cards */}
       <div className="grid grid-cols-3 md:grid-cols-5 gap-2 mb-4 p-1">

@@ -160,7 +160,7 @@ function MarkTchrAtte() {
             return acc
           }, {})
           setAttendance(defaultAttendance)
-          setMessage('No attendance records found for this date')
+          
         }
         
         setIsLoading(false)

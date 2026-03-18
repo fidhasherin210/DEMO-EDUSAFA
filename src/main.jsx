@@ -4,20 +4,15 @@ import App from "./App";
 import "./index.css";
 import { registerSW } from "virtual:pwa-register";
 
-// Register service worker
-registerSW({
+const updateSW = registerSW({
   immediate: true,
-  onRegistered(registration) {
-    console.log("Service Worker registered:", registration);
-  },
-  onRegisterError(error) {
-    console.error("SW registration error:", error);
-  },
   onNeedRefresh() {
-    console.log("New content available. Refresh the page to update.");
+    if (confirm("A new update is available. Would you like to reload the page പുതിയ അപ്ഡേറ്റ് ലഭ്യമാണ്. പേജ് റീലോഡ് ചെയ്യട്ടെ?")) {
+      updateSW(true);
+    }
   },
   onOfflineReady() {
-    console.log("App is ready to work offline.");
+    console.log("App ready for offline use.");
   },
 });
 
