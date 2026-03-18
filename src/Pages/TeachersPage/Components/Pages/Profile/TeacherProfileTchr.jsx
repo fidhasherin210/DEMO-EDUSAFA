@@ -20,7 +20,7 @@ import {
 const SAMPLE_TEACHER_DATA = {
   teacher: {
     name: "Dr. Abdul Rahman Al-Qasim",
-    image: "https://m.media-amazon.com/images/I/51Wz9iQFntL._AC_UY1100_.jpg",
+    image: "https://plus.unsplash.com/premium_photo-1677523780346-c24a9bd6c118?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     place: "Malappuram, Kerala",
     msr_no: "MSR2024001",
     reg_no: "TCH2024001",
@@ -83,11 +83,17 @@ function TeacherProfileTchr() {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-xl p-8 text-center max-w-md w-full">
-          <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
-          <h3 className="text-2xl font-bold text-gray-800 mb-2">Loading Profile</h3>
-          <p className="text-gray-600">Please wait while we fetch your details...</p>
+      <div className="flex items-center justify-center w-screen h-screen">
+        <div className="text-center">
+          <div className="inline-flex flex-col items-center gap-4 px-6 py-3">
+            <div className="flex gap-2">
+              <span className="w-3 h-3 bg-emerald-500 rounded-sm animate-[bounce_0.8s_infinite] rotate-12" style={{ animationDelay: '0ms' }}></span>
+              <span className="w-3 h-3 bg-blue-500 rounded-sm animate-[bounce_0.8s_infinite] -rotate-12" style={{ animationDelay: '200ms' }}></span>
+              <span className="w-3 h-3 bg-purple-500 rounded-sm animate-[bounce_0.8s_infinite] rotate-12" style={{ animationDelay: '400ms' }}></span>
+            </div>
+            <span className="text-sm font-medium tracking-wide text-slate-600">LOADING</span>
+            <div className="w-12 h-px bg-slate-200"></div>
+          </div>
         </div>
       </div>
     )

@@ -17,24 +17,7 @@ function AddNoticePrinci({ setMessage }) {
       description: "Annual parent-teacher meeting scheduled for all classes. Please ensure attendance.",
       date: "2024-03-25"
     },
-    {
-      id: 2,
-      title: "School Holiday",
-      description: "School will remain closed on account of Holi festival.",
-      date: "2024-03-29"
-    },
-    {
-      id: 3,
-      title: "Sports Day Registration",
-      description: "Last date for sports day event registration is approaching. Interested students please register in the sports office.",
-      date: "2024-04-05"
-    },
-    {
-      id: 4,
-      title: "Examination Schedule",
-      description: "Final term examination schedule has been published. Check the notice board for details.",
-      date: "2024-04-10"
-    }
+   
   ];
 
   useEffect(() => {

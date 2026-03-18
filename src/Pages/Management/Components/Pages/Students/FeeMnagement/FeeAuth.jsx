@@ -117,34 +117,34 @@ function FeeAuth() {
   // Sample fee data by student
   const sampleFeeData = {
     101: {
-      total_fee: 25000,
-      total_paid: 20000,
-      balance: 5000,
+      total_fee: 1500,
+      total_paid: 0,
+      balance: 1500,
       message: 'Balance amount pending',
       fee_list: [
-        { month: 'April 2023', amount: 5000, receiver: 'Mr. Sharma', created_date: '2023-04-05' },
-        { month: 'May 2023', amount: 5000, receiver: 'Mr. Sharma', created_date: '2023-05-03' },
-        { month: 'June 2023', amount: 5000, receiver: 'Mr. Sharma', created_date: '2023-06-07' },
-        { month: 'July 2023', amount: 5000, receiver: 'Mr. Sharma', created_date: '2023-07-04' },
+        { month: 'April 2023', amount: 300, receiver: 'Mr. Sharma', created_date: '2023-04-05' },
+        { month: 'May 2023', amount: 300, receiver: 'Mr. Sharma', created_date: '2023-05-03' },
+        { month: 'June 2023', amount:500, receiver: 'Mr. Sharma', created_date: '2023-06-07' },
+        { month: 'July 2023', amount: 100, receiver: 'Mr. Sharma', created_date: '2023-07-04' },
       ]
     },
     102: {
-      total_fee: 25000,
-      total_paid: 25000,
+      total_fee: 1500,
+      total_paid: 1500,
       balance: 0,
       message: 'Fee paid in full',
       fee_list: [
-        { month: 'April 2023', amount: 5000, receiver: 'Mrs. Gupta', created_date: '2023-04-02' },
-        { month: 'May 2023', amount: 5000, receiver: 'Mrs. Gupta', created_date: '2023-05-05' },
-        { month: 'June 2023', amount: 5000, receiver: 'Mrs. Gupta', created_date: '2023-06-01' },
-        { month: 'July 2023', amount: 5000, receiver: 'Mrs. Gupta', created_date: '2023-07-03' },
-        { month: 'August 2023', amount: 5000, receiver: 'Mrs. Gupta', created_date: '2023-08-04' },
+        { month: 'April 2023', amount: 1000, receiver: 'Mrs. Gupta', created_date: '2023-04-02' },
+        { month: 'May 2023', amount: 1000, receiver: 'Mrs. Gupta', created_date: '2023-05-05' },
+        { month: 'June 2023', amount: 1000, receiver: 'Mrs. Gupta', created_date: '2023-06-01' },
+        { month: 'July 2023', amount: 1000, receiver: 'Mrs. Gupta', created_date: '2023-07-03' },
+        { month: 'August 2023', amount: 1000, receiver: 'Mrs. Gupta', created_date: '2023-08-04' },
       ]
     },
     201: {
-      total_fee: 30000,
-      total_paid: 15000,
-      balance: 15000,
+      total_fee: 1500,
+      total_paid: 200,
+      balance: 1300,
       message: 'Half fee paid',
       fee_list: [
         { month: 'April 2023', amount: 5000, receiver: 'Mr. Kumar', created_date: '2023-04-06' },
@@ -153,8 +153,8 @@ function FeeAuth() {
       ]
     },
     301: {
-      total_fee: 28000,
-      total_paid: 28000,
+      total_fee: 1500,
+      total_paid: 1500,
       balance: 0,
       message: 'Fee paid in full',
       fee_list: [
@@ -166,9 +166,9 @@ function FeeAuth() {
       ]
     },
     401: {
-      total_fee: 32000,
-      total_paid: 24000,
-      balance: 8000,
+      total_fee: 1500,
+      total_paid: 1200,
+      balance: 800,
       message: 'Balance amount pending',
       fee_list: [
         { month: 'April 2023', amount: 8000, receiver: 'Mr. Shah', created_date: '2023-04-04' },

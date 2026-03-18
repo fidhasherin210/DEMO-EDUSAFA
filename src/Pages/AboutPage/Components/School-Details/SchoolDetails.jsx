@@ -10,21 +10,13 @@ import logo from "/src/assets/Edusafa2.png";
 // Sample school data
 const sampleSchool = {
   name: "Qurrathul Ain",
-  sub_name: "Higher Secondary Madrasa",
+  sub_name: "Demo Sample Madrasa",
   educational_board: "Demo Educational Board",
   logo: logo,
   image: "https://images.unsplash.com/photo-1562774053-701939374585?w=1200&h=800&fit=crop",
-  history: `Founded in 1985, Innovision Academy has been at the forefront of educational excellence for over three decades. What began as a small initiative with just 50 students has now blossomed into one of the most prestigious educational institutions in the region, nurturing over 2,000 young minds annually.
+  history: `Founded centuries ago, the madrasa system in Kerala has played a vital role in shaping the religious, cultural, and moral fabric of the Muslim community. What began as small learning circles in mosques has evolved into a well-organized educational network that continues to nurture thousands of students across the state.
 
-Our journey began with a simple yet powerful vision: to create an educational ecosystem that doesn't just impart knowledge but inspires innovation, critical thinking, and holistic development. Dr. Sarah Mitchell, our founder, envisioned a school where traditional values meet modern pedagogy, creating an environment where every child can discover their unique potential.
-
-Throughout the 1990s, we expanded our infrastructure, adding state-of-the-art science laboratories, a comprehensive library, and dedicated spaces for arts and sports. The new millennium brought digital transformation to our classrooms, making us one of the first schools in the region to integrate technology seamlessly into education.
-
-The 2010s marked our international expansion, with exchange programs established in 15 countries and our students consistently achieving top ranks in national and international Olympiads. Our alumni have gone on to become leaders in various fields - from technology innovators at Silicon Valley to renowned artists, from research scientists to social entrepreneurs.
-
-Today, Innovision Academy stands as a beacon of educational excellence, recognized with numerous awards including the National Educational Excellence Award (2022) and the Global Innovation in Education Award (2023). Our commitment to nurturing well-rounded individuals who are ready to face the challenges of tomorrow remains stronger than ever.
-
-As we look to the future, we're excited about our upcoming Center for Innovation and Research, a state-of-the-art facility that will house robotics labs, AI research centers, and sustainable technology workshops. Because at Innovision Academy, we believe that education is not just about preparing for tests - it's about preparing for life.`
+The roots of madrasa education in Kerala can be traced back to the arrival of Islam through Arab traders along the Malabar coast. Early scholars and religious leaders established informal classes in mosques, focusing on the teachings of the Qur’an, Hadith, and basic Islamic principles. Over time, these humble beginnings developed into structured institutions dedicated to preserving and spreading knowledge`
 }
 
 function SchoolDetails() {

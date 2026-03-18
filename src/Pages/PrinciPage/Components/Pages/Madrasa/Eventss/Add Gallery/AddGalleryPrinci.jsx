@@ -18,46 +18,19 @@ function AddGalleryPrinci() {
 
   // Sample gallery images data
   const sampleGallery = [
-    {
-      id: 1,
-      image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "Annual Sports Day 2024 - Students participating in various athletic events"
-    },
-    {
-      id: 2,
-      image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "Science Exhibition - Students showcasing their innovative projects"
-    },
+    
     {
       id: 3,
       image: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "Cultural Fest 2024 - Traditional dance performance by students"
+      title: "Cultural Fest 2024 - Traditional performance by students"
     },
-    {
-      id: 4,
-      image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "Graduation Day - Class of 2024 receiving their certificates"
-    },
-    {
-      id: 5,
-      image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "Teacher's Day Celebration - Students honoring their teachers"
-    },
-    {
-      id: 6,
-      image: "https://images.unsplash.com/photo-1503676260728-5177806622cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "Educational Field Trip - Students visiting the science museum"
-    },
+    
     {
       id: 7,
       image: "https://images.unsplash.com/photo-1519452635265-7b1fbfd1e4e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "Art Competition - Students displaying their creative artwork"
+      title: "Art Competition - Students displaying creative artwork"
     },
-    {
-      id: 8,
-      image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "Parent-Teacher Meeting - Discussing student progress"
-    }
+    
   ];
 
   const fetchImages = useCallback(async () => {

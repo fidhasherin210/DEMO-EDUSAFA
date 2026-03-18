@@ -9,13 +9,13 @@ import {
   Calendar,
 } from 'lucide-react'
 
-import student1 from '../../../../../../assets/students/student-01.jpeg';
-import student2 from '../../../../../../assets/students/student-03.jpeg';
-import student3 from '../../../../../../assets/students/student-02.jpeg';
-import student4 from '../../../../../../assets/students/student-06.jpg';
-import student5 from '../../../../../../assets/students/student-05.jpeg';
-import student6 from '../../../../../../assets/students/student-04.jpeg';
-import student7 from '../../../../../../assets/students/student-07.png';
+import student1 from '../../../../../../assets/students/student-01.webp';
+import student2 from '../../../../../../assets/students/student-03.webp';
+import student3 from '../../../../../../assets/students/student-02.webp';
+import student4 from '../../../../../../assets/students/student-06.webp';
+import student5 from '../../../../../../assets/students/student-05.webp';
+import student6 from '../../../../../../assets/students/student-04.webp';
+import student7 from '../../../../../../assets/students/student-07.webp';
 
 function ClassRoomsPrinci() {
   const [allClasses, setAllClasses] = useState([

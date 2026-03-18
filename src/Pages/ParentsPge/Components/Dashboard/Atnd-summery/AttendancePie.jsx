@@ -250,7 +250,7 @@ function AttendancePie({ studentId }) {
       {/* Main Content */}
       <div className="flex-1 flex flex-col items-center justify-center">
         {/* Donut Chart with Recharts - Soft Colors */}
-        <div className="relative w-28 h-28 md:w-36 md:h-36 mb-3">
+        <div className="relative w-28 h-28 md:w-36 md:h-36">
           {attendance.attendance_marked === false ? (
             <AttendanceUpdateAnimation />
           ) : (
@@ -260,12 +260,12 @@ function AttendancePie({ studentId }) {
                   <defs>
                     {/* Soft gradients */}
                     <linearGradient id="presentGradient" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stopColor="#4ade80" />
-                      <stop offset="100%" stopColor="#86efac" />
+                      <stop offset="0%" stopColor="#20991a" />
+                      <stop offset="100%" stopColor="#20a619" />
                     </linearGradient>
                     <linearGradient id="absentGradient" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stopColor="#f87171" />
-                      <stop offset="100%" stopColor="#fca5a5" />
+                      <stop offset="0%" stopColor="#ff2626" />
+                      <stop offset="100%" stopColor="#c71010" />
                     </linearGradient>
                   </defs>
 
@@ -312,7 +312,7 @@ function AttendancePie({ studentId }) {
         </div>
 
         {/* Stats Cards */}
-        <div className="w-full grid grid-cols-2 mt-2">
+        <div className="w-full grid grid-cols-2">
           {/* Present Card */}
           <div className="relative group p-2">
             <div className="absolute inset-0 bg-emerald-400 rounded-xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>

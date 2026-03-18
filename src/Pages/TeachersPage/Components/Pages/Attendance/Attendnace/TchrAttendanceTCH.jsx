@@ -197,10 +197,17 @@ function TchrAttendanceTCH() {
   // Show loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 flex flex-col items-center space-y-4">
-          <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-          <p className="text-sm text-gray-600">Loading attendance records...</p>
+      <div className="flex items-center justify-center w-screen h-screen">
+        <div className="text-center">
+          <div className="inline-flex flex-col items-center gap-4 px-6 py-3">
+            <div className="flex gap-2">
+              <span className="w-3 h-3 bg-emerald-500 rounded-sm animate-[bounce_0.8s_infinite] rotate-12" style={{ animationDelay: '0ms' }}></span>
+              <span className="w-3 h-3 bg-blue-500 rounded-sm animate-[bounce_0.8s_infinite] -rotate-12" style={{ animationDelay: '200ms' }}></span>
+              <span className="w-3 h-3 bg-purple-500 rounded-sm animate-[bounce_0.8s_infinite] rotate-12" style={{ animationDelay: '400ms' }}></span>
+            </div>
+            <span className="text-sm font-medium tracking-wide text-slate-600">LOADING</span>
+            <div className="w-12 h-px bg-slate-200"></div>
+          </div>
         </div>
       </div>
     )

@@ -10,7 +10,7 @@ import {
   Cell,
 } from 'recharts'
 
-const ProgressOverView = ({ progressData, stats }) => {
+const ProgressOverView = ({stats, progressData }) => {
   // Sample data to use if no props are provided
   const sampleProgressData = [
     {

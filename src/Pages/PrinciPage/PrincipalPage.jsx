@@ -1,22 +1,63 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, Suspense } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-// Component imports
-import ExamTopers from '../HomePage/Components/Exam-Topers/ExamTopers'
-import AttendnaceTopers from '../HomePage/Components/Atnd-Topers/AttendnaceTopers'
-import Footer from '../HomePage/Components/Footer/Footer'
-import Calandar from '../HomePage/Components/Calandar/Calandar'
-import Events from '../HomePage/Components/UpcomingEvents/Events'
-import STDAttendancePie from './Components/Dashboard/STDAtnd-summery/STDAttendancePie'
-import TCHAtendSummery from './Components/Dashboard/TCHAtnd-summery/TCHAtendSummery'
-import RouteenTopers from '../HomePage/Components/Routine-Toperse/RouteenTopers'
-import SchoolData from './Components/Dashboard/SchoolData/SchoolData'
+// Performance optimization: Lazy loading components without changing design
+const ExamTopers = React.lazy(() =>
+  import('../HomePage/Components/Exam-Topers/ExamTopers'),
+)
+const AttendnaceTopers = React.lazy(() =>
+  import('../HomePage/Components/Atnd-Topers/AttendnaceTopers'),
+)
+const Footer = React.lazy(() => import('../HomePage/Components/Footer/Footer'))
+const Calandar = React.lazy(() =>
+  import('../HomePage/Components/Calandar/Calandar'),
+)
+const Events = React.lazy(() =>
+  import('../HomePage/Components/UpcomingEvents/Events'),
+)
+const STDAttendancePie = React.lazy(() =>
+  import('./Components/Dashboard/STDAtnd-summery/STDAttendancePie'),
+)
+const TCHAtendSummery = React.lazy(() =>
+  import('./Components/Dashboard/TCHAtnd-summery/TCHAtendSummery'),
+)
+const RouteenTopers = React.lazy(() =>
+  import('../HomePage/Components/Routine-Toperse/RouteenTopers'),
+)
+const SchoolData = React.lazy(() =>
+  import('./Components/Dashboard/SchoolData/SchoolData'),
+)
 
-import logo from "/src/assets/Edusafa2.png";
+import logo from '/src/assets/Edusafa2.png'
+
+// Placeholder for lazy loading
+const ComponentLoader = () => (
+  <div className="flex items-center justify-center mt-10 ">
+    <div className="text-center">
+      <div className="inline-flex flex-col items-center gap-4 px-6 py-3">
+        <div className="flex gap-2">
+          <span className="w-3 h-3 bg-emerald-500 rounded-sm animate-[bounce_0.8s_infinite] rotate-12"></span>
+          <span
+            className="w-3 h-3 bg-blue-500 rounded-sm animate-[bounce_0.8s_infinite] -rotate-12"
+            style={{ animationDelay: '200ms' }}
+          ></span>
+          <span
+            className="w-3 h-3 bg-purple-500 rounded-sm animate-[bounce_0.8s_infinite] rotate-12"
+            style={{ animationDelay: '400ms' }}
+          ></span>
+        </div>
+        <span className="text-sm font-medium tracking-wide text-slate-600">
+          LOADING
+        </span>
+        <div className="w-12 h-px bg-slate-200"></div>
+      </div>
+    </div>
+  </div>
+)
 
 function PrincipalPage() {
   const navigate = useNavigate()
-  
+
   // State management
   const [menuOpen, setMenuOpen] = useState(false)
   const [school, setSchool] = useState({})
@@ -27,44 +68,44 @@ function PrincipalPage() {
   const [totals, setTotals] = useState({
     total_students: 100,
     total_teachers: 5,
-    total_notices: 12
+    total_notices: 12,
   })
 
   // Sample data
   const sampleSchool = {
-    name: "Qurrathul Ain",
-    sub_name: "Higher Secondary Madrasa",
-    address: "Malappuram, Kerala",
-    logo: logo
+    name: 'Qurrathul Ain',
+    sub_name: 'Higher Secondary Madrasa',
+    address: 'Malappuram, Kerala',
+    logo: logo,
   }
 
   const sampleManagement = {
-    name: "Yusuf Ahmed",
-    image: "https://image.made-in-china.com/202f0j00KeLiuPDRgrzm/Muslim-Arabic-Dubai-Saudi-Arabia-Men-Turban.webp",
-    role: "Principal"
+    name: 'Yusuf Ahmed',
+    image:
+      'https://image.made-in-china.com/202f0j00KeLiuPDRgrzm/Muslim-Arabic-Dubai-Saudi-Arabia-Men-Turban.webp',
+    role: 'Principal',
   }
 
   // Refs
   const sidebarRef = useRef(null)
   const menuButtonRef = useRef(null)
 
-  // Simulate data loading
+  // Simulate data loading - Adjusted for faster initial response
   useEffect(() => {
     const loadData = async () => {
       try {
         setIsLoading(true)
-        
-        // Simulate API call delay
-        await new Promise(resolve => setTimeout(resolve, 800))
-        
+        // Simulated minimal delay for PWA smoothness
+        await new Promise((resolve) => setTimeout(resolve, 500))
+
         setSchool(sampleSchool)
         setManagement(sampleManagement)
         setTotals({
           total_students: 100,
           total_teachers: 5,
-          total_notices: 12
+          total_notices: 12,
         })
-        
+
         setDataLoaded(true)
       } catch (error) {
         console.error('Error loading data:', error)
@@ -119,7 +160,6 @@ function PrincipalPage() {
   }, [menuOpen, isMobile])
 
   const handleLogout = () => {
-    // Simulate logout
     localStorage.clear()
     navigate('/')
   }
@@ -132,16 +172,14 @@ function PrincipalPage() {
 
   const getImageUrl = (url) => {
     if (!url) return null
-    return url // URLs are already complete from sample data
+    return url
   }
 
-  // Don't render anything until data is loaded
   if (!dataLoaded && isLoading) {
     return (
       <div className="flex items-center justify-center w-screen h-screen">
         <div className="text-center">
           <div className="inline-flex flex-col items-center gap-4 px-6 py-3">
-            {/* Modern bouncing blocks — like school app loading animation */}
             <div className="flex gap-2">
               <span
                 className="w-3 h-3 bg-emerald-500 rounded-sm animate-[bounce_0.8s_infinite] rotate-12"
@@ -156,13 +194,9 @@ function PrincipalPage() {
                 style={{ animationDelay: '400ms' }}
               ></span>
             </div>
-
-            {/* Friendly "loading" copy with a school-ish feel */}
             <span className="text-sm font-medium tracking-wide text-slate-600">
               LOADING
             </span>
-
-            {/* Optional subtle underline — like a notebook line */}
             <div className="w-12 h-px bg-slate-200"></div>
           </div>
         </div>
@@ -196,53 +230,46 @@ function PrincipalPage() {
             border-r border-white/10`}
           aria-label="Main navigation"
           aria-hidden={!menuOpen && isMobile}
-          inert={!menuOpen && isMobile ? "true" : undefined}
+          inert={!menuOpen && isMobile ? 'true' : undefined}
         >
           <div>
-            {/* School Header */}
             <div className="relative px-4 pb-6 mb-2 border-b border-white/10">
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"></div>
               <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-emerald-500/20 to-cyan-500/20 rounded-full blur-2xl"></div>
 
               <div className="relative flex flex-col items-center">
-                {/* Logo */}
-                 <div className="relative mb-2 mt-2">
-  <div className="absolute inset-0 bg-white rounded-2xl blur-xl"></div>
+                <div className="relative mb-2 mt-2">
+                  <div className="absolute inset-0 bg-white rounded-2xl blur-xl"></div>
+                  <div className="relative bg-white rounded-2xl p-2 border border-white/20 flex justify-center">
+                    {school?.logo ? (
+                      <img
+                        src={getImageUrl(school.logo)}
+                        alt="School Logo"
+                        className="w-[100px] md:w-[140px] h-[60px] md:h-[80px] object-contain"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-[100px] md:w-[140px] h-[60px] md:h-[80px] flex items-center justify-center text-sm md:text-base font-semibold text-gray-500">
+                        {school.name || 'Logo Update soon'}
+                      </div>
+                    )}
+                  </div>
+                </div>
 
-  <div className="relative bg-white rounded-2xl p-2 border border-white/20 flex justify-center">
-    {school?.logo ? (
-      <img
-        src={getImageUrl(school.logo)}
-        alt="School Logo"
-        className="w-[100px] md:w-[140px] h-[60px] md:h-[80px] object-contain"
-        loading="lazy"
-      />
-    ) : (
-      <div className="w-[100px] md:w-[140px] h-[60px] md:h-[80px] flex items-center justify-center text-sm md:text-base font-semibold text-gray-500">
-        {school.name || 'Logo Update soon'}
-      </div>
-    )}
-  </div>
-</div>
-
-                {/* School Details */}
                 <div className="text-center flex flex-col items-center space-y-3">
                   <h2 className="text-sm md:text-xl font-extrabold tracking-wide bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
                     {school?.name || 'School Name'}
                   </h2>
-
                   {school?.sub_name && (
                     <p className="text-xs md:text-xs text-blue-100/80 tracking-wide">
                       {school.sub_name}
                     </p>
                   )}
-
                   <div className="flex items-center justify-center gap-2 text-xs md:text-sm text-slate-300 bg-white/5 px-3 py-1 rounded-full backdrop-blur-sm">
                     <svg
                       className="w-4 h-4 text-blue-300"
                       fill="currentColor"
                       viewBox="0 0 20 20"
-                      aria-hidden="true"
                     >
                       <path
                         fillRule="evenodd"
@@ -258,7 +285,6 @@ function PrincipalPage() {
               </div>
             </div>
 
-            {/* Close Button */}
             <button
               className="absolute p-3 text-white/60 transition-all rounded-lg top-2 right-2 lg:hidden hover:bg-white/10 hover:text-white min-w-[44px] min-h-[44px] flex items-center justify-center"
               onClick={toggleMenu}
@@ -279,7 +305,6 @@ function PrincipalPage() {
               </svg>
             </button>
 
-            {/* Navigation Links */}
             <nav className="px-3 py-2 space-y-1">
               {[
                 {
@@ -316,12 +341,12 @@ function PrincipalPage() {
                 <Link
                   key={item.to}
                   to={item.to}
-                  className="flex items-center gap-3 px-4 py-3 min-h-[44px] text-white/80 no-underline transition-all duration-300 rounded-xl active:bg-gradient-to-r active:from-blue-600/90 active:to-purple-600/90 lg:hover:bg-gradient-to-r lg:hover:from-blue-600/90 lg:hover:to-purple-600/90 hover:text-white lg:hover:shadow-lg lg:hover:shadow-purple-500/25 group relative overflow-hidden"
+                  className="flex items-center gap-3 px-4 py-3 min-h-[44px] text-white/80 no-underline transition-all duration-300 rounded-xl active:bg-gradient-to-r active:from-blue-600/90 active:to-purple-600/90 lg:hover:bg-gradient-to-r lg:hover:from-blue-600/90 lg:hover:to-purple-600/90 hover:text-white group relative overflow-hidden"
                   onClick={closeMenu}
                 >
                   <div className="absolute inset-0 bg-white/5 translate-x-[-100%] group-active:translate-x-[100%] lg:group-hover:translate-x-[100%] transition-transform duration-700"></div>
                   <svg
-                    className="w-5 h-5 transition-transform active:scale-110 lg:group-hover:scale-110 lg:group-hover:rotate-3"
+                    className="w-5 h-5 transition-transform active:scale-110 lg:group-hover:scale-110"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -334,46 +359,24 @@ function PrincipalPage() {
                     />
                   </svg>
                   <span className="text-sm font-medium">{item.label}</span>
-                  {item.badge && (
-                    <span className="ml-auto text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-full">
-                      {item.badge}
-                    </span>
-                  )}
                 </Link>
               ))}
             </nav>
           </div>
 
-          {/* Bottom Footer */}
-          <div className="relative p-4 mt-4 overflow-hidden border-t border-white/10">
-            <div className="absolute inset-0 bg-gradient-to-t from-blue-600/10 to-transparent"></div>
-            <div className="absolute -bottom-10 -right-10 w-24 h-24 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-2xl"></div>
-
-            <div className="relative text-center">
-              <p className="text-xs text-slate-400">Built & Maintained by </p>
-              <a
-                href="https://www.aionespark.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative inline-flex flex-col items-center group min-h-[44px] justify-center px-2"
-                onClick={closeMenu}
-              >
-                <span className="text-xs md:text-sm font-bold bg-gradient-to-r from-emerald-400 via-blue-400 to-purple-400 bg-clip-text text-transparent transition-all duration-300 active:scale-105 lg:group-hover:scale-105">
-                  AioneSpark TechHive LLP
-                </span>
-                <div className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent scale-x-0 active:scale-x-100 lg:group-hover:scale-x-100 transition-transform duration-500"></div>
-              </a>
-
-              <div className="mt-3 text-[12px] md:text-xs text-slate-500">
-                v1.0.3 • Madrasa Edition
-              </div>
+          <div className="relative p-4 mt-4 border-t border-white/10 text-center">
+            <p className="text-xs text-slate-400">Built & Maintained by </p>
+            <span className="text-xs md:text-sm font-bold bg-gradient-to-r from-emerald-400 via-blue-400 to-purple-400 bg-clip-text text-transparent transition-all duration-300">
+              AioneSpark TechHive LLP
+            </span>
+            <div className="mt-3 text-[12px] md:text-xs text-slate-500">
+              v1.0.3 • Madrasa Edition
             </div>
           </div>
         </aside>
 
         {/* Main Content */}
         <div className="flex-1 overflow-x-hidden lg:ml-[20rem]">
-          {/* Header */}
           <header className="sticky top-0 z-30 bg-white border-b border-gray-200 shadow-sm">
             <div className="px-2 py-3 space-y-3">
               <div className="mt-2 mb-3 flex items-center justify-between">
@@ -381,9 +384,7 @@ function PrincipalPage() {
                   <button
                     ref={menuButtonRef}
                     onClick={toggleMenu}
-                    className="lg:hidden min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl bg-gray-100 active:scale-95 transition"
-                    aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-                    aria-expanded={menuOpen}
+                    className="lg:hidden min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl bg-gray-100"
                   >
                     <svg
                       className="w-5 h-5 text-gray-700"
@@ -399,21 +400,18 @@ function PrincipalPage() {
                       />
                     </svg>
                   </button>
-
                   <div className="md:ms-3">
                     <h1 className="text-sm md:text-xl font-bold text-gray-800">
-                      {school?.name || 'School Name'}
+                      {school?.name}
                     </h1>
-                    <p className="text-[13px] md:text-sm text-gray-500 mb-2">
-                      {school?.sub_name || ''}
+                    <p className="text-[13px] text-gray-500 mb-2">
+                      {school?.sub_name}
                     </p>
                   </div>
                 </div>
-
                 <div className="flex items-center gap-1 md:me-5">
                   <button
                     className="min-w-[44px] min-h-[44px] lg:min-w-[60px] lg:min-h-[60px] flex items-center justify-center rounded-2xl bg-red-50 active:bg-red-100 transition"
-                    aria-label="Logout"
                     onClick={handleLogout}
                   >
                     <svg
@@ -433,20 +431,18 @@ function PrincipalPage() {
                 </div>
               </div>
 
-              {/* Management Profile Card */}
               <div className="flex items-center mt-5 gap-4 p-4 rounded-2xl bg-gradient-to-r from-blue-600 to-sky-500 text-white shadow-lg">
                 {management?.image ? (
                   <img
                     src={getImageUrl(management.image)}
-                    alt={management?.name || 'Management'}
+                    alt=""
                     className="w-16 h-16 rounded-xl object-cover border-2 border-white shadow-md"
                   />
                 ) : (
-                  <div className="w-16 h-16 flex items-center justify-center rounded-xl border-2 border-white shadow-md bg-blue-400 text-white font-bold text-xl">
+                  <div className="w-16 h-16 flex items-center justify-center rounded-xl border-2 border-white bg-blue-400 font-bold text-xl">
                     {management?.name?.[0] || 'M'}
                   </div>
                 )}
-
                 <div className="flex flex-col">
                   <h2 className="text-sm font-bold">
                     {management?.name || 'Management Name'}
@@ -454,51 +450,46 @@ function PrincipalPage() {
                   <p className="text-xs text-blue-100">
                     {management?.role || 'Principal'}
                   </p>
-                  <div className="flex items-center gap-2 text-xs text-blue-100">
-                    <span>Welcome back!</span>
-                  </div>
+                  <div className="text-xs text-blue-100">Welcome back!</div>
                 </div>
               </div>
             </div>
           </header>
 
-          {/* Dashboard Content */}
           <main className="px-1 pt-4 pb-1 overflow-x-hidden">
-            <SchoolData totals={totals} />
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-              <div className="w-full shadow-lg bg-white/90 rounded-2xl overflow-hidden">
-                <STDAttendancePie />
+            <Suspense fallback={<ComponentLoader />}>
+              <SchoolData totals={totals} />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+                <div className="w-full shadow-lg bg-white/90 rounded-2xl overflow-hidden">
+                  <STDAttendancePie />
+                </div>
+                <div className="w-full shadow-lg bg-white/90 rounded-2xl overflow-hidden">
+                  <TCHAtendSummery />
+                </div>
               </div>
-              <div className="w-full shadow-lg bg-white/90 rounded-2xl overflow-hidden">
-                <TCHAtendSummery />
+              <div className="grid grid-cols-1 gap-6 mb-4 lg:grid-cols-2">
+                <div className="w-full overflow-x-auto shadow-lg bg-white/90 rounded-2xl">
+                  <Calandar />
+                </div>
+                <div className="w-full overflow-x-auto shadow-lg bg-white/90 rounded-2xl">
+                  <Events />
+                </div>
               </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-6 mb-4 lg:grid-cols-2">
-              <div className="w-full overflow-x-auto scrollbar-hide shadow-lg bg-white/90 rounded-2xl">
-                <Calandar />
+              <div className="space-y-4">
+                <div className="w-full shadow-lg bg-white/90 rounded-2xl overflow-x-auto">
+                  <AttendnaceTopers />
+                </div>
+                <div className="w-full shadow-lg bg-white/90 rounded-2xl overflow-x-auto">
+                  <RouteenTopers />
+                </div>
+                <div className="w-full shadow-lg bg-white/90 rounded-2xl overflow-x-auto">
+                  <ExamTopers />
+                </div>
               </div>
-              <div className="w-full overflow-x-auto scrollbar-hide shadow-lg bg-white/90 rounded-2xl">
-                <Events />
+              <div className="w-full mt-4 shadow-lg bg-white/90 rounded-2xl">
+                <Footer />
               </div>
-            </div>
-
-            <div className="space-y-4">
-              <div className="w-full overflow-x-auto scrollbar-hide shadow-lg bg-white/90 rounded-2xl">
-                <AttendnaceTopers />
-              </div>
-              <div className="w-full overflow-x-auto scrollbar-hide shadow-lg bg-white/90 rounded-2xl">
-                <RouteenTopers />
-              </div>
-              <div className="w-full overflow-x-auto scrollbar-hide shadow-lg bg-white/90 rounded-2xl">
-                <ExamTopers />
-              </div>
-            </div>
-
-            <div className="w-full mt-4 overflow-x-hidden shadow-lg bg-white/90 rounded-2xl">
-              <Footer />
-            </div>
+            </Suspense>
           </main>
         </div>
       </div>

@@ -92,7 +92,7 @@ const StdProgressAuth = () => {
           id: 303,
           name: "Aysha rafna",
           place: "Seoul, South Korea",
-          image: "https://static.vecteezy.com/system/resources/previews/060/422/478/non_2x/young-muslim-girl-reading-quran-in-serene-transparent-background-focused-on-faith-and-spirituality-free-png.pnghttps://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&h=200&fit=crop"
+          image: "https://static.vecteezy.com/system/resources/previews/060/422/478/non_2x/young-muslim-girl-reading-quran-in-serene-transparent-background-focused-on-faith-and-spirituality-free-png.png"
         }
       ]
     },
@@ -116,37 +116,46 @@ const StdProgressAuth = () => {
     }
   ]
 
+  // Updated sampleProgressData with correct property names for ProgressOverView
   const sampleProgressData = [
     {
       id: 1,
       subject: "Fiqh",
-      mark: 95,
-      total_mark: 100,
-      grade: "A+"
+      marks: "95",  // Changed from 'mark' to 'marks' and kept as string
+      full_mark: "100",  // Changed from 'total_mark' to 'full_mark' and kept as string
+      pass_mark: "35"  // Added pass_mark
     },
     {
       id: 2,
       subject: "Ahlaq",
-      mark: 88,
-      total_mark: 100,
-      grade: "A"
+      marks: "88",
+      full_mark: "100",
+      pass_mark: "33"
     },
     {
       id: 3,
       subject: "Thajweed",
-      mark: 92,
-      total_mark: 100,
-      grade: "A+"
+      marks: "92",
+      full_mark: "100",
+      pass_mark: "35"
     },
     {
       id: 4,
       subject: "Thareeh",
-      mark: 85,
-      total_mark: 100,
-      grade: "A"
+      marks: "85",
+      full_mark: "100",
+      pass_mark: "33"
     },
-   
   ]
+
+  // You can also add stats data if needed
+  const sampleStats = {
+    total_marks: 360,
+    total_subjects: 4,
+    average_marks: 90.0,
+    pass_count: 4,
+    fail_count: 0
+  }
 
   const [allClasses, setAllClasses] = useState([])
   const [allTerms, setAllTerms] = useState([])
@@ -154,6 +163,7 @@ const StdProgressAuth = () => {
   const [selectedStudent, setSelectedStudent] = useState(null)
   const [selectedTerm, setSelectedTerm] = useState('')
   const [studentProgress, setStudentProgress] = useState([])
+  const [studentStats, setStudentStats] = useState(null) // Added for stats
   const [loading, setLoading] = useState(false)
   const [academicYears, setAcademicYears] = useState([])
   const [selectedAcademicYear, setSelectedAcademicYear] = useState('')
@@ -207,6 +217,7 @@ const StdProgressAuth = () => {
     // Simulate API loading
     setTimeout(() => {
       setStudentProgress(sampleProgressData)
+      setStudentStats(sampleStats) // Set stats data
       setLoading(false)
     }, 800)
   }, [selectedStudent, selectedTerm])
@@ -215,6 +226,7 @@ const StdProgressAuth = () => {
     setSelectedClass(classData)
     setSelectedStudent(null)
     setStudentProgress([])
+    setStudentStats(null)
   }
 
   const handleStudentSelect = (studentData) => {
@@ -224,6 +236,7 @@ const StdProgressAuth = () => {
   const handleAcademicYearChange = (e) => {
     setSelectedAcademicYear(e.target.value)
     setStudentProgress([])
+    setStudentStats(null)
     setSelectedTerm('')
   }
 
@@ -399,6 +412,7 @@ const StdProgressAuth = () => {
                     value={selectedTerm}
                     onChange={(e) => setSelectedTerm(Number(e.target.value))}
                     className="w-full px-4 py-3 text-xs border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all duration-200 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    disabled={loading || allTerms.length === 0}
                   >
                     <option value="">Select Term</option>
                     {allTerms.map((term) => (
@@ -420,6 +434,7 @@ const StdProgressAuth = () => {
           </div>
         )}
       </div>
+      
       {loading ? (
         <div className="text-center py-10">
           <div className="animate-spin h-12 w-12 border-b-2 border-blue-500 rounded-full mx-auto"></div>
@@ -430,7 +445,10 @@ const StdProgressAuth = () => {
           {studentProgress.length > 0 ? (
             <div className="mt-3 grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch">
               <div className="w-full shadow-lg bg-white/90 rounded-2xl overflow-hidden h-full">
-                <ProgressOverView progressData={studentProgress} />
+                <ProgressOverView 
+                  progressData={studentProgress}
+                  stats={studentStats} // Pass stats if available
+                />
               </div>
 
               <div className="w-full shadow-lg bg-white/90 rounded-2xl overflow-hidden h-full">
@@ -441,9 +459,11 @@ const StdProgressAuth = () => {
               </div>
             </div>
           ) : (
-            <div className="text-center py-10 text-gray-500">
-              No progress data available for this student
-            </div>
+            selectedStudent && (
+              <div className="text-center py-10 text-gray-500">
+                No progress data available for this student
+              </div>
+            )
           )}
         </>
       )}

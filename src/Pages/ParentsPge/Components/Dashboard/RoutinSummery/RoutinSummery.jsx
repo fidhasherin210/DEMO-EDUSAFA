@@ -29,7 +29,7 @@ function RoutineSummary({ studentId }) {
         { month: "Jul", total: 228, is_future: false },
         { month: "Aug", total: 245, is_future: false },
         { month: "Sep", total: 274, is_future: false },
-        { month: "Oct", total: null, is_future: true },
+        { month: "Oct", total: 100, is_future: true },
         { month: "Nov", total: null, is_future: true },
         { month: "Dec", total: null, is_future: true }
       ],
@@ -44,7 +44,7 @@ function RoutineSummary({ studentId }) {
         { month: "Jul", total: 130, is_future: false },
         { month: "Aug", total: 195, is_future: false },
         { month: "Sep", total: 235, is_future: false },
-        { month: "Oct", total: null, is_future: true },
+        { month: "Oct", total: 100, is_future: true },
         { month: "Nov", total: null, is_future: true },
         { month: "Dec", total: null, is_future: true }
       ],
@@ -58,7 +58,7 @@ function RoutineSummary({ studentId }) {
         { month: "Jun", total: 298, is_future: false },
         { month: "Jul", total: 295, is_future: false },
         { month: "Aug", total: 300, is_future: false },
-        { month: "Sep", total: null, is_future: true },
+        { month: "Sep", total: 100, is_future: true },
         { month: "Oct", total: null, is_future: true },
         { month: "Nov", total: null, is_future: true },
         { month: "Dec", total: null, is_future: true }
@@ -73,8 +73,8 @@ function RoutineSummary({ studentId }) {
         { month: "Jun", total: 265, is_future: false },
         { month: "Jul", total: 260, is_future: false },
         { month: "Aug", total: 275, is_future: false },
-        { month: "Sep", total: null, is_future: true },
-        { month: "Oct", total: null, is_future: true },
+        { month: "Sep", total: 100, is_future: true },
+        { month: "Oct", total: 50, is_future: true },
         { month: "Nov", total: null, is_future: true },
         { month: "Dec", total: null, is_future: true }
       ]

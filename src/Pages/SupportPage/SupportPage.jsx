@@ -9,17 +9,17 @@ import {
 
 const SupportPage = () => {
   const [supportDetails, setSupportDetails] = useState({
-    school_number: '+91 98765 43210',
-    school_address: 'Juhu Lane, Andheri West, Mumbai - 400053, Maharashtra',
-    principal_number: '+91 98765 43211',
+    school_number: '+91 9090909090',
+    school_address: 'Calicut Kerala',
+    principal_number: '+91 9090909090',
   })
   const [loading, setLoading] = useState(true)
 
   // Sample support data
   const sampleSupportData = {
-    school_phone_no: '+91 98765 43210',
-    school_address: 'Juhu Lane, Andheri West, Mumbai - 400053, Maharashtra',
-    principal_phone_no: '+91 98765 43211',
+    school_phone_no: '+91 9898989898',
+    school_address: 'Calicut Kerala',
+    principal_phone_no: '+91 98898989898',
   }
 
   useEffect(() => {

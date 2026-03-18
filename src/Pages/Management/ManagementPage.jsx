@@ -1,38 +1,55 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, Suspense } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-// Component imports
-import ExamTopers from '../HomePage/Components/Exam-Topers/ExamTopers'
-import AttendnaceTopers from '../HomePage/Components/Atnd-Topers/AttendnaceTopers'
-import Footer from '../HomePage/Components/Footer/Footer'
-import Calandar from '../HomePage/Components/Calandar/Calandar'
-import Events from '../HomePage/Components/UpcomingEvents/Events'
-import STDAttendancePie from './Components/Dashboard/STDAtnd-summery/STDAttendancePie'
-import TCHAtendSummery from './Components/Dashboard/TCHAtnd-summery/TCHAtendSummery'
-import RouteenTopers from '../HomePage/Components/Routine-Toperse/RouteenTopers'
-import SchoolData from './Components/Dashboard/SchoolData/SchoolData'
+// Performance optimization: Lazy loading components
+const ExamTopers = React.lazy(() =>
+  import('../HomePage/Components/Exam-Topers/ExamTopers'),
+)
+const AttendnaceTopers = React.lazy(() =>
+  import('../HomePage/Components/Atnd-Topers/AttendnaceTopers'),
+)
+const Footer = React.lazy(() => import('../HomePage/Components/Footer/Footer'))
+const Calandar = React.lazy(() =>
+  import('../HomePage/Components/Calandar/Calandar'),
+)
+const Events = React.lazy(() =>
+  import('../HomePage/Components/UpcomingEvents/Events'),
+)
+const STDAttendancePie = React.lazy(() =>
+  import('./Components/Dashboard/STDAtnd-summery/STDAttendancePie'),
+)
+const TCHAtendSummery = React.lazy(() =>
+  import('./Components/Dashboard/TCHAtnd-summery/TCHAtendSummery'),
+)
+const RouteenTopers = React.lazy(() =>
+  import('../HomePage/Components/Routine-Toperse/RouteenTopers'),
+)
+const SchoolData = React.lazy(() =>
+  import('./Components/Dashboard/SchoolData/SchoolData'),
+)
 
-import logo from "/src/assets/Edusafa2.png";
+import logo from '/src/assets/Edusafa2.png'
 
 // Sample Data
 const sampleSchool = {
-  name: "Qurrathul Ain",
-  sub_name: "Higher Secondary Madrasa",
-  address: "Malappuram, Kerala",
-  logo: logo
+  name: 'Qurrathul Ain',
+  sub_name: 'Higher Secondary Madrasa',
+  address: 'Malappuram, Kerala',
+  logo: logo,
 }
 
 const sampleManagement = {
-  name: "Yusuf Ahmed",
-  place: "Malappuram",
-  position: "Managing Director",
-  image: "https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTA5L3Jhd3BpeGVsb2ZmaWNlMTJfbXVzbGltX21hbl91c2luZ19pcGFkX2xvb2tfYXRfY2FtZXJhX2hhcHB5X2lzb18xNjJmNWE0Yy1hZjJjLTQzMDQtYTQ4MC1hYjI2YzcwZGM0ZGEucG5n.png"
+  name: 'Yusuf Ahmed',
+  place: 'Malappuram',
+  position: 'Managing Director',
+  image:
+    'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTA5L3Jhd3BpeGVsb2ZmaWNlMTJfbXVzbGltX21hbl91c2luZ19pcGFkX2xvb2tfYXRfY2FtZXJhX2hhcHB5X2lzb18xNjJmNWE0Yy1hZjJjLTQzMDQtYTQ4MC1hYjI2YzcwZGM0ZGEucG5n.png',
 }
 
 const sampleTotals = {
   total_students: 100,
   total_teachers: 5,
-  total_notices: 24
+  total_notices: 24,
 }
 
 function ManagementPage() {
@@ -52,14 +69,10 @@ function ManagementPage() {
   const sidebarRef = useRef(null)
   const menuButtonRef = useRef(null)
 
-  // Simulate loading
+  // Fast loading without long timeout
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-      setDataLoaded(true)
-    }, 1000)
-
-    return () => clearTimeout(timer)
+    setIsLoading(false)
+    setDataLoaded(true)
   }, [])
 
   // Check mobile device
@@ -67,7 +80,6 @@ function ManagementPage() {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 1024)
     }
-
     checkMobile()
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
@@ -119,17 +131,13 @@ function ManagementPage() {
     setImageError(true)
   }
 
-  // Don't render anything until data is loaded
   if (!dataLoaded && isLoading) {
     return (
       <div className="flex items-center justify-center w-screen h-screen">
         <div className="text-center">
           <div className="inline-flex flex-col items-center gap-4 px-6 py-3">
             <div className="flex gap-2">
-              <span
-                className="w-3 h-3 bg-emerald-500 rounded-sm animate-[bounce_0.8s_infinite] rotate-12"
-                style={{ animationDelay: '0ms' }}
-              ></span>
+              <span className="w-3 h-3 bg-emerald-500 rounded-sm animate-[bounce_0.8s_infinite] rotate-12"></span>
               <span
                 className="w-3 h-3 bg-blue-500 rounded-sm animate-[bounce_0.8s_infinite] -rotate-12"
                 style={{ animationDelay: '200ms' }}
@@ -139,11 +147,9 @@ function ManagementPage() {
                 style={{ animationDelay: '400ms' }}
               ></span>
             </div>
-
             <span className="text-sm font-medium tracking-wide text-slate-600">
               LOADING
             </span>
-
             <div className="w-12 h-px bg-slate-200"></div>
           </div>
         </div>
@@ -222,7 +228,6 @@ function ManagementPage() {
                       className="w-4 h-4 text-blue-300"
                       fill="currentColor"
                       viewBox="0 0 20 20"
-                      aria-hidden="true"
                     >
                       <path
                         fillRule="evenodd"
@@ -296,7 +301,7 @@ function ManagementPage() {
                 <Link
                   key={item.to}
                   to={item.to}
-                  className="flex items-center gap-3 px-4 py-3 min-h-[44px] text-white/80 no-underline transition-all duration-300 rounded-xl active:bg-gradient-to-r active:from-blue-600/90 active:to-purple-600/90 lg:hover:bg-gradient-to-r lg:hover:from-blue-600/90 lg:hover:to-purple-600/90 hover:text-white lg:hover:shadow-lg lg:hover:shadow-purple-500/25 group relative overflow-hidden"
+                  className="flex items-center gap-3 px-4 py-3 min-h-[44px] text-white/80 no-underline transition-all duration-300 rounded-xl active:bg-gradient-to-r active:from-blue-600/90 active:to-purple-600/90 lg:hover:bg-gradient-to-r lg:hover:from-blue-600/90 lg:hover:to-purple-600/90 hover:text-white group relative overflow-hidden"
                   onClick={closeMenu}
                 >
                   <div className="absolute inset-0 bg-white/5 translate-x-[-100%] group-active:translate-x-[100%] lg:group-hover:translate-x-[100%] transition-transform duration-700"></div>
@@ -314,11 +319,6 @@ function ManagementPage() {
                     />
                   </svg>
                   <span className="text-sm font-medium">{item.label}</span>
-                  {item.badge && (
-                    <span className="ml-auto text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-full">
-                      {item.badge}
-                    </span>
-                  )}
                 </Link>
               ))}
             </nav>
@@ -327,8 +327,6 @@ function ManagementPage() {
           {/* Bottom Footer */}
           <div className="relative p-4 mt-4 overflow-hidden border-t border-white/10">
             <div className="absolute inset-0 bg-gradient-to-t from-blue-600/10 to-transparent"></div>
-            <div className="absolute -bottom-10 -right-10 w-24 h-24 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-2xl"></div>
-
             <div className="relative text-center">
               <p className="text-xs text-slate-400">Built & Maintained by </p>
               <a
@@ -336,14 +334,12 @@ function ManagementPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="relative inline-flex flex-col items-center group min-h-[44px] justify-center px-2"
-                onClick={closeMenu}
               >
                 <span className="text-xs md:text-sm font-bold bg-gradient-to-r from-emerald-400 via-blue-400 to-purple-400 bg-clip-text text-transparent transition-all duration-300 active:scale-105 lg:group-hover:scale-105">
                   AioneSpark TechHive LLP
                 </span>
                 <div className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent scale-x-0 active:scale-x-100 lg:group-hover:scale-x-100 transition-transform duration-500"></div>
               </a>
-
               <div className="mt-3 text-[12px] md:text-xs text-slate-500">
                 v1.0.3 • Madrasa Edition
               </div>
@@ -353,7 +349,6 @@ function ManagementPage() {
 
         {/* Main Content */}
         <div className="flex-1 overflow-x-hidden lg:ml-[20rem]">
-          {/* Header */}
           <header className="sticky top-0 z-30 bg-white border-b border-gray-200 shadow-sm">
             <div className="px-2 py-3 space-y-3">
               <div className="mt-2 mb-3 flex items-center justify-between">
@@ -379,7 +374,6 @@ function ManagementPage() {
                       />
                     </svg>
                   </button>
-
                   <div className="md:ms-3">
                     <h1 className="text-sm md:text-xl font-bold text-gray-800">
                       {school?.name || 'School Name'}
@@ -389,7 +383,6 @@ function ManagementPage() {
                     </p>
                   </div>
                 </div>
-
                 <div className="flex items-center gap-1 md:me-5">
                   <button
                     className="min-w-[44px] min-h-[44px] lg:min-w-[60px] lg:min-h-[60px] flex items-center justify-center rounded-2xl bg-red-50 active:bg-red-100 transition"
@@ -427,7 +420,6 @@ function ManagementPage() {
                     {management?.name?.[0] || 'M'}
                   </div>
                 )}
-
                 <div className="flex flex-col">
                   <h2 className="text-sm font-bold">
                     {management?.name || 'Management Name'}
@@ -443,43 +435,64 @@ function ManagementPage() {
             </div>
           </header>
 
-          {/* Dashboard Content */}
           <main className="px-1 pt-4 pb-1 overflow-x-hidden">
-            <SchoolData totals={totals} />
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
-              <div className="w-full shadow-lg bg-white/90 rounded-2xl overflow-hidden">
-                <STDAttendancePie />
+            <Suspense
+              fallback={
+                <div className="flex items-center justify-center ">
+                  <div className="text-center">
+                    <div className="inline-flex flex-col items-center gap-4 px-6 py-3">
+                      <div className="flex gap-2">
+                        <span className="w-3 h-3 bg-emerald-500 rounded-sm animate-[bounce_0.8s_infinite] rotate-12"></span>
+                        <span
+                          className="w-3 h-3 bg-blue-500 rounded-sm animate-[bounce_0.8s_infinite] -rotate-12"
+                          style={{ animationDelay: '200ms' }}
+                        ></span>
+                        <span
+                          className="w-3 h-3 bg-purple-500 rounded-sm animate-[bounce_0.8s_infinite] rotate-12"
+                          style={{ animationDelay: '400ms' }}
+                        ></span>
+                      </div>
+                      <span className="text-sm font-medium tracking-wide text-slate-600">
+                        LOADING
+                      </span>
+                      <div className="w-12 h-px bg-slate-200"></div>
+                    </div>
+                  </div>
+                </div>
+              }
+            >
+              <SchoolData totals={totals} />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
+                <div className="w-full shadow-lg bg-white/90 rounded-2xl overflow-hidden">
+                  <STDAttendancePie />
+                </div>
+                <div className="w-full shadow-lg bg-white/90 rounded-2xl overflow-hidden">
+                  <TCHAtendSummery />
+                </div>
               </div>
-              <div className="w-full shadow-lg bg-white/90 rounded-2xl overflow-hidden">
-                <TCHAtendSummery />
+              <div className="grid grid-cols-1 gap-6 mb-8 lg:grid-cols-2">
+                <div className="w-full overflow-x-auto scrollbar-hide shadow-lg bg-white/90 rounded-2xl">
+                  <Calandar />
+                </div>
+                <div className="w-full overflow-x-auto scrollbar-hide shadow-lg bg-white/90 rounded-2xl">
+                  <Events />
+                </div>
               </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-6 mb-8 lg:grid-cols-2">
-              <div className="w-full overflow-x-auto scrollbar-hide shadow-lg bg-white/90 rounded-2xl">
-                <Calandar />
+              <div className="space-y-6">
+                <div className="w-full overflow-x-auto scrollbar-hide shadow-lg bg-white/90 rounded-2xl">
+                  <AttendnaceTopers />
+                </div>
+                <div className="w-full overflow-x-auto scrollbar-hide shadow-lg bg-white/90 rounded-2xl">
+                  <RouteenTopers />
+                </div>
+                <div className="w-full overflow-x-auto scrollbar-hide shadow-lg bg-white/90 rounded-2xl">
+                  <ExamTopers />
+                </div>
               </div>
-              <div className="w-full overflow-x-auto scrollbar-hide shadow-lg bg-white/90 rounded-2xl">
-                <Events />
+              <div className="w-full mt-4 overflow-x-hidden shadow-lg bg-white/90 rounded-2xl">
+                <Footer />
               </div>
-            </div>
-
-            <div className="space-y-6">
-              <div className="w-full overflow-x-auto scrollbar-hide shadow-lg bg-white/90 rounded-2xl">
-                <AttendnaceTopers />
-              </div>
-              <div className="w-full overflow-x-auto scrollbar-hide shadow-lg bg-white/90 rounded-2xl">
-                <RouteenTopers />
-              </div>
-              <div className="w-full overflow-x-auto scrollbar-hide shadow-lg bg-white/90 rounded-2xl">
-                <ExamTopers />
-              </div>
-            </div>
-
-            <div className="w-full mt-4 overflow-x-hidden shadow-lg bg-white/90 rounded-2xl">
-              <Footer />
-            </div>
+            </Suspense>
           </main>
         </div>
       </div>
