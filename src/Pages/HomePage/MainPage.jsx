@@ -346,12 +346,6 @@ function MainPage() {
     }
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem('edusafa_user')
-    setUserData(null)
-    setShowLoginModal(true)
-    setIsVisible(false)
-  }
 
   const roles = [
     {
