@@ -3,9 +3,9 @@ import logo from '../../assets/Edusafa2.png'
 import { useParams } from 'react-router-dom'
 import { supabase } from '../../supabaseClient'
 
-// Login Modal Component with Supabase Auth (Simplified)
+// Login Modal Component - Complete Working Solution with Auto Logout
 const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
-  const [isLoginMode, setIsLoginMode] = useState(true) // true = login, false = signup
+  const [isLoginMode, setIsLoginMode] = useState(true)
   const [userDetails, setUserDetails] = useState({
     email: '',
     password: '',
@@ -14,117 +14,218 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [currentUser, setCurrentUser] = useState(null)
 
-  // Check if user already logged in when component mounts
+  // FORCE LOGOUT - Clear everything and show login form
+  const forceLogout = async (message) => {
+    console.log("🚨 Force logout triggered:", message)
+    
+    try {
+      // Sign out from Supabase
+      await supabase.auth.signOut()
+      
+      // Clear all storage
+      localStorage.clear()
+      sessionStorage.clear()
+      
+      // Clear any stored user data
+      localStorage.removeItem('edusafa_user')
+      
+      // Reset all React states
+      setIsLoggedIn(false)
+      setCurrentUser(null)
+      setUserDetails({ email: '', password: '' })
+      setSubmitError('')
+      setErrors({})
+      
+      // Close modal if open
+      if (onClose) onClose()
+      
+      // Force reload to clear all cached data
+      window.location.href = '/'
+      
+    } catch (error) {
+      console.error("Logout error:", error)
+      // Force reset even if error
+      setIsLoggedIn(false)
+      setCurrentUser(null)
+      if (onClose) onClose()
+      window.location.href = '/'
+    }
+  }
+
+  // AGGRESSIVE CHECK - Check every 2 seconds for auth user
   useEffect(() => {
-    const checkLoggedInUser = async () => {
+    let checkInterval
+    
+    const verifyUserInAuth = async () => {
       try {
-        // Check Supabase session
+        // Get current session
         const { data: { session } } = await supabase.auth.getSession()
         
-        if (session) {
-          // Get user profile from users table (if you still need additional user data)
-          const { data: userData, error } = await supabase
-            .from('users')
-            .select('*')
-            .eq('id', session.user.id)
-            .single()
-          
-          if (userData && !error) {
-            setIsLoggedIn(true)
-            onSubmit(userData) // Auto-login
-          } else {
-            // If no profile in users table, just pass the auth user
-            setIsLoggedIn(true)
-            onSubmit(session.user)
+        if (!session) {
+          // No session, user is logged out
+          if (isLoggedIn) {
+            console.log("No session found, logging out...")
+            setIsLoggedIn(false)
+            setCurrentUser(null)
+            localStorage.removeItem('edusafa_user')
+            if (onClose) onClose()
           }
+          return
         }
-      } catch (error) {
-        console.error('Error checking login status:', error)
+        
+        // CRITICAL: Check if user still exists in Auth
+        const { data: { user }, error } = await supabase.auth.getUser()
+        
+        console.log("Auth check - User:", user?.email, "Error:", error?.message)
+        
+        if (error || !user) {
+          // User deleted from Auth!
+          console.log("❌ User deleted from Supabase Auth!")
+          await forceLogout("Your account has been deleted. Please login again.")
+          return
+        }
+        
+        // User exists, update current user if needed
+        if (user && (!currentUser || user.id !== currentUser.id)) {
+          setCurrentUser(user)
+          // Update stored user data
+          localStorage.setItem('edusafa_user', JSON.stringify(user))
+        }
+        
+      } catch (err) {
+        console.error("Error verifying user:", err)
       }
     }
     
-    checkLoggedInUser()
+    // Only check if user is supposedly logged in or we have stored user
+    const storedUser = localStorage.getItem('edusafa_user')
+    if (isLoggedIn || storedUser) {
+      // Check immediately
+      verifyUserInAuth()
+      // Then check every 2 seconds
+      checkInterval = setInterval(verifyUserInAuth, 2000)
+    }
+    
+    return () => {
+      if (checkInterval) clearInterval(checkInterval)
+    }
+  }, [isLoggedIn, currentUser, onClose])
 
-    // Set up auth state listener
-    const { data: authListener } = supabase.auth.onAuthStateChange(
+  // Listen to Auth state changes from Supabase
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log("📢 Auth state changed:", event, session?.user?.email)
+        
         if (event === 'SIGNED_OUT') {
+          console.log("User signed out")
           setIsLoggedIn(false)
+          setCurrentUser(null)
+          localStorage.removeItem('edusafa_user')
           setUserDetails({ email: '', password: '' })
-        } else if (event === 'SIGNED_IN' && session) {
-          // Get user profile if exists
-          const { data: userData } = await supabase
-            .from('users')
-            .select('*')
-            .eq('id', session.user.id)
-            .single()
-          
-          if (userData) {
-            setIsLoggedIn(true)
-            onSubmit(userData)
-          } else {
-            setIsLoggedIn(true)
-            onSubmit(session.user)
-          }
+          if (onClose) onClose()
+        }
+        else if (event === 'SIGNED_IN' && session) {
+          console.log("User signed in:", session.user.email)
+          setIsLoggedIn(true)
+          setCurrentUser(session.user)
+          localStorage.setItem('edusafa_user', JSON.stringify(session.user))
+          onSubmit(session.user)
+          if (onClose) onClose()
+        }
+        else if (event === 'USER_DELETED') {
+          console.log("⚠️ USER_DELETED event received!")
+          await forceLogout("Your account has been deleted.")
+        }
+        else if (event === 'TOKEN_REFRESHED') {
+          console.log("Token refreshed")
         }
       }
     )
 
     return () => {
-      authListener?.subscription.unsubscribe()
+      subscription?.unsubscribe()
     }
-  }, [onSubmit])
+  }, [onSubmit, onClose])
+
+  // Check initial session on component mount
+  useEffect(() => {
+    const checkInitialSession = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession()
+        
+        if (session) {
+          // Verify user still exists in Auth
+          const { data: { user }, error } = await supabase.auth.getUser()
+          
+          if (!error && user) {
+            console.log("User already logged in:", user.email)
+            setIsLoggedIn(true)
+            setCurrentUser(user)
+            localStorage.setItem('edusafa_user', JSON.stringify(user))
+            onSubmit(user)
+            if (onClose) onClose()
+          } else {
+            console.log("Session exists but user not found, clearing session")
+            await supabase.auth.signOut()
+            setIsLoggedIn(false)
+            setCurrentUser(null)
+            localStorage.removeItem('edusafa_user')
+          }
+        } else {
+          console.log("No active session")
+          setIsLoggedIn(false)
+          setCurrentUser(null)
+          localStorage.removeItem('edusafa_user')
+        }
+      } catch (err) {
+        console.error("Error checking session:", err)
+        setIsLoggedIn(false)
+        setCurrentUser(null)
+        localStorage.removeItem('edusafa_user')
+      }
+    }
+    
+    checkInitialSession()
+  }, [onSubmit, onClose])
 
   const validateLoginForm = () => {
     const newErrors = {}
-
     if (!userDetails.email.trim()) {
       newErrors.email = 'Email is required'
     } else if (!/\S+@\S+\.\S+/.test(userDetails.email)) {
       newErrors.email = 'Enter a valid email address'
     }
-
     if (!userDetails.password) {
       newErrors.password = 'Password is required'
-    } else if (userDetails.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters'
     }
-
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
   const validateSignupForm = () => {
     const newErrors = {}
-
     if (!userDetails.email.trim()) {
       newErrors.email = 'Email is required'
     } else if (!/\S+@\S+\.\S+/.test(userDetails.email)) {
       newErrors.email = 'Enter a valid email address'
     }
-
     if (!userDetails.password) {
       newErrors.password = 'Password is required'
     } else if (userDetails.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters'
     }
-
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
-    setUserDetails((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
+    setUserDetails((prev) => ({ ...prev, [name]: value }))
     if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: '',
-      }))
+      setErrors((prev) => ({ ...prev, [name]: '' }))
     }
     if (submitError) {
       setSubmitError('')
@@ -133,10 +234,7 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault()
-
-    if (!validateLoginForm()) {
-      return
-    }
+    if (!validateLoginForm()) return
 
     setIsSubmitting(true)
     setSubmitError('')
@@ -151,17 +249,9 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
 
       if (data.user) {
         setIsLoggedIn(true)
-        
-        // Try to get additional user data if users table exists
-        const { data: userData } = await supabase
-          .from('users')
-          .select('*')
-          .eq('id', data.user.id)
-          .single()
-        
-        onSubmit(userData || data.user)
-        
-        // Close modal if onClose provided
+        setCurrentUser(data.user)
+        localStorage.setItem('edusafa_user', JSON.stringify(data.user))
+        onSubmit(data.user)
         if (onClose) onClose()
       }
     } catch (error) {
@@ -174,16 +264,12 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
 
   const handleSignup = async (e) => {
     e.preventDefault()
-
-    if (!validateSignupForm()) {
-      return
-    }
+    if (!validateSignupForm()) return
 
     setIsSubmitting(true)
     setSubmitError('')
 
     try {
-      // Create auth user with just email and password
       const { data, error } = await supabase.auth.signUp({
         email: userDetails.email,
         password: userDetails.password,
@@ -193,146 +279,102 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
 
       if (data.user) {
         setIsLoggedIn(true)
+        setCurrentUser(data.user)
+        localStorage.setItem('edusafa_user', JSON.stringify(data.user))
         onSubmit(data.user)
-        
-        // Close modal if onClose provided
         if (onClose) onClose()
       }
     } catch (error) {
       console.error('Signup error:', error)
-      setSubmitError(error.message || 'Failed to create account. Please try again.')
+      setSubmitError(error.message || 'Failed to create account.')
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  const toggleMode = () => {
-    setIsLoginMode(!isLoginMode)
-    setErrors({})
-    setSubmitError('')
-    setUserDetails({
-      email: '',
-      password: '',
-    })
+  // CRITICAL: If user is logged in, DON'T show modal
+  if (isLoggedIn) {
+    return null
   }
 
-  // Don't show modal if user is logged in
-  if (!show || isLoggedIn) return null
+  // Show login form if not logged in AND modal should be shown
+  if (!show) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 backdrop-blur-sm">
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-sky-500/20 to-cyan-500/20 backdrop-blur-md" />
-
-      <div className="relative w-full max-w-md transform transition-all duration-500 scale-100">
-        <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
-          <div className="h-1.5 w-full bg-gradient-to-r from-blue-600 to-sky-500" />
-
-          <div className="p-8">
-            <div className="text-center">
-              <img src={logo} alt="EduSafa" className="h-16 mx-auto" />
-            </div>
-            <p className="text-center text-gray-600 mb-8 text-sm">
-              {isLoginMode ? 'Welcome back to EduSafa' : 'Create your EduSafa account'}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+      <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <div className="h-1.5 w-full bg-gradient-to-r from-blue-600 to-sky-500" />
+        <div className="p-8">
+          <div className="text-center mb-8">
+            <img src={logo} alt="EduSafa" className="h-16 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-gray-800">
+              {isLoginMode ? 'Welcome Back' : 'Create Account'}
+            </h2>
+            <p className="text-gray-500 text-sm mt-2">
+              {isLoginMode ? 'Login to your account' : 'Sign up to get started'}
             </p>
-
-            {submitError && (
-              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-red-600 text-sm flex items-center">
-                  <span className="mr-2">⚠️</span>
-                  {submitError}
-                </p>
-              </div>
-            )}
-
-            <form onSubmit={isLoginMode ? handleLogin : handleSignup} className="space-y-5">
-              <div>
-                <input
-                  type="email"
-                  name="email"
-                  value={userDetails.email}
-                  onChange={handleInputChange}
-                  placeholder="Email address"
-                  autoComplete="off"
-                  disabled={isSubmitting}
-                  className={`w-full px-4 py-3 bg-gray-50 border ${
-                    errors.email ? 'border-red-400' : 'border-gray-300'
-                  } rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all duration-300 ${
-                    isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
-                />
-                {errors.email && (
-                  <p className="text-red-500 text-xs mt-1">⚠️ {errors.email}</p>
-                )}
-              </div>
-
-              <div>
-                <input
-                  type="password"
-                  name="password"
-                  value={userDetails.password}
-                  onChange={handleInputChange}
-                  placeholder="Password"
-                  autoComplete="off"
-                  disabled={isSubmitting}
-                  className={`w-full px-4 py-3 bg-gray-50 border ${
-                    errors.password ? 'border-red-400' : 'border-gray-300'
-                  } rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all duration-300 ${
-                    isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
-                />
-                {errors.password && (
-                  <p className="text-red-500 text-xs mt-1">⚠️ {errors.password}</p>
-                )}
-                {!isLoginMode && !errors.password && userDetails.password && (
-                  <p className="text-green-600 text-xs mt-1">
-                    ✓ Password strength: {userDetails.password.length >= 8 ? 'Strong' : 'Weak'}
-                  </p>
-                )}
-              </div>
-
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full py-3.5 text-sm px-4 bg-gradient-to-r from-blue-600 to-sky-500 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-sky-600 transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-lg hover:shadow-xl mt-6 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-              >
-                {isSubmitting ? (
-                  <div className="flex items-center justify-center">
-                    <svg
-                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                    Processing...
-                  </div>
-                ) : (
-                  isLoginMode ? 'Login to Dashboard' : 'Create Account'
-                )}
-              </button>
-            </form>
-
-           
-
-            {isLoginMode && (
-              <p className="text-center text-xs text-gray-400 mt-4">
-                Enter your email and password to continue
-              </p>
-            )}
           </div>
+
+          {submitError && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-600 text-sm">{submitError}</p>
+            </div>
+          )}
+
+          <form onSubmit={isLoginMode ? handleLogin : handleSignup} className="space-y-4">
+            <div>
+              <input
+                type="email"
+                name="email"
+                value={userDetails.email}
+                onChange={handleInputChange}
+                placeholder="Email address"
+                className={`w-full px-4 py-3 border ${
+                  errors.email ? 'border-red-400' : 'border-gray-300'
+                } rounded-xl focus:outline-none focus:border-blue-600`}
+              />
+              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+            </div>
+
+            <div>
+              <input
+                type="password"
+                name="password"
+                value={userDetails.password}
+                onChange={handleInputChange}
+                placeholder="Password"
+                className={`w-full px-4 py-3 border ${
+                  errors.password ? 'border-red-400' : 'border-gray-300'
+                } rounded-xl focus:outline-none focus:border-blue-600`}
+              />
+              {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+              {!isLoginMode && !errors.password && userDetails.password && (
+                <p className="text-green-600 text-xs mt-1">
+                  ✓ Password strength: {userDetails.password.length >= 8 ? 'Strong' : 'Weak'}
+                </p>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition duration-300 disabled:opacity-50"
+            >
+              {isSubmitting ? 'Processing...' : (isLoginMode ? 'Login' : 'Sign Up')}
+            </button>
+          </form>
+
+          <button
+            onClick={() => {
+              setIsLoginMode(!isLoginMode)
+              setErrors({})
+              setSubmitError('')
+              setUserDetails({ email: '', password: '' })
+            }}
+            className="w-full mt-4 text-sm text-blue-600 hover:text-blue-700"
+          >
+            {isLoginMode ? "Don't have an account? Sign Up" : "Already have an account? Login"}
+          </button>
         </div>
       </div>
     </div>
@@ -345,17 +387,61 @@ function MainPage() {
   const [showLoginModal, setShowLoginModal] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
-  const [userData, setUserData] = useState(null) // Add state for user data
+  const [userData, setUserData] = useState(null)
   const cardsRef = useRef([])
 
+  // Check session on mount and setup auth listener
   useEffect(() => {
-    // Check if user already logged in
-    const storedUserData = localStorage.getItem('edusafa_user')
-    if (storedUserData) {
-      setUserData(JSON.parse(storedUserData))
-      setShowLoginModal(false)
-      setIsVisible(true)
+    const checkSession = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession()
+        
+        if (session) {
+          // Verify user exists in Auth
+          const { data: { user }, error } = await supabase.auth.getUser()
+          
+          if (!error && user) {
+            setUserData(user)
+            localStorage.setItem('edusafa_user', JSON.stringify(user))
+            setShowLoginModal(false)
+            setIsVisible(true)
+          } else {
+            // User doesn't exist, clear everything
+            await supabase.auth.signOut()
+            localStorage.removeItem('edusafa_user')
+            setShowLoginModal(true)
+            setIsVisible(false)
+          }
+        } else {
+          setShowLoginModal(true)
+          setIsVisible(false)
+        }
+      } catch (err) {
+        console.error("Session check error:", err)
+        setShowLoginModal(true)
+      }
     }
+    
+    checkSession()
+
+    // Setup auth listener for real-time updates
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        console.log("MainPage Auth event:", event)
+        
+        if (event === 'SIGNED_OUT' || event === 'USER_DELETED') {
+          setUserData(null)
+          localStorage.removeItem('edusafa_user')
+          setShowLoginModal(true)
+          setIsVisible(false)
+        } else if (event === 'SIGNED_IN' && session) {
+          setUserData(session.user)
+          localStorage.setItem('edusafa_user', JSON.stringify(session.user))
+          setShowLoginModal(false)
+          setIsVisible(true)
+        }
+      }
+    )
 
     const timer = setInterval(() => {
       setCurrentTime(new Date())
@@ -380,22 +466,40 @@ function MainPage() {
     return () => {
       observer.disconnect()
       clearInterval(timer)
+      subscription?.unsubscribe()
     }
   }, [])
+
+  // Periodic check for auth user (every 3 seconds)
+  useEffect(() => {
+    if (!userData) return
+
+    const checkUserExists = setInterval(async () => {
+      try {
+        const { data: { user }, error } = await supabase.auth.getUser()
+        
+        if (error || !user) {
+          console.log("User no longer exists in Auth")
+          setUserData(null)
+          localStorage.removeItem('edusafa_user')
+          setShowLoginModal(true)
+          setIsVisible(false)
+        }
+      } catch (err) {
+        console.error("Periodic check error:", err)
+      }
+    }, 3000)
+
+    return () => clearInterval(checkUserExists)
+  }, [userData])
 
   const handleLoginSubmit = async (userDetails) => {
     try {
       setIsLoading(true)
-
-      // Store user data in state and localStorage
       setUserData(userDetails)
       localStorage.setItem('edusafa_user', JSON.stringify(userDetails))
-
-      // Hide modal and show main content
       setShowLoginModal(false)
       setIsVisible(true)
-
-      // You can also send this data to your backend if needed
       console.log('User logged in:', userDetails)
     } catch (error) {
       console.error('Login failed:', error)
@@ -405,6 +509,18 @@ function MainPage() {
     }
   }
 
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut()
+      localStorage.removeItem('edusafa_user')
+      setUserData(null)
+      setShowLoginModal(true)
+      setIsVisible(false)
+      window.location.href = '/'
+    } catch (error) {
+      console.error('Logout error:', error)
+    }
+  }
 
   const roles = [
     {
@@ -419,7 +535,6 @@ function MainPage() {
         ? '/parent/dashboard'
         : '/parent/login',
     },
-
     {
       id: 'teacher',
       title: 'Teacher',
@@ -429,10 +544,9 @@ function MainPage() {
       textColor: 'text-emerald-600',
       borderColor: 'border-emerald-100',
       path: localStorage.getItem('teacher_ui')
-        ? 'teacher/dashboard'
-        : 'teacher/login',
+        ? '/teacher/dashboard'
+        : '/teacher/login',
     },
-
     {
       id: 'principal',
       title: 'Principal',
@@ -442,8 +556,8 @@ function MainPage() {
       textColor: 'text-amber-600',
       borderColor: 'border-amber-100',
       path: localStorage.getItem('principal_ui')
-        ? 'principal/dashboard'
-        : 'principal/login',
+        ? '/principal/dashboard'
+        : '/principal/login',
     },
     {
       id: 'management',
@@ -468,14 +582,28 @@ function MainPage() {
       <LoginModal
         show={showLoginModal}
         onSubmit={handleLoginSubmit}
+        onClose={() => setShowLoginModal(false)}
         isLoading={isLoading}
       />
-
-      {/* User Info Bar - Show when logged in */}
 
       {error && (
         <div className="fixed top-4 right-4 z-50 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg shadow-lg">
           <p>{error}</p>
+        </div>
+      )}
+
+      {/* User Info Bar - Show when logged in */}
+      {userData && !showLoginModal && (
+        <div className="fixed top-4 right-4 z-40 bg-white/90 backdrop-blur-lg rounded-xl px-4 py-2 shadow-lg border border-slate-200">
+          <div className="flex items-center space-x-3">
+            <span className="text-sm text-gray-600">Welcome, {userData.email?.split('@')[0]}</span>
+            <button
+              onClick={handleLogout}
+              className="text-xs bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition"
+            >
+              Logout
+            </button>
+          </div>
         </div>
       )}
 
@@ -549,13 +677,15 @@ function MainPage() {
             className="h-24 sm:h-28 md:h-32 lg:h-36 xl:h-40 w-auto object-contain"
           />
         </div>
-        <p className="mb-2 px-4 py-3 text-[13px] md:text-xs max-w-md md:max-w-2xl lg:max-w-3xl mx-auto text-center  text-slate-500 leading-relaxed bg-white/70 backdrop-blur-md border border-slate-200/60 rounded-xl  shadow-sm hover:shadow-md transition-all duration-300">
+        
+        <p className="mb-2 px-4 py-3 text-[13px] md:text-xs max-w-md md:max-w-2xl lg:max-w-3xl mx-auto text-center text-slate-500 leading-relaxed bg-white/70 backdrop-blur-md border border-slate-200/60 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
           This is a demo version of the Edusafa app. It is only meant to help
           you understand how the original app works. This app should not be used
           for any other purposes. All the people, images, and data shown here
           are purely fictional. The original app may have differences compared
           to this demo version.
         </p>
+        
         {/* Role Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 lg:gap-5 max-w-md md:max-w-3xl lg:max-w-4xl mx-auto w-full mb-5 md:mb-6 lg:mb-7">
           {roles.map((role, index) => (
@@ -667,7 +797,6 @@ function MainPage() {
         </div>
       </div>
 
-      {/* Styles */}
       <style jsx>{`
         * {
           -webkit-tap-highlight-color: transparent;
