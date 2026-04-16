@@ -3,12 +3,12 @@ import logo from '../../assets/Edusafa2.png'
 import { useParams } from 'react-router-dom'
 import { supabase } from '../../supabaseClient'
 
-// Login Modal Component
+// Login Modal Component with Supabase Auth (Simplified)
 const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
+  const [isLoginMode, setIsLoginMode] = useState(true) // true = login, false = signup
   const [userDetails, setUserDetails] = useState({
-    name: '',
-    phone: '',
-    place: '',
+    email: '',
+    password: '',
   })
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -17,26 +17,26 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
 
   // Check if user already logged in when component mounts
   useEffect(() => {
-    const checkLoggedInUser = () => {
+    const checkLoggedInUser = async () => {
       try {
-        const savedUser = localStorage.getItem('user')
-        const token = localStorage.getItem('auth_token')
-        const expiry = localStorage.getItem('token_expiry')
+        // Check Supabase session
+        const { data: { session } } = await supabase.auth.getSession()
         
-        if (savedUser && token && expiry) {
-          // Check if token is still valid
-          const now = new Date()
-          const expiryDate = new Date(expiry)
+        if (session) {
+          // Get user profile from users table (if you still need additional user data)
+          const { data: userData, error } = await supabase
+            .from('users')
+            .select('*')
+            .eq('id', session.user.id)
+            .single()
           
-          if (now < expiryDate) {
+          if (userData && !error) {
             setIsLoggedIn(true)
-            const userData = JSON.parse(savedUser)
             onSubmit(userData) // Auto-login
           } else {
-            // Clear expired data
-            localStorage.removeItem('user')
-            localStorage.removeItem('auth_token')
-            localStorage.removeItem('token_expiry')
+            // If no profile in users table, just pass the auth user
+            setIsLoggedIn(true)
+            onSubmit(session.user)
           }
         }
       } catch (error) {
@@ -45,59 +45,69 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
     }
     
     checkLoggedInUser()
+
+    // Set up auth state listener
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === 'SIGNED_OUT') {
+          setIsLoggedIn(false)
+          setUserDetails({ email: '', password: '' })
+        } else if (event === 'SIGNED_IN' && session) {
+          // Get user profile if exists
+          const { data: userData } = await supabase
+            .from('users')
+            .select('*')
+            .eq('id', session.user.id)
+            .single()
+          
+          if (userData) {
+            setIsLoggedIn(true)
+            onSubmit(userData)
+          } else {
+            setIsLoggedIn(true)
+            onSubmit(session.user)
+          }
+        }
+      }
+    )
+
+    return () => {
+      authListener?.subscription.unsubscribe()
+    }
   }, [onSubmit])
 
-  // Token generation function
-  const generateSessionToken = (userId) => {
-    const header = {
-      alg: 'HS256',
-      typ: 'JWT'
-    }
-    
-    const payload = {
-      userId: userId,
-      iat: Math.floor(Date.now() / 1000),
-      exp: Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60) // 7 days
-    }
-    
-    // Simple encoding (in production, use proper JWT library)
-    const encodedHeader = btoa(JSON.stringify(header))
-    const encodedPayload = btoa(JSON.stringify(payload))
-    const signature = btoa(userId + '-' + payload.exp)
-    
-    return `${encodedHeader}.${encodedPayload}.${signature}`
-  }
-
-  // Logout function
-  const handleLogout = () => {
-    localStorage.removeItem('user')
-    localStorage.removeItem('auth_token')
-    localStorage.removeItem('token_expiry')
-    setIsLoggedIn(false)
-    setUserDetails({ name: '', phone: '', place: '' }) // Reset form
-    setErrors({})
-    setSubmitError('')
-  }
-
-  const validateForm = () => {
+  const validateLoginForm = () => {
     const newErrors = {}
 
-    if (!userDetails.name.trim()) {
-      newErrors.name = 'Name is required'
-    } else if (userDetails.name.length < 2) {
-      newErrors.name = 'Name must be at least 2 characters'
+    if (!userDetails.email.trim()) {
+      newErrors.email = 'Email is required'
+    } else if (!/\S+@\S+\.\S+/.test(userDetails.email)) {
+      newErrors.email = 'Enter a valid email address'
     }
 
-    if (!userDetails.phone.trim()) {
-      newErrors.phone = 'Phone number is required'
-    } else if (!/^\d{10}$/.test(userDetails.phone.replace(/\D/g, ''))) {
-      newErrors.phone = 'Enter a valid 10-digit phone number'
+    if (!userDetails.password) {
+      newErrors.password = 'Password is required'
+    } else if (userDetails.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters'
     }
 
-    if (!userDetails.place.trim()) {
-      newErrors.place = 'Place is required'
-    } else if (userDetails.place.length < 2) {
-      newErrors.place = 'Place must be at least 2 characters'
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  const validateSignupForm = () => {
+    const newErrors = {}
+
+    if (!userDetails.email.trim()) {
+      newErrors.email = 'Email is required'
+    } else if (!/\S+@\S+\.\S+/.test(userDetails.email)) {
+      newErrors.email = 'Enter a valid email address'
+    }
+
+    if (!userDetails.password) {
+      newErrors.password = 'Password is required'
+    } else if (userDetails.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters'
     }
 
     setErrors(newErrors)
@@ -121,49 +131,10 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
     }
   }
 
-  const saveUserToSupabase = async (userData) => {
-    try {
-      const { data, error } = await supabase
-        .from('users')
-        .insert([
-          {
-            name: userData.name,
-            phone: userData.phone.replace(/\D/g, ''),
-            place: userData.place,
-            created_at: new Date().toISOString(),
-          },
-        ])
-        .select()
-
-      if (error) throw error
-
-      return { success: true, data }
-    } catch (error) {
-      console.error('Error saving user:', error.message)
-      return { success: false, error: error.message }
-    }
-  }
-
-  const checkExistingUser = async (phone) => {
-    try {
-      const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('phone', phone.replace(/\D/g, ''))
-
-      if (error) throw error
-
-      return { exists: data && data.length > 0, data }
-    } catch (error) {
-      console.error('Error checking user:', error.message)
-      return { exists: false, error: error.message }
-    }
-  }
-
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
 
-    if (!validateForm()) {
+    if (!validateLoginForm()) {
       return
     }
 
@@ -171,58 +142,78 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
     setSubmitError('')
 
     try {
-      const cleanPhone = userDetails.phone.replace(/\D/g, '')
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: userDetails.email,
+        password: userDetails.password,
+      })
 
-      const existingUser = await checkExistingUser(cleanPhone)
+      if (error) throw error
 
-      if (existingUser.error) {
-        setSubmitError('Error checking user. Please try again.')
-        setIsSubmitting(false)
-        return
+      if (data.user) {
+        setIsLoggedIn(true)
+        
+        // Try to get additional user data if users table exists
+        const { data: userData } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', data.user.id)
+          .single()
+        
+        onSubmit(userData || data.user)
+        
+        // Close modal if onClose provided
+        if (onClose) onClose()
       }
-
-      let userData
-
-      if (existingUser.exists) {
-        userData = existingUser.data[0]
-      } else {
-        const result = await saveUserToSupabase({
-          ...userDetails,
-          phone: cleanPhone,
-        })
-
-        if (!result.success) {
-          setSubmitError(
-            result.error || 'Failed to save user. Please try again.',
-          )
-          setIsSubmitting(false)
-          return
-        }
-
-        userData = result.data[0]
-      }
-
-      // Save user session
-      const token = generateSessionToken(userData.id)
-      
-      // Set expiry (7 days from now)
-      const expiry = new Date()
-      expiry.setDate(expiry.getDate() + 7)
-      
-      // Save to localStorage
-      localStorage.setItem('user', JSON.stringify(userData))
-      localStorage.setItem('auth_token', token)
-      localStorage.setItem('token_expiry', expiry.toISOString())
-      
-      setIsLoggedIn(true) // Mark as logged in
-
-      onSubmit(userData)
     } catch (error) {
-      console.error('Submit error:', error)
-      setSubmitError('An unexpected error occurred. Please try again.')
+      console.error('Login error:', error)
+      setSubmitError(error.message || 'Invalid email or password')
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  const handleSignup = async (e) => {
+    e.preventDefault()
+
+    if (!validateSignupForm()) {
+      return
+    }
+
+    setIsSubmitting(true)
+    setSubmitError('')
+
+    try {
+      // Create auth user with just email and password
+      const { data, error } = await supabase.auth.signUp({
+        email: userDetails.email,
+        password: userDetails.password,
+      })
+
+      if (error) throw error
+
+      if (data.user) {
+        setIsLoggedIn(true)
+        onSubmit(data.user)
+        
+        // Close modal if onClose provided
+        if (onClose) onClose()
+      }
+    } catch (error) {
+      console.error('Signup error:', error)
+      setSubmitError(error.message || 'Failed to create account. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const toggleMode = () => {
+    setIsLoginMode(!isLoginMode)
+    setErrors({})
+    setSubmitError('')
+    setUserDetails({
+      email: '',
+      password: '',
+    })
   }
 
   // Don't show modal if user is logged in
@@ -241,11 +232,8 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
               <img src={logo} alt="EduSafa" className="h-16 mx-auto" />
             </div>
             <p className="text-center text-gray-600 mb-8 text-sm">
-              Welcome to edusafa demo app
+              {isLoginMode ? 'Welcome back to EduSafa' : 'Create your EduSafa account'}
             </p>
-
-            {/* Show login status if already logged in (optional) */}
-           
 
             {submitError && (
               <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -256,79 +244,48 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={isLoginMode ? handleLogin : handleSignup} className="space-y-5">
               <div>
                 <input
-                  type="text"
-                  name="name"
-                  value={userDetails.name}
+                  type="email"
+                  name="email"
+                  value={userDetails.email}
                   onChange={handleInputChange}
-                  placeholder="Enter your name"
+                  placeholder="Email address"
                   autoComplete="off"
                   disabled={isSubmitting}
                   className={`w-full px-4 py-3 bg-gray-50 border ${
-                    errors.name ? 'border-red-400' : 'border-gray-300'
+                    errors.email ? 'border-red-400' : 'border-gray-300'
                   } rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all duration-300 ${
                     isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
                   }`}
                 />
-                {errors.name && (
-                  <p className="text-red-500 text-xs mt-1 flex items-center">
-                    <span className="mr-1">⚠️</span> {errors.name}
-                  </p>
+                {errors.email && (
+                  <p className="text-red-500 text-xs mt-1">⚠️ {errors.email}</p>
                 )}
-              </div>
-
-              <div>
-                <div className="relative">
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={userDetails.phone}
-                    onChange={handleInputChange}
-                    placeholder="Enter phone number"
-                    maxLength="10"
-                    autoComplete="off"
-                    disabled={isSubmitting}
-                    className={`w-full px-4 py-3 bg-gray-50 border ${
-                      errors.phone ? 'border-red-400' : 'border-gray-300'
-                    } rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all duration-300 ${
-                      isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
-                    }`}
-                  />
-                </div>
-
-                {errors.phone && (
-                  <p className="text-red-500 text-xs mt-1">⚠️ {errors.phone}</p>
-                )}
-
-                {!errors.phone &&
-                  userDetails.phone &&
-                  userDetails.phone.length === 10 && (
-                    <p className="text-green-600 text-xs mt-1">
-                      ✓ Valid phone number
-                    </p>
-                  )}
               </div>
 
               <div>
                 <input
-                  type="text"
-                  name="place"
-                  value={userDetails.place}
+                  type="password"
+                  name="password"
+                  value={userDetails.password}
                   onChange={handleInputChange}
-                  placeholder="Enter your place"
+                  placeholder="Password"
                   autoComplete="off"
                   disabled={isSubmitting}
                   className={`w-full px-4 py-3 bg-gray-50 border ${
-                    errors.place ? 'border-red-400' : 'border-gray-300'
+                    errors.password ? 'border-red-400' : 'border-gray-300'
                   } rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all duration-300 ${
                     isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
                   }`}
                 />
-                {errors.place && (
-                  <p className="text-red-500 text-xs mt-1 flex items-center">
-                    <span className="mr-1">⚠️</span> {errors.place}
+                {errors.password && (
+                  <p className="text-red-500 text-xs mt-1">⚠️ {errors.password}</p>
+                )}
+                {!isLoginMode && !errors.password && userDetails.password && (
+                  <p className="text-green-600 text-xs mt-1">
+                    ✓ Password strength: {userDetails.password.length >= 8 ? 'Strong' : 'Weak'}
                   </p>
                 )}
               </div>
@@ -336,7 +293,7 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3.5 text-xs px-4 bg-gradient-to-r from-blue-600 to-sky-500 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-sky-600 transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-lg hover:shadow-xl mt-6 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                className="w-full py-3.5 text-sm px-4 bg-gradient-to-r from-blue-600 to-sky-500 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-sky-600 transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-lg hover:shadow-xl mt-6 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 {isSubmitting ? (
                   <div className="flex items-center justify-center">
@@ -363,15 +320,18 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
                     Processing...
                   </div>
                 ) : (
-                  'Continue to Dashboard'
+                  isLoginMode ? 'Login to Dashboard' : 'Create Account'
                 )}
               </button>
             </form>
 
-            {/* Optional: Quick login info for demo */}
-            <p className="text-center text-xs text-gray-400 mt-4">
-              Enter your details to continue
-            </p>
+           
+
+            {isLoginMode && (
+              <p className="text-center text-xs text-gray-400 mt-4">
+                Enter your email and password to continue
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -590,7 +550,7 @@ function MainPage() {
           />
         </div>
         <p className="mb-2 px-4 py-3 text-[13px] md:text-xs max-w-md md:max-w-2xl lg:max-w-3xl mx-auto text-center  text-slate-500 leading-relaxed bg-white/70 backdrop-blur-md border border-slate-200/60 rounded-xl  shadow-sm hover:shadow-md transition-all duration-300">
-          This is a demo version of the Edusafy app. It is only meant to help
+          This is a demo version of the Edusafa app. It is only meant to help
           you understand how the original app works. This app should not be used
           for any other purposes. All the people, images, and data shown here
           are purely fictional. The original app may have differences compared
