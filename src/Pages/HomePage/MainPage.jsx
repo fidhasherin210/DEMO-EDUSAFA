@@ -15,7 +15,7 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
   const [submitError, setSubmitError] = useState('')
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [currentUser, setCurrentUser] = useState(null)
-
+const [showPassword, setShowPassword] = useState(false);
   // FORCE LOGOUT - Clear everything and show login form
   const forceLogout = async (message) => {
     console.log("🚨 Force logout triggered:", message)
@@ -210,7 +210,7 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
     if (!userDetails.email.trim()) {
       newErrors.email = 'Email is required'
     } else if (!/\S+@\S+\.\S+/.test(userDetails.email)) {
-      newErrors.email = 'Enter a valid email address'
+      newErrors.email = 'Enter a valid username'
     }
     if (!userDetails.password) {
       newErrors.password = 'Password is required'
@@ -256,7 +256,7 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
       }
     } catch (error) {
       console.error('Login error:', error)
-      setSubmitError(error.message || 'Invalid email or password')
+      setSubmitError(error.message || 'Invalid username or password')
     } finally {
       setIsSubmitting(false)
     }
@@ -328,7 +328,7 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
                 name="email"
                 value={userDetails.email}
                 onChange={handleInputChange}
-                placeholder="Email address"
+                placeholder="User name"
                 className={`w-full px-4 py-3 border ${
                   errors.email ? 'border-red-400' : 'border-gray-300'
                 } rounded-xl focus:outline-none focus:border-blue-600`}
@@ -336,24 +336,42 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
               {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
             </div>
 
-            <div>
-              <input
-                type="password"
-                name="password"
-                value={userDetails.password}
-                onChange={handleInputChange}
-                placeholder="Password"
-                className={`w-full px-4 py-3 border ${
-                  errors.password ? 'border-red-400' : 'border-gray-300'
-                } rounded-xl focus:outline-none focus:border-blue-600`}
-              />
-              {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
-              {!isLoginMode && !errors.password && userDetails.password && (
-                <p className="text-green-600 text-xs mt-1">
-                  ✓ Password strength: {userDetails.password.length >= 8 ? 'Strong' : 'Weak'}
-                </p>
-              )}
-            </div>
+           <div className="relative">
+  <input
+    type={showPassword ? "text" : "password"}
+    name="password"
+    value={userDetails.password}
+    onChange={handleInputChange}
+    placeholder="Password"
+    className={`w-full px-4 py-3 border ${
+      errors.password ? 'border-red-400' : 'border-gray-300'
+    } rounded-xl focus:outline-none focus:border-blue-600 pr-12`}
+  />
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+  >
+    {showPassword ? (
+      // Eye icon (visible)
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+    ) : (
+      // Eye icon (hidden/slash)
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+      </svg>
+    )}
+  </button>
+  {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+  {!isLoginMode && !errors.password && userDetails.password && (
+    <p className="text-green-600 text-xs mt-1">
+      ✓ Password strength: {userDetails.password.length >= 8 ? 'Strong' : 'Weak'}
+    </p>
+  )}
+</div>
 
             <button
               type="submit"
@@ -363,18 +381,23 @@ const LoginModal = ({ show, onSubmit, onClose, isLoading }) => {
               {isSubmitting ? 'Processing...' : (isLoginMode ? 'Login' : 'Sign Up')}
             </button>
           </form>
-
-          <button
-            onClick={() => {
-              setIsLoginMode(!isLoginMode)
-              setErrors({})
-              setSubmitError('')
-              setUserDetails({ email: '', password: '' })
-            }}
-            className="w-full mt-4 text-sm text-blue-600 hover:text-blue-700"
-          >
-            {isLoginMode ? "Don't have an account? Sign Up" : "Already have an account? Login"}
-          </button>
+<a
+  href="https://wa.me/8848034231"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="w-full mt-6 flex items-center justify-center gap-2 px-4 py-3 bg-green-50 hover:bg-green-100 border border-green-200 rounded-xl transition-all duration-200 group"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-green-600 group-hover:scale-110 transition-transform">
+    <path d="M12.032 2.001c-5.511 0-9.99 4.479-9.99 9.99 0 1.755.455 3.468 1.322 4.976l-1.412 4.964 5.133-1.353a9.957 9.957 0 004.947 1.322c5.511 0 9.99-4.479 9.99-9.99 0-5.511-4.479-9.991-9.99-9.991zm0 18.38c-1.649 0-3.243-.447-4.629-1.289l-.332-.198-3.041.803.81-2.966-.216-.354a7.994 7.994 0 01-1.24-4.273c0-4.418 3.595-8.013 8.013-8.013 4.418 0 8.013 3.595 8.013 8.013 0 4.418-3.595 8.013-8.013 8.013z"/>
+    <path d="M16.764 13.774c-.262-.131-1.553-.766-1.793-.854-.24-.087-.414-.131-.589.131-.175.262-.678.854-.831 1.029-.153.175-.306.197-.568.066-.262-.131-1.107-.408-2.108-1.302-.779-.695-1.305-1.552-1.458-1.814-.153-.262-.016-.403.115-.533.117-.117.262-.306.393-.459.131-.153.175-.262.262-.437.087-.175.044-.328-.022-.459-.066-.131-.589-1.42-.807-1.944-.212-.51-.428-.44-.589-.448-.153-.008-.328-.009-.503-.009s-.46.066-.7.328c-.24.262-.918.897-.918 2.188 0 1.291.94 2.539 1.071 2.714.131.175 1.85 2.824 4.48 3.96.626.27 1.115.432 1.496.554.629.198 1.202.17 1.656.103.505-.075 1.553-.635 1.772-1.248.219-.613.219-1.138.153-1.248-.065-.109-.24-.175-.502-.306z"/>
+  </svg>
+  <span className="text-green-700 text-[11px]">
+  If you don't have an account, send a message on WhatsApp
+</span>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 text-green-600 group-hover:translate-x-1 transition-transform">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+  </svg>
+</a>
         </div>
       </div>
     </div>
@@ -592,20 +615,7 @@ function MainPage() {
         </div>
       )}
 
-      {/* User Info Bar - Show when logged in */}
-      {userData && !showLoginModal && (
-        <div className="fixed top-4 right-4 z-40 bg-white/90 backdrop-blur-lg rounded-xl px-4 py-2 shadow-lg border border-slate-200">
-          <div className="flex items-center space-x-3">
-            <span className="text-sm text-gray-600">Welcome, {userData.email?.split('@')[0]}</span>
-            <button
-              onClick={handleLogout}
-              className="text-xs bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      )}
+      
 
       {/* Background Pattern */}
       {!showLoginModal && (
